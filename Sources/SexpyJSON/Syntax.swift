@@ -36,7 +36,20 @@ let integer = oneOf([
     zip(literal("-"), unsignedInteger).map { "-\($0.1)" }
 ])
 
-// TODO: fraction, exponent
+let fraction = zip(literal("."), unsignedInteger).map { ".\($0.1)" }
+let exponent = zip(oneOf([capturingLiteral("e"), capturingLiteral("E")]), integer).map { "\($0.0)\($0.1)" }
+
+let number = zip(
+    integer,
+    oneOf([
+        fraction,
+        literal("").map { "" },
+    ]),
+    oneOf([
+        exponent,
+        literal("").map { "" },
+    ])
+).map { "\($0)\($1)\($2)" }
 
 let escaped = zip(literal("\\"), char).map { #"\\#($0.1)"# }
 let notQuote = prefix(while: { $0 != "\"" && $0 != "\\" }).filter { !$0.isEmpty }.map(String.init)
@@ -69,7 +82,7 @@ func buildParser() -> Parser<SexpyJSONElement> {
         }
     
     valueParser.value = oneOf([
-        integer.map(SexpyJSONElement.integer),
+        number.map(SexpyJSONElement.integer),
         quoted.map(SexpyJSONElement.string),
         array,
         object,
