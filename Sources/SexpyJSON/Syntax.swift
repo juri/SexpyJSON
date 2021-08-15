@@ -7,7 +7,7 @@ struct SexpyJSONMember: Equatable {
 
 enum SexpyJSONElement: Equatable {
     case string(String)
-    case integer(Int)
+    case integer(String)
     case array([SexpyJSONElement])
     case object([SexpyJSONMember])
     case boolean(Bool)
@@ -35,10 +35,6 @@ let integer = oneOf([
     unsignedInteger,
     zip(literal("-"), unsignedInteger).map { "-\($0.1)" }
 ])
-
-func parseInt(_ a: String) -> Parser<Int> {
-    Parser { _ in Int(a) }
-}
 
 // TODO: fraction, exponent
 
@@ -73,7 +69,7 @@ func buildParser() -> Parser<SexpyJSONElement> {
         }
     
     valueParser.value = oneOf([
-        integer.flatMap(parseInt).map(SexpyJSONElement.integer),
+        integer.map(SexpyJSONElement.integer),
         quoted.map(SexpyJSONElement.string),
         array,
         object,

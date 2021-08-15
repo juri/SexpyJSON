@@ -16,7 +16,7 @@ final class ObjectSyntaxTests: XCTestCase {
 
     func testOneIntegerField() throws {
         let (element, remainder) = buildParser().run(#"{"f1": 100}"#)
-        XCTAssertEqual(element, SexpyJSONElement.object([.init(name: "f1", value: .integer(100))]))
+        XCTAssertEqual(element, SexpyJSONElement.object([.init(name: "f1", value: .integer("100"))]))
         XCTAssertEqual(remainder, ""[...])
     }
     
@@ -26,7 +26,7 @@ final class ObjectSyntaxTests: XCTestCase {
             element,
             SexpyJSONElement.object([
                 .init(name: "f1", value: .string("v1")),
-                .init(name: "f2", value: .integer(2))
+                .init(name: "f2", value: .integer("2"))
             ])
         )
         XCTAssertEqual(remainder, ""[...])
@@ -38,7 +38,7 @@ final class ObjectSyntaxTests: XCTestCase {
             element,
             SexpyJSONElement.object([
                 .init(name: "f1", value: .array([
-                    .integer(1),
+                    .integer("1"),
                     .object([
                         .init(name: "n1", value: .object([
                             .init(name: "n1n1", value: .string("n1n1v"))
