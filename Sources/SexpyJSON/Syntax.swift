@@ -11,6 +11,7 @@ enum SexpyJSONElement: Equatable {
     case array([SexpyJSONElement])
     case object([SexpyJSONMember])
     case boolean(Bool)
+    case null
 }
 
 let openBrace = literal("{")
@@ -60,6 +61,7 @@ let quoted = zip(quote, stringContent, quote).map(\.1)
 let boolTrue = literal("true").map { true }
 let boolFalse = literal("false").map { false }
 
+let null = literal("null")
 
 func buildParser() -> Parser<SexpyJSONElement> {
     let valueParser: RefBox<Parser<SexpyJSONElement>> = RefBox(value: Parser { _ in fatalError() })
@@ -88,6 +90,7 @@ func buildParser() -> Parser<SexpyJSONElement> {
         object,
         boolTrue.map(SexpyJSONElement.boolean),
         boolFalse.map(SexpyJSONElement.boolean),
+        null.map { SexpyJSONElement.null },
     ])
 
     return valueParser.value
