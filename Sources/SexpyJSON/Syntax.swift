@@ -12,6 +12,12 @@ enum SexpyJSONElement: Equatable {
     case object([SexpyJSONMember])
     case boolean(Bool)
     case null
+    
+    case addition
+    case subtraction
+    case multiplication
+    case division
+    case name(String)
 }
 
 // MARK: JSON syntax, other than arrays and objects
@@ -64,6 +70,19 @@ let boolTrue = literal("true").map { true }
 let boolFalse = literal("false").map { false }
 
 let null = literal("null")
+
+// MARK: Sexp syntax
+
+let symbol = oneOf([
+    literal("+").map(const(SexpyJSONElement.addition)),
+    literal("-").map(const(SexpyJSONElement.subtraction)),
+    literal("*").map(const(SexpyJSONElement.multiplication)),
+    literal("/").map(const(SexpyJSONElement.division)),
+    
+    zip(char.filter { $0.isLetter }, zeroOrMore(char.filter { $0.isLetter || $0.isNumber }, separatedBy: always(())))
+        .map { String([$0] + $1) }
+        .map(SexpyJSONElement.name)
+])
 
 // MARK: Parser builder for recursive syntax
 
