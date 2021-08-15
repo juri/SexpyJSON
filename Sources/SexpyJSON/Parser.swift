@@ -1,14 +1,14 @@
 import Foundation
 
-public struct Parser<A> {
-    public let run: (inout Substring) -> A?
+struct Parser<A> {
+    let run: (inout Substring) -> A?
 
-    public init(run: @escaping (inout Substring) -> A?) {
+    init(run: @escaping (inout Substring) -> A?) {
         self.run = run
     }
 }
 
-public extension Parser {
+extension Parser {
     func run(_ str: String) -> (match: A?, rest: Substring) {
         var str = str[...]
         let match = self.run(&str)
@@ -49,12 +49,12 @@ public extension Parser {
     }
 }
 
-public let char = Parser<Character> { str in
+let char = Parser<Character> { str in
     guard !str.isEmpty else { return nil }
     return str.removeFirst()
 }
 
-public func literal(_ p: String) -> Parser<Void> {
+func literal(_ p: String) -> Parser<Void> {
     Parser<Void> { str in
         guard str.hasPrefix(p) else { return nil }
         str.removeFirst(p.count)
@@ -62,7 +62,7 @@ public func literal(_ p: String) -> Parser<Void> {
     }
 }
 
-public func capturingLiteral(_ p: String) -> Parser<String> {
+func capturingLiteral(_ p: String) -> Parser<String> {
     Parser<String> { str in
         guard str.hasPrefix(p) else { return nil }
         str.removeFirst(p.count)
@@ -70,7 +70,7 @@ public func capturingLiteral(_ p: String) -> Parser<String> {
     }
 }
 
-public func prefix(while p: @escaping (Character) -> Bool) -> Parser<Substring> {
+func prefix(while p: @escaping (Character) -> Bool) -> Parser<Substring> {
     Parser<Substring> { str in
         let prefix = str.prefix(while: p)
         str.removeFirst(prefix.count)
@@ -78,7 +78,7 @@ public func prefix(while p: @escaping (Character) -> Bool) -> Parser<Substring> 
     }
 }
 
-public func prefix(length: Int) -> Parser<Substring> {
+func prefix(length: Int) -> Parser<Substring> {
     Parser<Substring> { str in
         let prefix = str.prefix(length)
         guard prefix.count == length else { return nil }
@@ -87,11 +87,11 @@ public func prefix(length: Int) -> Parser<Substring> {
     }
 }
 
-public func always<A>(_ a: A) -> Parser<A> {
+func always<A>(_ a: A) -> Parser<A> {
     Parser<A> { _ in a }
 }
 
-public func oneOf<A>(_ parsers: [Parser<A>]) -> Parser<A> {
+func oneOf<A>(_ parsers: [Parser<A>]) -> Parser<A> {
     Parser<A> { str in
         for parser in parsers {
             if let match = parser.run(&str) {
@@ -102,7 +102,7 @@ public func oneOf<A>(_ parsers: [Parser<A>]) -> Parser<A> {
     }
 }
 
-public func zeroOrMore<A>(_ p: Parser<A>, separatedBy s: Parser<Void>) -> Parser<[A]> {
+func zeroOrMore<A>(_ p: Parser<A>, separatedBy s: Parser<Void>) -> Parser<[A]> {
     Parser<[A]> { str in
         var original = str
         var matches: [A] = []
@@ -118,7 +118,7 @@ public func zeroOrMore<A>(_ p: Parser<A>, separatedBy s: Parser<Void>) -> Parser
     }
 }
 
-public func oneOrMore<A>(_ p: Parser<A>, separatedBy s: Parser<Void>) -> Parser<[A]> {
+func oneOrMore<A>(_ p: Parser<A>, separatedBy s: Parser<Void>) -> Parser<[A]> {
     Parser<[A]> { str -> [A]? in
         guard let match = p.run(&str) else {
             return nil
@@ -133,7 +133,7 @@ public func oneOrMore<A>(_ p: Parser<A>, separatedBy s: Parser<Void>) -> Parser<
     }
 }
 
-public func zip<A, B>(_ a: Parser<A>, _ b: Parser<B>) -> Parser<(A, B)> {
+func zip<A, B>(_ a: Parser<A>, _ b: Parser<B>) -> Parser<(A, B)> {
     Parser<(A, B)> { str -> (A, B)? in
         let original = str
         guard let matchA = a.run(&str) else { return nil }
@@ -145,7 +145,7 @@ public func zip<A, B>(_ a: Parser<A>, _ b: Parser<B>) -> Parser<(A, B)> {
     }
 }
 
-public func zip<A, B, C>(
+func zip<A, B, C>(
     _ a: Parser<A>,
     _ b: Parser<B>,
     _ c: Parser<C>
