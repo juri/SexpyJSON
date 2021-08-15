@@ -14,6 +14,8 @@ enum SexpyJSONElement: Equatable {
     case null
 }
 
+// MARK: JSON syntax, other than arrays and objects
+
 let openBrace = literal("{")
 let closeBrace = literal("}")
 let openBracket = literal("[")
@@ -62,6 +64,8 @@ let boolTrue = literal("true").map { true }
 let boolFalse = literal("false").map { false }
 
 let null = literal("null")
+
+// MARK: Parser builder for recursive syntax
 
 func buildParser() -> Parser<SexpyJSONElement> {
     let valueParser: RefBox<Parser<SexpyJSONElement>> = RefBox(value: Parser { _ in fatalError() })
