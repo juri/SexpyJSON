@@ -42,9 +42,9 @@ final class SExpSyntaxTests: XCTestCase {
                         name: "a",
                         value: .sexp(
                             .init(target: .symbol(.name("list")), params: [
-                                .element(.integer("1")),
-                                .element(.integer("2")),
-                                .element(.integer("3")),
+                                .element(.number("1")),
+                                .element(.number("2")),
+                                .element(.number("3")),
                             ])
                         )
                     )

@@ -17,28 +17,28 @@ final class NumberSyntaxTests: XCTestCase {
     func testDigitToElement() throws {
         let parser = buildParser()
         let (element, remainder) = parser.run("9")
-        XCTAssertEqual(element, SexpyJSONElement.integer("9"))
+        XCTAssertEqual(element, SexpyJSONElement.number("9"))
         XCTAssertEqual(remainder, ""[...])
     }
 
     func testUnsignedIntegerToElement() throws {
         let parser = buildParser()
         let (element, remainder) = parser.run("123")
-        XCTAssertEqual(element, SexpyJSONElement.integer("123"))
+        XCTAssertEqual(element, SexpyJSONElement.number("123"))
         XCTAssertEqual(remainder, ""[...])
     }
     
     func testUnsignedIntegerToElementWithRemainder() throws {
         let parser = buildParser()
         let (element, remainder) = parser.run("123 zap")
-        XCTAssertEqual(element, SexpyJSONElement.integer("123"))
+        XCTAssertEqual(element, SexpyJSONElement.number("123"))
         XCTAssertEqual(remainder, " zap"[...])
     }
 
     func testNegativeIntegerToElement() throws {
         let parser = buildParser()
         let (element, remainder) = parser.run("-80")
-        XCTAssertEqual(element, SexpyJSONElement.integer("-80"))
+        XCTAssertEqual(element, SexpyJSONElement.number("-80"))
         XCTAssertEqual(remainder, ""[...])
     }
     
@@ -47,14 +47,14 @@ final class NumberSyntaxTests: XCTestCase {
     func testFractionalToElement() throws {
         let parser = buildParser()
         let (element, remainder) = parser.run("101.010")
-        XCTAssertEqual(element, SexpyJSONElement.integer("101.010"))
+        XCTAssertEqual(element, SexpyJSONElement.number("101.010"))
         XCTAssertEqual(remainder, ""[...])
     }
 
     func testNegativeFractionalToElement() throws {
         let parser = buildParser()
         let (element, remainder) = parser.run("-80.9")
-        XCTAssertEqual(element, SexpyJSONElement.integer("-80.9"))
+        XCTAssertEqual(element, SexpyJSONElement.number("-80.9"))
         XCTAssertEqual(remainder, ""[...])
     }
     
@@ -63,14 +63,14 @@ final class NumberSyntaxTests: XCTestCase {
     func testExponentToElement() throws {
         let parser = buildParser()
         let (element, remainder) = parser.run("101e10")
-        XCTAssertEqual(element, SexpyJSONElement.integer("101e10"))
+        XCTAssertEqual(element, SexpyJSONElement.number("101e10"))
         XCTAssertEqual(remainder, ""[...])
     }
 
     func testNegativeExponentToElement() throws {
         let parser = buildParser()
         let (element, remainder) = parser.run("-80E-9")
-        XCTAssertEqual(element, SexpyJSONElement.integer("-80E-9"))
+        XCTAssertEqual(element, SexpyJSONElement.number("-80E-9"))
         XCTAssertEqual(remainder, ""[...])
     }
     
@@ -79,14 +79,14 @@ final class NumberSyntaxTests: XCTestCase {
     func testFractionalAndExponentToElement() throws {
         let parser = buildParser()
         let (element, remainder) = parser.run("101.010e10")
-        XCTAssertEqual(element, SexpyJSONElement.integer("101.010e10"))
+        XCTAssertEqual(element, SexpyJSONElement.number("101.010e10"))
         XCTAssertEqual(remainder, ""[...])
     }
 
     func testFractionalAndNegativeExponentToElement() throws {
         let parser = buildParser()
         let (element, remainder) = parser.run("-80.08E-9")
-        XCTAssertEqual(element, SexpyJSONElement.integer("-80.08E-9"))
+        XCTAssertEqual(element, SexpyJSONElement.number("-80.08E-9"))
         XCTAssertEqual(remainder, ""[...])
     }
 }

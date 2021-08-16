@@ -30,7 +30,7 @@ enum SExpressionParameter: Equatable {
 
 enum SexpyJSONElement: Equatable {
     case string(String)
-    case integer(String)
+    case number(String)
     case array([SexpyJSONElement])
     case object([SexpyJSONMember])
     case boolean(Bool)
@@ -151,7 +151,7 @@ func buildParser() -> Parser<SexpyJSONElement> {
     sexpTargetParser.value = sexp.map(SexpyJSONTarget.sexp)
     
     valueParser.value = oneOf([
-        number.map(SexpyJSONElement.integer),
+        number.map(SexpyJSONElement.number),
         quoted.map(SexpyJSONElement.string),
         array,
         object,
