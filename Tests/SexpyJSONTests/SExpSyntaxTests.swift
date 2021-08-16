@@ -31,4 +31,27 @@ final class SExpSyntaxTests: XCTestCase {
         )
         XCTAssertEqual(remainder, ""[...])
     }
+
+    func testNested() throws {
+        let (element, remainder) = buildParser().run(#"(target {"a": (list 1 2 3)})"#)
+        XCTAssertEqual(
+            element,
+            SexpyJSONElement.sexp(.init(target: .symbol(.name("target")), params: [
+                .element(.object([
+                    .init(
+                        name: "a",
+                        value: .sexp(
+                            .init(target: .symbol(.name("list")), params: [
+                                .element(.integer("1")),
+                                .element(.integer("2")),
+                                .element(.integer("3")),
+                            ])
+                        )
+                    )
+                ]))
+
+            ]))
+        )
+        XCTAssertEqual(remainder, ""[...])
+    }
 }
