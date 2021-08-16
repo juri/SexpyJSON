@@ -1,5 +1,3 @@
-import Foundation
-
 struct SexpyJSONMember: Equatable {
     var name: String
     var value: SexpyJSONElement

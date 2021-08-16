@@ -1,5 +1,3 @@
-import Foundation
-
 struct Parser<A> {
     let run: (inout Substring) -> A?
 
