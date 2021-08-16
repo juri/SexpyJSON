@@ -37,12 +37,6 @@ enum SexpyJSONElement: Equatable {
     case null
 
     case sexp(SExpression)
-//    case addition
-//    case subtraction
-//    case multiplication
-//    case division
-//    case name(String)
-
 }
 
 // MARK: JSON syntax, other than arrays and objects
