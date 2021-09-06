@@ -47,11 +47,51 @@ enum IntermediateValue {
     case object([IntermediateObjectMember])
     case boolean(Bool)
     case null
+
+    var requireValue: OutputValue {
+        get throws {
+            switch self {
+            case .function(_):
+                throw EvaluatorError.uncalledFunction
+            case let .string(s):
+                return .string(s)
+            case let .number(n):
+                return .number(n)
+            case let .array(a):
+                return try .array(a.map { try $0.requireValue })
+            case let .object(a):
+                return try .object(a.map { OutputObjectMember(name: $0.name, value: try $0.value.requireValue ) } )
+            case let .boolean(b):
+                return .boolean(b)
+            case .null:
+                return .null
+            }
+        }
+    }
 }
 
 struct IntermediateObjectMember {
     var name: String
     var value: IntermediateValue
+}
+
+enum OutputValue: Equatable {
+    case string(String)
+    case number(Double)
+    case array([OutputValue])
+    case object([OutputObjectMember])
+    case boolean(Bool)
+    case null
+}
+
+struct OutputObjectMember: Equatable {
+    var name: String
+    var value: OutputValue
+}
+
+func evaluateToOutput(expression: Expression, in context: Context) throws -> OutputValue {
+    var mutableContext = context
+    return try evaluate(expression: expression, in: &mutableContext).requireValue
 }
 
 func evaluate(expression: Expression, in context: inout Context) throws -> IntermediateValue {
@@ -104,4 +144,5 @@ enum EvaluatorError: Error {
     case badExpressionType(ExpressionValue)
     case badParameterList([Expression], String)
     case missingValue(Symbol)
+    case uncalledFunction
 }
