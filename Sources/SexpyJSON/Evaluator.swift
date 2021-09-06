@@ -158,7 +158,11 @@ struct OutputObjectMember: Equatable {
 
 func evaluateToOutput(expression: Expression, in context: Context) throws -> OutputValue {
     var mutableContext = context
-    return try evaluate(expression: expression, in: &mutableContext).requireValue
+    return try evaluateToOutput(expression: expression, mutating: &mutableContext)
+}
+
+func evaluateToOutput(expression: Expression, mutating context: inout Context) throws -> OutputValue {
+    return try evaluate(expression: expression, in: &context).requireValue
 }
 
 func evaluate(expression: Expression, in context: inout Context) throws -> IntermediateValue {
