@@ -1,5 +1,5 @@
-import XCTest
 @testable import SexpyJSON
+import XCTest
 
 final class StringSyntaxTests: XCTestCase {
     func testQuoted() throws {
@@ -11,6 +11,12 @@ final class StringSyntaxTests: XCTestCase {
     func testQuotedWithEscapedQuote() throws {
         let (element, remainder) = quoted.run(#""he\"llo""#)
         XCTAssertEqual(element, #"he\"llo"#)
+        XCTAssertEqual(remainder, ""[...])
+    }
+
+    func testQuotedWithEscapedCharacters() throws {
+        let (element, remainder) = quoted.run(#""he\\l\nlo""#)
+        XCTAssertEqual(element, #"he\\l\nlo"#)
         XCTAssertEqual(remainder, ""[...])
     }
 
