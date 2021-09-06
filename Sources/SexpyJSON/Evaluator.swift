@@ -75,6 +75,28 @@ enum IntermediateValue {
     }
 }
 
+extension IntermediateValue {
+    var array: [IntermediateValue]? {
+        guard case let .array(a) = self else { return nil }
+        return a
+    }
+
+    var boolean: Bool? {
+        guard case let .boolean(b) = self else { return nil }
+        return b
+    }
+
+    var number: Double? {
+        guard case let .number(d) = self else { return nil }
+        return d
+    }
+
+    var string: String? {
+        guard case let .string(s) = self else { return nil }
+        return s
+    }
+}
+
 struct IntermediateObjectMember {
     var name: String
     var value: IntermediateValue
@@ -90,9 +112,34 @@ enum OutputValue: Equatable {
 }
 
 extension OutputValue {
+    var string: String? {
+        guard case let .string(s) = self else { return nil }
+        return s
+    }
+
     var number: Double? {
         guard case let .number(n) = self else { return nil }
         return n
+    }
+
+    var array: [OutputValue]? {
+        guard case let .array(a) = self else { return nil }
+        return a
+    }
+
+    var object: [OutputObjectMember]? {
+        guard case let .object(o) = self else { return nil }
+        return o
+    }
+
+    var boolean: Bool? {
+        guard case let .boolean(b) = self else { return nil }
+        return b
+    }
+
+    var isNull: Bool {
+        guard case .null = self else { return false }
+        return true
     }
 }
 
