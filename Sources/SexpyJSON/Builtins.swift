@@ -5,4 +5,5 @@ let builtins: [Symbol: IntermediateValue] = [
     .subtraction: .function(.subtractFunction),
     .name("concat"): .function(.concatFunction),
     .name("eq"): .function(.eqFunction),
+    .name("if"): .function(.ifFunction),
 ]
