@@ -5,6 +5,10 @@ struct Context {
         return try namespace[symbol]
     }
 
+    func wrap(names: [Symbol: IntermediateValue]) -> Context {
+        Context(namespace: .init(names: names, wrappedNamespace: self.namespace))
+    }
+
     static let withBuiltins = Context(namespace: .init(names: builtins, wrappedNamespace: nil))
     static let empty = Context(namespace: .empty)
 }
@@ -19,6 +23,10 @@ final class Namespace {
     ) {
         self.names = names
         self.wrappedNamespace = wrappedNamespace
+    }
+
+    func wrap(names: [Symbol: IntermediateValue]) -> Namespace {
+        Namespace(names: names, wrappedNamespace: self)
     }
 
     subscript(key: Symbol) -> IntermediateValue {
