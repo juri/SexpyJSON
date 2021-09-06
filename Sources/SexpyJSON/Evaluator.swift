@@ -4,6 +4,8 @@ struct Context {
     func value(for symbol: Symbol) throws -> IntermediateValue {
         return try namespace[symbol]
     }
+
+    static let withBuiltins = Context(namespace: .init(names: builtins, wrappedNamespace: nil))
 }
 
 final class Namespace {
@@ -82,6 +84,13 @@ enum OutputValue: Equatable {
     case object([OutputObjectMember])
     case boolean(Bool)
     case null
+}
+
+extension OutputValue {
+    var number: Double? {
+        guard case let .number(n) = self else { return nil }
+        return n
+    }
 }
 
 struct OutputObjectMember: Equatable {
