@@ -6,4 +6,5 @@ let builtins: [Symbol: IntermediateValue] = [
     .name("concat"): .function(.concatFunction),
     .name("eq"): .function(.eqFunction),
     .name("if"): .function(.ifFunction),
+    .name("let"): .function(.letFunction),
 ]
