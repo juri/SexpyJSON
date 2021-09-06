@@ -1,7 +1,7 @@
 @testable import SexpyJSON
 import XCTest
 
-final class EvaluatorMathTests: XCTestCase {
+final class MathTests: XCTestCase {
     // MARK: Add
 
     func testAddOneNumber() throws {

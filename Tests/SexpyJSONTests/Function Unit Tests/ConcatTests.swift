@@ -1,7 +1,7 @@
 @testable import SexpyJSON
 import XCTest
 
-final class EvaluatorConcatTests: XCTestCase {
+final class ConcatTests: XCTestCase {
     func testNoParametersThrows() throws {
         let expr = Expression.call(
             .init(

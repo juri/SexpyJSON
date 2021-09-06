@@ -1,7 +1,7 @@
 @testable import SexpyJSON
 import XCTest
 
-final class EvaluatorDefineTests: XCTestCase {
+final class DefineTests: XCTestCase {
     func testRecursiveFunction() throws {
         let expr = Expression.call(
             .init(
