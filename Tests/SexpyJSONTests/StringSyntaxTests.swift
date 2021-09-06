@@ -14,6 +14,12 @@ final class StringSyntaxTests: XCTestCase {
         XCTAssertEqual(remainder, ""[...])
     }
 
+    func testQuotedWithEscapedCharacters() throws {
+        let (element, remainder) = quoted.run(#""he\\l\nlo""#)
+        XCTAssertEqual(element, #"he\\l\nlo"#)
+        XCTAssertEqual(remainder, ""[...])
+    }
+
     func testQuotedWithEscapedQuoteToElement() throws {
         let (element, remainder) = buildParser().run(#""he\"llo""#)
         XCTAssertEqual(element, SexpyJSONElement.string(#"he\"llo"#))
