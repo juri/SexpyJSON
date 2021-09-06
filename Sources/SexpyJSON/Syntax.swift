@@ -11,7 +11,12 @@ enum SexpyJSONSymbol: Equatable {
     case name(String)
 }
 
-struct SExpression: Equatable {
+enum SExpression: Equatable {
+    case empty
+    case call(SExpressionCall)
+}
+
+struct SExpressionCall: Equatable {
     var target: SexpyJSONTarget
     var params: [SExpressionParameter]
 }
@@ -138,13 +143,17 @@ func buildParser() -> Parser<SexpyJSONElement> {
         wrapped({ valueParser.value }).map(SExpressionParameter.element),
         symbol.map(SExpressionParameter.symbol)
     ])
-    let sexpContent = zip(sexpFunction, whitespace, zeroOrMore(sexpParameter, separatedBy: whitespace))
+    let callSExpContent = zip(sexpFunction, whitespace, zeroOrMore(sexpParameter, separatedBy: whitespace))
         .map { ($0.0, $0.2) }
-    let sexp = zip(openParen, sexpContent, closeParen)
+
+    let callSExp = zip(openParen, callSExpContent, closeParen)
         .map(\.1)
         .map { target, params in
-            SExpression.init(target: target, params: params)
+            SExpression.call(.init(target: target, params: params))
         }
+    let emptySExp = zip(openParen, whitespace, closeParen)
+        .map(const(SExpression.empty))
+    let sexp = oneOf([callSExp, emptySExp])
 
     sexpTargetParser.value = sexp.map(SexpyJSONTarget.sexp)
     
