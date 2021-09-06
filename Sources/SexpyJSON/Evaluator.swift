@@ -6,6 +6,7 @@ struct Context {
     }
 
     static let withBuiltins = Context(namespace: .init(names: builtins, wrappedNamespace: nil))
+    static let empty = Context(namespace: .empty)
 }
 
 final class Namespace {
@@ -31,6 +32,8 @@ final class Namespace {
             throw EvaluatorError.missingValue(key)
         }
     }
+
+    static let empty = Namespace(names: [:], wrappedNamespace: nil)
 }
 
 struct Function {
