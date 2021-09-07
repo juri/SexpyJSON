@@ -32,7 +32,16 @@ final class NumberSyntaxTests: XCTestCase {
         let parser = buildParser()
         let (element, remainder) = parser.run("123 zap")
         XCTAssertEqual(element, SexpyJSONElement.number("123"))
-        XCTAssertEqual(remainder, " zap"[...])
+        XCTAssertEqual(remainder, "zap"[...])
+    }
+
+    func testUnsignedIntegerToElementWithRemainder_Newlines() throws {
+        let parser = buildParser()
+        let (element, remainder) = parser.run("""
+            123 zap
+        """)
+        XCTAssertEqual(element, SexpyJSONElement.number("123"))
+        XCTAssertEqual(remainder, "zap"[...])
     }
 
     func testNegativeIntegerToElement() throws {

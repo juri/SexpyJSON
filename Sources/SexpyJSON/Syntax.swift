@@ -156,8 +156,8 @@ func buildParser() -> Parser<SexpyJSONElement> {
     let sexp = oneOf([callSExp, emptySExp])
 
     sexpTargetParser.value = sexp.map(SexpyJSONTarget.sexp)
-    
-    valueParser.value = oneOf([
+
+    let valueBodyParser = oneOf([
         number.map(SexpyJSONElement.number),
         quoted.map(SexpyJSONElement.string),
         array,
@@ -167,6 +167,8 @@ func buildParser() -> Parser<SexpyJSONElement> {
         null.map { SexpyJSONElement.null },
         sexp.map(SexpyJSONElement.sexp),
     ])
+
+    valueParser.value = zip(whitespace, valueBodyParser, whitespace).map(\.1)
 
     return valueParser.value
 }
