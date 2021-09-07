@@ -70,19 +70,19 @@ struct ExpressionObjectMember: Equatable {
 extension Expression {
     init(element: SexpyJSONElement) {
         switch element {
-        case .string(let string):
+        case let .string(string):
             self = .value(.string(string))
-        case .number(let string):
+        case let .number(string):
             self = .value(.number(string))
-        case .array(let array):
+        case let .array(array):
             self = .value(.array(array.map(Expression.init(element:))))
-        case .object(let array):
+        case let .object(array):
             self = .value(.object(array.map(ExpressionObjectMember.init(sexpyJSONMember:))))
-        case .boolean(let bool):
+        case let .boolean(bool):
             self = .value(.boolean(bool))
         case .null:
             self = .value(.null)
-        case .sexp(let sExpression):
+        case let .sexp(sExpression):
             self = Expression(sExpression: sExpression)
         }
     }
