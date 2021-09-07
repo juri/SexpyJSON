@@ -101,13 +101,18 @@ let null = literal("null")
 let openParen = literal("(")
 let closeParen = literal(")")
 
+private let specials: Set<Character> = ["+", "-", "*", "/", "#", "@", "$", "!", "%", "&", "?", "_"]
+private extension Character {
+    var isSpecial: Bool { specials.contains(self) }
+}
+
 let symbol = oneOf([
     literal("+").map(const(SexpyJSONSymbol.addition)),
     literal("-").map(const(SexpyJSONSymbol.subtraction)),
     literal("*").map(const(SexpyJSONSymbol.multiplication)),
     literal("/").map(const(SexpyJSONSymbol.division)),
     
-    zip(char.filter { $0.isLetter }, zeroOrMore(char.filter { $0.isLetter || $0.isNumber }, separatedBy: always(())))
+    zip(char.filter { $0.isLetter || $0 == "_" }, zeroOrMore(char.filter { $0.isLetter || $0.isNumber || $0.isSpecial }, separatedBy: always(())))
         .map { String([$0] + $1) }
         .map(SexpyJSONSymbol.name)
 ])

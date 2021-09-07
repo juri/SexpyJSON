@@ -20,6 +20,18 @@ final class SExpSyntaxTests: XCTestCase {
         XCTAssertEqual(remainder, ""[...])
     }
 
+    func testSymbolStartingWithUnderscore() throws {
+        let (element, remainder) = buildParser().run(#"(_target)"#)
+        XCTAssertEqual(element, SexpyJSONElement.sexp(.call(.init(target: .symbol(.name("_target")), params: []))))
+        XCTAssertEqual(remainder, ""[...])
+    }
+
+    func testSymbolWithSpecialCharacters() throws {
+        let (element, remainder) = buildParser().run(#"(t-a*r!g+e$t?)"#)
+        XCTAssertEqual(element, SexpyJSONElement.sexp(.call(.init(target: .symbol(.name("t-a*r!g+e$t?")), params: []))))
+        XCTAssertEqual(remainder, ""[...])
+    }
+
     func testExpressionWithTargetAndStringParams() throws {
         let (element, remainder) = buildParser().run(#"(target "p1" "p2")"#)
         XCTAssertEqual(
