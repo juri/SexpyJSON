@@ -35,7 +35,7 @@ final class SExpSyntaxTests: XCTestCase {
     func testExpressionWithTargetAndStringParams() throws {
         let (element, remainder) = buildParser().run(#"(target "p1" "p2")"#)
         XCTAssertEqual(
-            element,
+            try XCTUnwrap(element),
             SexpyJSONElement.sexp(.call(.init(target: .symbol(.init("target")), params: [
                 .element(.string("p1")),
                 .element(.string("p2")),
