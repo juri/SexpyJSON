@@ -39,8 +39,7 @@ public struct SXPJEvaluator {
         let originalContext = self.context
 
         do {
-            let output = try evaluateToOutput(expression: expression.expression, mutating: &self.context)
-            return SXPJOutputValue(outputValue: output)
+            return try evaluateToOutput(expression: expression.expression, mutating: &self.context)
         } catch let error as EvaluatorError {
             self.context = originalContext
             throw SXPJError.evaluationFailure(describe(error: error))
@@ -74,23 +73,6 @@ public enum SXPJOutputValue: Equatable {
     case boolean(Bool)
     case null
 
-    init(outputValue: OutputValue) {
-        switch outputValue {
-        case let .string(string):
-            self = .string(string)
-        case let .number(double):
-            self = .number(double)
-        case let .array(array):
-            self = .array(array.map(SXPJOutputValue.init(outputValue:)))
-        case let .object(array):
-            self = .object(array.map(SXPJOutputObjectMember.init(outputObjectMember:)))
-        case let .boolean(bool):
-            self = .boolean(bool)
-        case .null:
-            self = .null
-        }
-    }
-
     public func outputToJSONObject() -> Any? {
         switch self {
         case let .number(n): return n
@@ -107,14 +89,41 @@ public enum SXPJOutputValue: Equatable {
     }
 }
 
+public extension SXPJOutputValue {
+    var string: String? {
+        guard case let .string(s) = self else { return nil }
+        return s
+    }
+
+    var number: Double? {
+        guard case let .number(n) = self else { return nil }
+        return n
+    }
+
+    var array: [SXPJOutputValue]? {
+        guard case let .array(a) = self else { return nil }
+        return a
+    }
+
+    var object: [SXPJOutputObjectMember]? {
+        guard case let .object(o) = self else { return nil }
+        return o
+    }
+
+    var boolean: Bool? {
+        guard case let .boolean(b) = self else { return nil }
+        return b
+    }
+
+    var isNull: Bool {
+        guard case .null = self else { return false }
+        return true
+    }
+}
+
 public struct SXPJOutputObjectMember: Equatable {
     public var name: String
     public var value: SXPJOutputValue
-
-    init(outputObjectMember: OutputObjectMember) {
-        self.name = outputObjectMember.name
-        self.value = SXPJOutputValue(outputValue: outputObjectMember.value)
-    }
 }
 
 

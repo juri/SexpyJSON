@@ -61,7 +61,7 @@ enum IntermediateValue {
     case boolean(Bool)
     case null
 
-    var requireValue: OutputValue {
+    var requireValue: SXPJOutputValue {
         get throws {
             switch self {
             case .function(_):
@@ -73,7 +73,7 @@ enum IntermediateValue {
             case let .array(a):
                 return try .array(a.map { try $0.requireValue })
             case let .object(a):
-                return try .object(a.map { OutputObjectMember(name: $0.name, value: try $0.value.requireValue ) } )
+                return try .object(a.map { SXPJOutputObjectMember(name: $0.name, value: try $0.value.requireValue) })
             case let .boolean(b):
                 return .boolean(b)
             case .null:
@@ -110,58 +110,12 @@ struct IntermediateObjectMember {
     var value: IntermediateValue
 }
 
-enum OutputValue: Equatable {
-    case string(String)
-    case number(Double)
-    case array([OutputValue])
-    case object([OutputObjectMember])
-    case boolean(Bool)
-    case null
-}
-
-extension OutputValue {
-    var string: String? {
-        guard case let .string(s) = self else { return nil }
-        return s
-    }
-
-    var number: Double? {
-        guard case let .number(n) = self else { return nil }
-        return n
-    }
-
-    var array: [OutputValue]? {
-        guard case let .array(a) = self else { return nil }
-        return a
-    }
-
-    var object: [OutputObjectMember]? {
-        guard case let .object(o) = self else { return nil }
-        return o
-    }
-
-    var boolean: Bool? {
-        guard case let .boolean(b) = self else { return nil }
-        return b
-    }
-
-    var isNull: Bool {
-        guard case .null = self else { return false }
-        return true
-    }
-}
-
-struct OutputObjectMember: Equatable {
-    var name: String
-    var value: OutputValue
-}
-
-func evaluateToOutput(expression: Expression, in context: Context) throws -> OutputValue {
+func evaluateToOutput(expression: Expression, in context: Context) throws -> SXPJOutputValue {
     var mutableContext = context
     return try evaluateToOutput(expression: expression, mutating: &mutableContext)
 }
 
-func evaluateToOutput(expression: Expression, mutating context: inout Context) throws -> OutputValue {
+func evaluateToOutput(expression: Expression, mutating context: inout Context) throws -> SXPJOutputValue {
     return try evaluate(expression: expression, in: &context).requireValue
 }
 
