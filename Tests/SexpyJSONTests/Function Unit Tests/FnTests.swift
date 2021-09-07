@@ -8,7 +8,7 @@ final class FnTests: XCTestCase {
             .init(
                 target: .call(
                     .init(
-                        target: .symbol(.name("fn")),
+                        target: .symbol(Symbol("fn")),
                         params: [
                             .value(.null),
                         ]
@@ -28,20 +28,20 @@ final class FnTests: XCTestCase {
             .init(
                 target: .call(
                     .init(
-                        target: .symbol(.name("fn")),
+                        target: .symbol(Symbol("fn")),
                         params: [
                             .value(.array([
-                                .symbol(.name("a1")),
-                                .symbol(.name("a2")),
-                                .symbol(.name("a3")),
+                                .symbol(Symbol("a1")),
+                                .symbol(Symbol("a2")),
+                                .symbol(Symbol("a3")),
                             ])),
 
                             .call(.init(
-                                target: .symbol(.addition),
+                                target: .symbol(Symbol("+")),
                                 params: [
-                                    .symbol(.name("a1")),
-                                    .symbol(.name("a2")),
-                                    .symbol(.name("a3")),
+                                    .symbol(Symbol("a1")),
+                                    .symbol(Symbol("a2")),
+                                    .symbol(Symbol("a3")),
                                 ]
                             )),
                         ]

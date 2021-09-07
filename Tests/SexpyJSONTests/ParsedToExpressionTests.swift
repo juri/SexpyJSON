@@ -9,9 +9,9 @@ final class ParsedToExpressionTests: XCTestCase {
         let expr = Expression(element: reallyElement)
         XCTAssertEqual(
             expr,
-            .call(.init(target: .symbol(.name("target1")), params: [
+            .call(.init(target: .symbol(Symbol("target1")), params: [
                 .value(.object([
-                    .init(name: "key1", value: .call(.init(target: .symbol(.name("target2")), params: []))),
+                    .init(name: "key1", value: .call(.init(target: .symbol(Symbol("target2")), params: []))),
                 ])),
             ]))
         )

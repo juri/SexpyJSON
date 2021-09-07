@@ -3,12 +3,14 @@ struct SexpyJSONMember: Equatable {
     var value: SexpyJSONElement
 }
 
-enum SexpyJSONSymbol: Equatable {
-    case addition
-    case subtraction
-    case multiplication
-    case division
-    case name(String)
+struct SexpyJSONSymbol: Equatable {
+    var name: String
+}
+
+extension SexpyJSONSymbol {
+    init(_ name: String) {
+        self.init(name: name)
+    }
 }
 
 enum SExpression: Equatable {
@@ -107,14 +109,14 @@ private extension Character {
 }
 
 let symbol = oneOf([
-    literal("+").map(const(SexpyJSONSymbol.addition)),
-    literal("-").map(const(SexpyJSONSymbol.subtraction)),
-    literal("*").map(const(SexpyJSONSymbol.multiplication)),
-    literal("/").map(const(SexpyJSONSymbol.division)),
+    capturingLiteral("+").map(SexpyJSONSymbol.init(name:)),
+    capturingLiteral("-").map(SexpyJSONSymbol.init(name:)),
+    capturingLiteral("*").map(SexpyJSONSymbol.init(name:)),
+    capturingLiteral("/").map(SexpyJSONSymbol.init(name:)),
     
     zip(char.filter { $0.isLetter || $0 == "_" }, zeroOrMore(char.filter { $0.isLetter || $0.isNumber || $0.isSpecial }, separatedBy: always(())))
         .map { String([$0] + $1) }
-        .map(SexpyJSONSymbol.name)
+        .map(SexpyJSONSymbol.init(name:))
 ])
 
 // MARK: Parser builder for recursive syntax

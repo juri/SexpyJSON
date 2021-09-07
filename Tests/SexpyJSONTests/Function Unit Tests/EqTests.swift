@@ -5,7 +5,7 @@ final class EqTests: XCTestCase {
     func testNoParametersThrows() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: []
             )
         )
@@ -16,7 +16,7 @@ final class EqTests: XCTestCase {
     func testOneParameterThrows() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: [
                     .value(.boolean(true)),
                 ]
@@ -29,7 +29,7 @@ final class EqTests: XCTestCase {
     func testTwoBooleansEqual() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: [
                     .value(.boolean(true)),
                     .value(.boolean(true)),
@@ -44,7 +44,7 @@ final class EqTests: XCTestCase {
     func testFourBooleansEqual() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: [
                     .value(.boolean(false)),
                     .value(.boolean(false)),
@@ -61,7 +61,7 @@ final class EqTests: XCTestCase {
     func testFourBooleansEqualDontEqualIfOneIsDifferent() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: [
                     .value(.boolean(false)),
                     .value(.boolean(false)),
@@ -78,7 +78,7 @@ final class EqTests: XCTestCase {
     func testTwoStringsEqual() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: [
                     .value(.string("hello")),
                     .value(.string("hello")),
@@ -93,7 +93,7 @@ final class EqTests: XCTestCase {
     func testThreeStringsEqual() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: [
                     .value(.string("hello")),
                     .value(.string("hello")),
@@ -109,7 +109,7 @@ final class EqTests: XCTestCase {
     func testThreeStringsDontEqualIfOneIsDifferent() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: [
                     .value(.string("hello")),
                     .value(.string("hello")),
@@ -125,7 +125,7 @@ final class EqTests: XCTestCase {
     func testEmptyArraysEqual() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: [
                     .value(.array([])),
                     .value(.array([])),
@@ -140,7 +140,7 @@ final class EqTests: XCTestCase {
     func testThreeArraysEqual() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: [
                     .value(.array([.value(.string("a")), .value(.string("b"))])),
                     .value(.array([.value(.string("a")), .value(.string("b"))])),
@@ -156,7 +156,7 @@ final class EqTests: XCTestCase {
     func testThreeArraysDontEqualIfOneIsDifferent() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: [
                     .value(.array([.value(.string("a")), .value(.string("b"))])),
                     .value(.array([.value(.string("A")), .value(.string("b"))])),
@@ -172,7 +172,7 @@ final class EqTests: XCTestCase {
     func testThreeArraysDontEqualIfOneHasMoreElements() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: [
                     .value(.array([.value(.string("a")), .value(.string("b"))])),
                     .value(.array([.value(.string("a")), .value(.string("b"))])),
@@ -188,7 +188,7 @@ final class EqTests: XCTestCase {
     func testEmptyObjectsEqual() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: [
                     .value(.object([])),
                     .value(.object([])),
@@ -203,7 +203,7 @@ final class EqTests: XCTestCase {
     func testObjectsEqualIfAllFieldsAreSame() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: [
                     .value(.object([.init(name: "f1", value: .value(.string("v1")))])),
                     .value(.object([.init(name: "f1", value: .value(.string("v1")))])),
@@ -218,7 +218,7 @@ final class EqTests: XCTestCase {
     func testObjectsDontEqualIfAllFieldsAreNotSame() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: [
                     .value(.object([.init(name: "f1", value: .value(.string("v1")))])),
                     .value(.object([.init(name: "f1", value: .value(.string("v2")))])),
@@ -233,7 +233,7 @@ final class EqTests: XCTestCase {
     func testObjectsEqualIfNumberOfFieldsDoesntMatch() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: [
                     .value(.object([.init(name: "f1", value: .value(.string("v1")))])),
                     .value(.object([
@@ -251,7 +251,7 @@ final class EqTests: XCTestCase {
     func testComplicatedObjectsEqual() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: [
                     .value(.object([
                         .init(name: "f1", value: .value(.array([
@@ -282,7 +282,7 @@ final class EqTests: XCTestCase {
     func testComplicatedObjectsDontEqual() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("eq")),
+                target: .symbol(Symbol("eq")),
                 params: [
                     .value(.object([
                         .init(name: "f1", value: .value(.array([

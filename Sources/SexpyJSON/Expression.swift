@@ -1,16 +1,5 @@
-enum Symbol: Equatable, Hashable {
-    case addition
-    case subtraction
-    case multiplication
-    case division
-    case name(String)
-}
-
-extension Symbol {
-    var name: String? {
-        guard case let .name(n) = self else { return nil }
-        return n
-    }
+struct Symbol: Equatable, Hashable {
+    var name: String
 }
 
 indirect enum Expression: Equatable {
@@ -127,19 +116,12 @@ extension ExpressionObjectMember {
 }
 
 extension Symbol {
+    init(_ name: String) {
+        self.init(name: name)
+    }
+
     init(sexpyJSONSymbol: SexpyJSONSymbol) {
-        switch sexpyJSONSymbol {
-        case .addition:
-            self = .addition
-        case .subtraction:
-            self = .subtraction
-        case .multiplication:
-            self = .multiplication
-        case .division:
-            self = .division
-        case let .name(string):
-            self = .name(string)
-        }
+        self.init(name: sexpyJSONSymbol.name)
     }
 }
 

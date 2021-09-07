@@ -12,7 +12,7 @@ private func definef(_ params: [Expression], _ context: inout Context) throws ->
     }
 
     let exprResult = try evaluate(expression: expr, in: &context)
-    context.namespace = context.namespace.wrap(names: [.name(name): exprResult])
+    context.namespace = context.namespace.wrap(names: [Symbol(name): exprResult])
 
     return .null
 }

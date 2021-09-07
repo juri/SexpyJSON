@@ -5,7 +5,7 @@ final class ConcatTests: XCTestCase {
     func testNoParametersThrows() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("concat")),
+                target: .symbol(Symbol("concat")),
                 params: []
             )
         )
@@ -16,7 +16,7 @@ final class ConcatTests: XCTestCase {
     func testOneParameterThrows() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("concat")),
+                target: .symbol(Symbol("concat")),
                 params: [
                     .value(.string("a")),
                 ]
@@ -29,7 +29,7 @@ final class ConcatTests: XCTestCase {
     func testTwoEmptyStringsMakesEmptyString() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("concat")),
+                target: .symbol(Symbol("concat")),
                 params: [
                     .value(.string("")),
                     .value(.string("")),
@@ -44,7 +44,7 @@ final class ConcatTests: XCTestCase {
     func testTwoEmptyArraysMakesEmptyArray() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("concat")),
+                target: .symbol(Symbol("concat")),
                 params: [
                     .value(.array([])),
                     .value(.array([])),
@@ -59,7 +59,7 @@ final class ConcatTests: XCTestCase {
     func testConcatThreeStrings() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("concat")),
+                target: .symbol(Symbol("concat")),
                 params: [
                     .value(.string("a")),
                     .value(.string("b")),
@@ -75,7 +75,7 @@ final class ConcatTests: XCTestCase {
     func testConcatThreeArrays() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("concat")),
+                target: .symbol(Symbol("concat")),
                 params: [
                     .value(.array([.value(.string("X"))])),
                     .value(.array([.value(.string("Y"))])),

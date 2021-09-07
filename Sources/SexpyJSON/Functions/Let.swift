@@ -14,7 +14,7 @@ private func letf(_ params: [Expression], _ context: inout Context) throws -> In
         for symbolIndex in stride(from: 0, to: elems.endIndex, by: 2) {
             let name = try bindingName(elems[symbolIndex])
             let value = try evaluate(expression: elems[symbolIndex + 1], in: &nestedContext)
-            nestedContext = nestedContext.wrap(names: [.name(name): value])
+            nestedContext = nestedContext.wrap(names: [Symbol(name): value])
         }
         context = nestedContext
 
@@ -35,7 +35,7 @@ private func letf(_ params: [Expression], _ context: inout Context) throws -> In
 private func makeNameExtractor(params: [Expression]) -> (Expression) throws -> String {
     { expression in
         switch expression {
-        case let .symbol(.name(name)): return name
+        case let .symbol(s): return s.name
         default:
             throw EvaluatorError.badParameterList(params, "Bad let bindings")
         }

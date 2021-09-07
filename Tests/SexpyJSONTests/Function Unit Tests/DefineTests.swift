@@ -5,46 +5,46 @@ final class DefineTests: XCTestCase {
     func testRecursiveFunction() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("let")),
+                target: .symbol(Symbol("let")),
                 params: [
                     .value(.null),
                     .call(
                         .init(
-                            target: .symbol(.name("define")),
+                            target: .symbol(Symbol("define")),
                             params: [
-                                .symbol(.name("myfun")),
+                                .symbol(Symbol("myfun")),
                                 .call(
                                     .init(
-                                        target: .symbol(.name("fn")),
+                                        target: .symbol(Symbol("fn")),
                                         params: [
                                             .value(.array([
-                                                .symbol(.name("p")),
+                                                .symbol(Symbol("p")),
                                             ])),
 
                                             .call(
                                                 .init(
-                                                    target: .symbol(.name("if")),
+                                                    target: .symbol(Symbol("if")),
                                                     params: [
                                                         .call(
                                                             .init(
-                                                                target: .symbol(.name("eq")),
+                                                                target: .symbol(Symbol("eq")),
                                                                 params: [
-                                                                    .symbol(.name("p")),
+                                                                    .symbol(Symbol("p")),
                                                                     .value(.string("aaaaa")),
                                                                 ]
                                                             )
                                                         ),
 
-                                                        .symbol(.name("p")),
+                                                        .symbol(Symbol("p")),
                                                         .call(
                                                             .init(
-                                                                target: .symbol(.name("myfun")),
+                                                                target: .symbol(Symbol("myfun")),
                                                                 params: [
                                                                     .call(
                                                                         .init(
-                                                                            target: .symbol(.name("concat")),
+                                                                            target: .symbol(Symbol("concat")),
                                                                             params: [
-                                                                                .symbol(.name("p")),
+                                                                                .symbol(Symbol("p")),
                                                                                 .value(.string("a")),
                                                                             ]
                                                                         )
@@ -61,7 +61,7 @@ final class DefineTests: XCTestCase {
                             ]
                         )
                     ),
-                    .call(.init(target: .symbol(.name("myfun")), params: [.value(.string("a"))])),
+                    .call(.init(target: .symbol(Symbol("myfun")), params: [.value(.string("a"))])),
                 ]
             )
         )

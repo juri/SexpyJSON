@@ -5,14 +5,14 @@ final class MathTests: XCTestCase {
     // MARK: Add
 
     func testAddOneNumber() throws {
-        let expr = Expression.call(.init(target: .symbol(.addition), params: [.value(.number("-68"))]))
+        let expr = Expression.call(.init(target: .symbol(Symbol("+")), params: [.value(.number("-68"))]))
         let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
         XCTAssertEqual(try XCTUnwrap(outputValue.number), -68.0, accuracy: 0.0001)
     }
 
     func testAddTwoNumbers() throws {
         let expr = Expression.call(
-            .init(target: .symbol(.addition), params: [.value(.number("1")), .value(.number("2"))])
+            .init(target: .symbol(Symbol("+")), params: [.value(.number("1")), .value(.number("2"))])
         )
         let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
         XCTAssertEqual(try XCTUnwrap(outputValue.number), 3.0, accuracy: 0.0001)
@@ -21,7 +21,7 @@ final class MathTests: XCTestCase {
     func testAddThreeNumbers() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.addition),
+                target: .symbol(Symbol("+")),
                 params: [.value(.number("1")), .value(.number("2")), .value(.number("-4"))]
             )
         )
@@ -32,10 +32,10 @@ final class MathTests: XCTestCase {
     func testAddAdd() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.addition),
+                target: .symbol(Symbol("+")),
                 params: [
                     .value(.number("1")),
-                    .call(.init(target: .symbol(.addition), params: [
+                    .call(.init(target: .symbol(Symbol("+")), params: [
                         .value(.number("11")),
                         .value(.number("12")),
                     ])),
@@ -50,14 +50,14 @@ final class MathTests: XCTestCase {
     // MARK: Subtract
 
     func testSubtractOneNumber() throws {
-        let expr = Expression.call(.init(target: .symbol(.subtraction), params: [.value(.number("-68"))]))
+        let expr = Expression.call(.init(target: .symbol(Symbol("-")), params: [.value(.number("-68"))]))
         let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
         XCTAssertEqual(try XCTUnwrap(outputValue.number), -68.0, accuracy: 0.0001)
     }
 
     func testSubtractTwoNumbers() throws {
         let expr = Expression.call(
-            .init(target: .symbol(.subtraction), params: [.value(.number("1")), .value(.number("2"))])
+            .init(target: .symbol(Symbol("-")), params: [.value(.number("1")), .value(.number("2"))])
         )
         let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
         XCTAssertEqual(try XCTUnwrap(outputValue.number), -1.0, accuracy: 0.0001)
@@ -66,7 +66,7 @@ final class MathTests: XCTestCase {
     func testSubtractThreeNumbers() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.subtraction),
+                target: .symbol(Symbol("-")),
                 params: [.value(.number("1")), .value(.number("2")), .value(.number("-4"))]
             )
         )
@@ -77,10 +77,10 @@ final class MathTests: XCTestCase {
     func testSubtract() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.subtraction),
+                target: .symbol(Symbol("-")),
                 params: [
                     .value(.number("1")),
-                    .call(.init(target: .symbol(.subtraction), params: [
+                    .call(.init(target: .symbol(Symbol("-")), params: [
                         .value(.number("11")),
                         .value(.number("12")),
                     ])),
@@ -95,14 +95,14 @@ final class MathTests: XCTestCase {
     // MARK: Multiply
 
     func testMultiplyOneNumber() throws {
-        let expr = Expression.call(.init(target: .symbol(.multiplication), params: [.value(.number("-68"))]))
+        let expr = Expression.call(.init(target: .symbol(Symbol("*")), params: [.value(.number("-68"))]))
         let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
         XCTAssertEqual(try XCTUnwrap(outputValue.number), -68.0, accuracy: 0.0001)
     }
 
     func testMultiplyTwoNumbers() throws {
         let expr = Expression.call(
-            .init(target: .symbol(.multiplication), params: [.value(.number("1")), .value(.number("2"))])
+            .init(target: .symbol(Symbol("*")), params: [.value(.number("1")), .value(.number("2"))])
         )
         let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
         XCTAssertEqual(try XCTUnwrap(outputValue.number), 2.0, accuracy: 0.0001)
@@ -111,7 +111,7 @@ final class MathTests: XCTestCase {
     func testMultiplyThreeNumbers() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.multiplication),
+                target: .symbol(Symbol("*")),
                 params: [.value(.number("1")), .value(.number("2")), .value(.number("-4"))]
             )
         )
@@ -122,10 +122,10 @@ final class MathTests: XCTestCase {
     func testMultiplyMultiply() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.multiplication),
+                target: .symbol(Symbol("*")),
                 params: [
                     .value(.number("1")),
-                    .call(.init(target: .symbol(.multiplication), params: [
+                    .call(.init(target: .symbol(Symbol("*")), params: [
                         .value(.number("11")),
                         .value(.number("12")),
                     ])),
@@ -140,14 +140,14 @@ final class MathTests: XCTestCase {
     // MARK: Divide
 
     func testDivideDivideOneNumber() throws {
-        let expr = Expression.call(.init(target: .symbol(.division), params: [.value(.number("-68"))]))
+        let expr = Expression.call(.init(target: .symbol(Symbol("/")), params: [.value(.number("-68"))]))
         let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
         XCTAssertEqual(try XCTUnwrap(outputValue.number), -68.0, accuracy: 0.0001)
     }
 
     func testDivideDivideTwoNumbers() throws {
         let expr = Expression.call(
-            .init(target: .symbol(.division), params: [.value(.number("1")), .value(.number("2"))])
+            .init(target: .symbol(Symbol("/")), params: [.value(.number("1")), .value(.number("2"))])
         )
         let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
         XCTAssertEqual(try XCTUnwrap(outputValue.number), 0.5, accuracy: 0.0001)
@@ -156,7 +156,7 @@ final class MathTests: XCTestCase {
     func testDivideDivideThreeNumbers() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.division),
+                target: .symbol(Symbol("/")),
                 params: [.value(.number("1")), .value(.number("2")), .value(.number("-4"))]
             )
         )
@@ -167,10 +167,10 @@ final class MathTests: XCTestCase {
     func testDivideDivide() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.division),
+                target: .symbol(Symbol("/")),
                 params: [
                     .value(.number("1")),
-                    .call(.init(target: .symbol(.division), params: [
+                    .call(.init(target: .symbol(Symbol("/")), params: [
                         .value(.number("11")),
                         .value(.number("12")),
                     ])),

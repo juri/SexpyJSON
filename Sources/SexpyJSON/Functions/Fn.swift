@@ -27,7 +27,7 @@ private func fnf(_ params: [Expression], _ context: inout Context) throws -> Int
         }
 
         let namespacePairs = try zip(functionArguments, args).map { name, value in
-            (Symbol.name(name), try evaluate(expression: value, in: &context))
+            (Symbol(name: name), try evaluate(expression: value, in: &context))
         }
         let nsDict = Dictionary(namespacePairs, uniquingKeysWith: { $1 })
         var evalContext = context.wrap(names: nsDict)
@@ -42,7 +42,7 @@ private func fnf(_ params: [Expression], _ context: inout Context) throws -> Int
 private func makeNameExtractor(params: [Expression]) -> (Expression) throws -> String {
     { expression in
         switch expression {
-        case let .symbol(.name(name)): return name
+        case let .symbol(symbol): return symbol.name
         default:
             throw EvaluatorError.badParameterList(params, "Bad fn args")
         }

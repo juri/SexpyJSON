@@ -5,7 +5,7 @@ final class LetTests: XCTestCase {
     func testNullNoExpressions() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("let")),
+                target: .symbol(Symbol("let")),
                 params: [
                     .value(.null),
                 ]
@@ -19,10 +19,10 @@ final class LetTests: XCTestCase {
     func testNullBindings() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("let")),
+                target: .symbol(Symbol("let")),
                 params: [
                     .value(.null),
-                    .call(.init(target: .symbol(.addition), params: [
+                    .call(.init(target: .symbol(Symbol("+")), params: [
                         .value(.number("4")),
                         .value(.number("3")),
                     ])),
@@ -37,13 +37,13 @@ final class LetTests: XCTestCase {
     func testOneBoundValue() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("let")),
+                target: .symbol(Symbol("let")),
                 params: [
-                    .value(.array([
-                        .symbol(.name("foo")),
+                    .call(.init(expressions: [
+                        .symbol(Symbol("foo")),
                         .value(.string("bar")),
                     ])),
-                    .symbol(.name("foo")),
+                    .symbol(Symbol("foo")),
                 ]
             )
         )
@@ -55,17 +55,17 @@ final class LetTests: XCTestCase {
     func testMultipleBoundValues() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("let")),
+                target: .symbol(Symbol("let")),
                 params: [
-                    .value(.array([
-                        .symbol(.name("n1")),
+                    .call(.init(expressions: [
+                        .symbol(Symbol("n1")),
                         .value(.string("foo")),
-                        .symbol(.name("n2")),
-                        .symbol(.name("n1")),
-                        .symbol(.name("n3")),
-                        .symbol(.name("n2")),
+                        .symbol(Symbol("n2")),
+                        .symbol(Symbol("n1")),
+                        .symbol(Symbol("n3")),
+                        .symbol(Symbol("n2")),
                     ])),
-                    .symbol(.name("n3")),
+                    .symbol(Symbol("n3")),
                 ]
             )
         )
@@ -91,27 +91,27 @@ final class LetTests: XCTestCase {
 
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("let")),
+                target: .symbol(Symbol("let")),
                 params: [
-                    .value(.array([
-                        .symbol(.name("n1")),
+                    .call(.init(expressions: [
+                        .symbol(Symbol("n1")),
                         .value(.string("foo")),
-                        .symbol(.name("n2")),
-                        .symbol(.name("n1")),
-                        .symbol(.name("ep1")),
+                        .symbol(Symbol("n2")),
+                        .symbol(Symbol("n1")),
+                        .symbol(Symbol("ep1")),
                         .value(.string("bar")),
-                        .symbol(.name("paramForExtraCall")),
-                        .symbol(.name("ep1")),
-                        .symbol(.name("n3")),
-                        .symbol(.name("n2")),
+                        .symbol(Symbol("paramForExtraCall")),
+                        .symbol(Symbol("ep1")),
+                        .symbol(Symbol("n3")),
+                        .symbol(Symbol("n2")),
                     ])),
-                    .call(.init(target: .symbol(.name("extraFunc")), params: [.symbol(.name("paramForExtraCall"))])),
-                    .symbol(.name("n3")),
+                    .call(.init(target: .symbol(Symbol("extraFunc")), params: [.symbol(Symbol("paramForExtraCall"))])),
+                    .symbol(Symbol("n3")),
                 ]
             )
         )
 
-        let context = Context.withBuiltins.wrap(names: [.name("extraFunc"): .function(extraFunc)])
+        let context = Context.withBuiltins.wrap(names: [Symbol("extraFunc"): .function(extraFunc)])
         let outputValue = try evaluateToOutput(expression: expr, in: context)
         XCTAssertEqual(outputValue, .string("foo"))
         XCTAssertEqual(extraFuncArgumentValue, "bar")

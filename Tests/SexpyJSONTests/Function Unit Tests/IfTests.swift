@@ -5,7 +5,7 @@ final class IfTests: XCTestCase {
     func testNoParametersThrows() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("if")),
+                target: .symbol(Symbol("if")),
                 params: []
             )
         )
@@ -16,7 +16,7 @@ final class IfTests: XCTestCase {
     func testOneParameterThrows() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("if")),
+                target: .symbol(Symbol("if")),
                 params: [
                     .value(.boolean(true)),
                 ]
@@ -29,7 +29,7 @@ final class IfTests: XCTestCase {
     func testTwoParametersThrows() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("if")),
+                target: .symbol(Symbol("if")),
                 params: [
                     .value(.boolean(true)),
                     .value(.string("then-branch")),
@@ -43,7 +43,7 @@ final class IfTests: XCTestCase {
     func testFourParametersThrows() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("if")),
+                target: .symbol(Symbol("if")),
                 params: [
                     .value(.boolean(true)),
                     .value(.string("then-branch")),
@@ -59,7 +59,7 @@ final class IfTests: XCTestCase {
     func testTrueReturnsFirstValue() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("if")),
+                target: .symbol(Symbol("if")),
                 params: [
                     .value(.boolean(true)),
                     .value(.string("then-branch")),
@@ -75,7 +75,7 @@ final class IfTests: XCTestCase {
     func testFalseReturnsSecondValue() throws {
         let expr = Expression.call(
             .init(
-                target: .symbol(.name("if")),
+                target: .symbol(Symbol("if")),
                 params: [
                     .value(.boolean(false)),
                     .value(.string("then-branch")),
