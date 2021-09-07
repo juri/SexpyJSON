@@ -144,11 +144,11 @@ func buildParser() -> Parser<SexpyJSONElement> {
     let sexpTargetParser: RefBox<Parser<SexpyJSONTarget>> = RefBox(value: Parser { _ in fatalError() })
     let sexpFunction = oneOf([
         symbol.map(SexpyJSONTarget.symbol),
-        wrapped({ sexpTargetParser.value })
+        wrapped({ sexpTargetParser.value }),
     ])
     let sexpParameter = oneOf([
         wrapped({ valueParser.value }).map(SExpressionParameter.element),
-        symbol.map(SExpressionParameter.symbol)
+        symbol.map(SExpressionParameter.symbol),
     ])
     let callSExpContent = zip(sexpFunction, whitespace, zeroOrMore(sexpParameter, separatedBy: whitespace))
         .map { ($0.0, $0.2) }
