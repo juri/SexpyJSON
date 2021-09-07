@@ -1,4 +1,4 @@
-// (let [binding1 value1 binding2 value2 binding3 binding1] expr1 expr2 … exprN)
+// (let (binding1 value1 binding2 value2 binding3 binding1) expr1 expr2 … exprN)
 private func letf(_ params: [Expression], _ context: inout Context) throws -> IntermediateValue {
     guard let bindings = params.first else {
         throw EvaluatorError.badParameterList(params, "No bindings list found for let")
@@ -6,7 +6,8 @@ private func letf(_ params: [Expression], _ context: inout Context) throws -> In
     let bindingName = makeNameExtractor(params: params)
     var context = context
     switch bindings {
-    case let .value(.array(elems)):
+    case let .call(call):
+        let elems = call.allExpressions
         guard elems.count.isMultiple(of: 2) else {
             throw EvaluatorError.badParameterList(params, "Bad number of elements in let bindings: must be even")
         }

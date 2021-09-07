@@ -30,6 +30,21 @@ struct Call: Equatable {
     var params: [Expression]
 }
 
+extension Call {
+    var allExpressions: [Expression] {
+        [self.target] + self.params
+    }
+
+    init(expressions: [Expression]) {
+        precondition(!expressions.isEmpty)
+        guard let first = expressions.first else {
+            preconditionFailure("expressions must not be empty")
+        }
+
+        self.init(target: first, params: Array(expressions.dropFirst()))
+    }
+}
+
 enum ExpressionValue: Equatable {
     case string(String)
     case number(String)
