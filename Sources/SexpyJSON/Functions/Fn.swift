@@ -1,4 +1,5 @@
-// (fn [a1 a2 … aN] e1 e2 … eN)
+// (fn [a1, a2, …, aN] e1 e2 … eN)
+// (fn (a1 a2 … aN) e1 e2 … eN)
 private func fnf(_ params: [Expression], _ context: inout Context) throws -> IntermediateValue {
     guard let argNames = params.first else {
         throw EvaluatorError.badParameterList(params, "No args list list found for fn")
@@ -6,6 +7,9 @@ private func fnf(_ params: [Expression], _ context: inout Context) throws -> Int
     let functionArguments: [String]
 
     switch argNames {
+    case let .call(call):
+        functionArguments = try call.allExpressions.map(makeNameExtractor(params: params))
+
     case let .value(.array(elems)):
         functionArguments = try elems.map(makeNameExtractor(params: params))
 

@@ -14,6 +14,17 @@ final class ObjectSyntaxTests: XCTestCase {
         XCTAssertEqual(remainder, ""[...])
     }
 
+    func testOneStringFieldWithNewlines() throws {
+        let (element, remainder) = buildParser().run(#"""
+        
+            {
+                "f1": "v1"
+            }
+        """#)
+        XCTAssertEqual(element, SexpyJSONElement.object([.init(name: "f1", value: .string("v1"))]))
+        XCTAssertEqual(remainder, ""[...])
+    }
+
     func testOneIntegerField() throws {
         let (element, remainder) = buildParser().run(#"{"f1": 100}"#)
         XCTAssertEqual(element, SexpyJSONElement.object([.init(name: "f1", value: .number("100"))]))

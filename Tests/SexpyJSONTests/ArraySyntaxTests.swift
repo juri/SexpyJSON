@@ -8,6 +8,18 @@ final class ArraySyntaxTests: XCTestCase {
         XCTAssertEqual(remainder, ""[...])
     }
 
+    func testOneElement() throws {
+        let (element, remainder) = buildParser().run("[1]")
+        XCTAssertEqual(element, SexpyJSONElement.array([.number("1")]))
+        XCTAssertEqual(remainder, ""[...])
+    }
+
+    func testOneSymbolElement() throws {
+        let (element, remainder) = buildParser().run("[blep]")
+        XCTAssertEqual(try XCTUnwrap(element), SexpyJSONElement.array([SexpyJSONElement.symbol(.init("blep"))]))
+        XCTAssertEqual(remainder, ""[...])
+    }
+
     func testStringsNumbers() throws {
         let (element, remainder) = buildParser().run(#"[1, "first", 42, "second"]"#)
         let actualElement = try XCTUnwrap(element)

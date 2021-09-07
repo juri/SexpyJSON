@@ -42,6 +42,7 @@ enum SexpyJSONElement: Equatable {
     case null
 
     case sexp(SExpression)
+    case symbol(SexpyJSONSymbol)
 }
 
 // MARK: JSON syntax, other than arrays and objects
@@ -119,13 +120,20 @@ let symbol = oneOf([
         .map(SexpyJSONSymbol.init(name:))
 ])
 
+let symbolValue = symbol.map { sym in
+    SexpyJSONElement.symbol(sym)
+}
+
 // MARK: Parser builder for recursive syntax
 
 func buildParser() -> Parser<SexpyJSONElement> {
     let valueParser: RefBox<Parser<SexpyJSONElement>> = RefBox(value: Parser { _ in fatalError() })
 
+    let valueOrSymbolParser: RefBox<Parser<SexpyJSONElement>> = RefBox(value: Parser { _ in fatalError() })
+
+
     let element: Parser<SexpyJSONElement> = wrapped {
-        zip(whitespace, valueParser.value, whitespace).map(\.1)
+        zip(whitespace, valueOrSymbolParser.value, whitespace).map(\.1)
     }
 
     let elements = zeroOrMore(element, separatedBy: comma)
@@ -173,9 +181,18 @@ func buildParser() -> Parser<SexpyJSONElement> {
         boolFalse.map(SexpyJSONElement.boolean),
         null.map { SexpyJSONElement.null },
         sexp.map(SexpyJSONElement.sexp),
+//        symbolValue,
+//        symbol.map { SexpyJSONElement.sexp(.call(.init(target: .symbol(.name("value")), params: [.symbol(.name($0))])))},
     ])
 
-    valueParser.value = zip(whitespace, valueBodyParser, whitespace).map(\.1)
+    let valueBodyIgnoringWhitespace = zip(whitespace, valueBodyParser, whitespace).map(\.1)
 
-    return valueParser.value
+    valueParser.value = valueBodyIgnoringWhitespace
+
+    valueOrSymbolParser.value = oneOf([
+        valueBodyIgnoringWhitespace,
+        symbolValue,
+    ])
+
+    return valueOrSymbolParser.value
 }

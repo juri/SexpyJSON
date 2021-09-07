@@ -84,6 +84,8 @@ extension Expression {
             self = .value(.null)
         case let .sexp(sExpression):
             self = Expression(sExpression: sExpression)
+        case let .symbol(symbol):
+            self = .symbol(Symbol(sexpyJSONSymbol: symbol))
         }
     }
     
