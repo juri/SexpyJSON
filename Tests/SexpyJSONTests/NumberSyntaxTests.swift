@@ -1,5 +1,5 @@
-import XCTest
 @testable import SexpyJSON
+import XCTest
 
 final class NumberSyntaxTests: XCTestCase {
     func testDigit() throws {
@@ -27,7 +27,7 @@ final class NumberSyntaxTests: XCTestCase {
         XCTAssertEqual(element, SexpyJSONElement.number("123"))
         XCTAssertEqual(remainder, ""[...])
     }
-    
+
     func testUnsignedIntegerToElementWithRemainder() throws {
         let parser = buildParser()
         let (element, remainder) = parser.run("123 zap")
@@ -50,7 +50,7 @@ final class NumberSyntaxTests: XCTestCase {
         XCTAssertEqual(element, SexpyJSONElement.number("-80"))
         XCTAssertEqual(remainder, ""[...])
     }
-    
+
     // MARK: Fractionals
 
     func testFractionalToElement() throws {
@@ -66,7 +66,7 @@ final class NumberSyntaxTests: XCTestCase {
         XCTAssertEqual(element, SexpyJSONElement.number("-80.9"))
         XCTAssertEqual(remainder, ""[...])
     }
-    
+
     // MARK: Exponents
 
     func testExponentToElement() throws {
@@ -82,9 +82,9 @@ final class NumberSyntaxTests: XCTestCase {
         XCTAssertEqual(element, SexpyJSONElement.number("-80E-9"))
         XCTAssertEqual(remainder, ""[...])
     }
-    
+
     // MARK: Fractionals and exponents
-    
+
     func testFractionalAndExponentToElement() throws {
         let parser = buildParser()
         let (element, remainder) = parser.run("101.010e10")

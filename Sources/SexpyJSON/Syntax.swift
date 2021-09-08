@@ -59,15 +59,14 @@ let whitespace = prefix(
 )
 .map { _ in () }
 
-
-let oneNine = oneOf((0...9).map(String.init).map(capturingLiteral(_:)))
+let oneNine = oneOf((0 ... 9).map(String.init).map(capturingLiteral(_:)))
 let digit = oneOf([capturingLiteral("0"), oneNine])
 let digits = zeroOrMore(digit, separatedBy: always(())).map { $0.joined() }
 let unsignedInteger = zip(digit, digits).map { $0 + $1 }
 
 let integer = oneOf([
     unsignedInteger,
-    zip(literal("-"), unsignedInteger).map { "-\($0.1)" }
+    zip(literal("-"), unsignedInteger).map { "-\($0.1)" },
 ])
 
 let fraction = zip(literal("."), unsignedInteger).map { ".\($0.1)" }
@@ -105,8 +104,8 @@ let openParen = literal("(")
 let closeParen = literal(")")
 
 private let specials: Set<Character> = ["+", "-", "*", "/", "#", "@", "$", "!", "%", "&", "?", "_"]
-private extension Character {
-    var isSpecial: Bool { specials.contains(self) }
+extension Character {
+    fileprivate var isSpecial: Bool { specials.contains(self) }
 }
 
 let symbol = oneOf([
@@ -114,10 +113,10 @@ let symbol = oneOf([
     capturingLiteral("-").map(SexpyJSONSymbol.init(name:)),
     capturingLiteral("*").map(SexpyJSONSymbol.init(name:)),
     capturingLiteral("/").map(SexpyJSONSymbol.init(name:)),
-    
+
     zip(char.filter { $0.isLetter || $0 == "_" }, zeroOrMore(char.filter { $0.isLetter || $0.isNumber || $0.isSpecial }, separatedBy: always(())))
         .map { String([$0] + $1) }
-        .map(SexpyJSONSymbol.init(name:))
+        .map(SexpyJSONSymbol.init(name:)),
 ])
 
 let symbolValue = symbol.map { sym in
@@ -131,14 +130,13 @@ func buildParser() -> Parser<SexpyJSONElement> {
 
     let valueOrSymbolParser: RefBox<Parser<SexpyJSONElement>> = RefBox(value: Parser { _ in fatalError() })
 
-
     let element: Parser<SexpyJSONElement> = wrapped {
         zip(whitespace, valueOrSymbolParser.value, whitespace).map(\.1)
     }
 
     let elements = zeroOrMore(element, separatedBy: comma)
     let array = zip(openBracket, elements, closeBracket).map(\.1).map(SexpyJSONElement.array)
-    
+
     let memberName = zip(whitespace, quoted, whitespace).map(\.1)
     let member = zip(memberName, literal(":"), element)
     let members = zeroOrMore(member, separatedBy: comma)
@@ -148,14 +146,14 @@ func buildParser() -> Parser<SexpyJSONElement> {
             let smems = mems.map { SexpyJSONMember(name: $0.0, value: $0.2) }
             return SexpyJSONElement.object(smems)
         }
-    
+
     let sexpTargetParser: RefBox<Parser<SexpyJSONTarget>> = RefBox(value: Parser { _ in fatalError() })
     let sexpFunction = oneOf([
         symbol.map(SexpyJSONTarget.symbol),
-        wrapped({ sexpTargetParser.value }),
+        wrapped { sexpTargetParser.value },
     ])
     let sexpParameter = oneOf([
-        wrapped({ valueParser.value }).map(SExpressionParameter.element),
+        wrapped { valueParser.value }.map(SExpressionParameter.element),
         symbol.map(SExpressionParameter.symbol),
     ])
     let callSExpContent = zip(sexpFunction, whitespace, zeroOrMore(sexpParameter, separatedBy: whitespace))

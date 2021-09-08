@@ -1,5 +1,5 @@
-import XCTest
 @testable import SexpyJSON
+import XCTest
 
 final class SExpSyntaxTests: XCTestCase {
     func testExpressionEmpty() throws {
@@ -50,7 +50,7 @@ final class SExpSyntaxTests: XCTestCase {
             element,
             SexpyJSONElement.sexp(.call(.init(target: .symbol(.init("target")), params: [
                 .symbol(.init("p1")),
-                .symbol(.init("p2"))
+                .symbol(.init("p2")),
             ])))
         )
         XCTAssertEqual(remainder, ""[...])
@@ -71,8 +71,8 @@ final class SExpSyntaxTests: XCTestCase {
                                 .element(.number("3")),
                             ])
                         ))
-                    )
-                ]))
+                    ),
+                ])),
 
             ])))
         )

@@ -1,5 +1,5 @@
-import XCTest
 @testable import SexpyJSON
+import XCTest
 
 final class ArraySyntaxTests: XCTestCase {
     func testEmpty() throws {
@@ -27,11 +27,11 @@ final class ArraySyntaxTests: XCTestCase {
             .number("1"),
             .string("first"),
             .number("42"),
-            .string("second")
+            .string("second"),
         ]))
         XCTAssertEqual(remainder, ""[...])
     }
-    
+
     func testNested() throws {
         let (element, remainder) = buildParser().run(#"[1, "first", 42, "second", [11, [], 6, ["deep"]]]"#)
         let actualElement = try XCTUnwrap(element)
@@ -45,9 +45,9 @@ final class ArraySyntaxTests: XCTestCase {
                 .array([]),
                 .number("6"),
                 .array([
-                    .string("deep")
-                ])
-            ])
+                    .string("deep"),
+                ]),
+            ]),
         ]))
         XCTAssertEqual(remainder, ""[...])
     }

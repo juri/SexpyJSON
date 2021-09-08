@@ -1,5 +1,5 @@
-import XCTest
 @testable import SexpyJSON
+import XCTest
 
 final class WhitespaceSyntaxTests: XCTestCase {
     func testEmpty() throws {
@@ -12,4 +12,3 @@ final class WhitespaceSyntaxTests: XCTestCase {
         XCTAssertEqual(remainder, "asdf"[...])
     }
 }
-

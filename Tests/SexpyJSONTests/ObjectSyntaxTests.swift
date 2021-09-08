@@ -1,5 +1,5 @@
-import XCTest
 @testable import SexpyJSON
+import XCTest
 
 final class ObjectSyntaxTests: XCTestCase {
     func testEmpty() throws {
@@ -7,7 +7,7 @@ final class ObjectSyntaxTests: XCTestCase {
         XCTAssertEqual(element, SexpyJSONElement.object([]))
         XCTAssertEqual(remainder, ""[...])
     }
-    
+
     func testOneStringField() throws {
         let (element, remainder) = buildParser().run(#"{"f1": "v1"}"#)
         XCTAssertEqual(element, SexpyJSONElement.object([.init(name: "f1", value: .string("v1"))]))
@@ -16,7 +16,7 @@ final class ObjectSyntaxTests: XCTestCase {
 
     func testOneStringFieldWithNewlines() throws {
         let (element, remainder) = buildParser().run(#"""
-        
+
             {
                 "f1": "v1"
             }
@@ -30,19 +30,19 @@ final class ObjectSyntaxTests: XCTestCase {
         XCTAssertEqual(element, SexpyJSONElement.object([.init(name: "f1", value: .number("100"))]))
         XCTAssertEqual(remainder, ""[...])
     }
-    
+
     func testTwoFields() throws {
         let (element, remainder) = buildParser().run(#"{"f1": "v1", "f2": 2}"#)
         XCTAssertEqual(
             element,
             SexpyJSONElement.object([
                 .init(name: "f1", value: .string("v1")),
-                .init(name: "f2", value: .number("2"))
+                .init(name: "f2", value: .number("2")),
             ])
         )
         XCTAssertEqual(remainder, ""[...])
     }
-    
+
     func testCompoundFields() throws {
         let (element, remainder) = buildParser().run(#"{"f1": [1, {"n1": {"n1n1": "n1n1v"}}], "f2": {"n2": {}}}"#)
         XCTAssertEqual(
@@ -52,16 +52,15 @@ final class ObjectSyntaxTests: XCTestCase {
                     .number("1"),
                     .object([
                         .init(name: "n1", value: .object([
-                            .init(name: "n1n1", value: .string("n1n1v"))
-                        ]))
-                    ])
+                            .init(name: "n1n1", value: .string("n1n1v")),
+                        ])),
+                    ]),
                 ])),
                 .init(name: "f2", value: .object([
-                    .init(name: "n2", value: .object([]))
-                ]))
+                    .init(name: "n2", value: .object([])),
+                ])),
             ])
         )
         XCTAssertEqual(remainder, ""[...])
-
     }
 }

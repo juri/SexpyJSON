@@ -2,7 +2,7 @@ struct Context {
     var namespace: Namespace
 
     func value(for symbol: Symbol) throws -> IntermediateValue {
-        return try namespace[symbol]
+        try self.namespace[symbol]
     }
 
     func wrap(names: [Symbol: IntermediateValue]) -> Context {
@@ -76,7 +76,7 @@ enum IntermediateValue {
     var requireValue: SXPJOutputValue {
         get throws {
             switch self {
-            case .function(_):
+            case .function:
                 throw EvaluatorError.uncalledFunction
             case let .string(s):
                 return .string(s)
@@ -128,7 +128,7 @@ func evaluateToOutput(expression: Expression, in context: Context) throws -> SXP
 }
 
 func evaluateToOutput(expression: Expression, mutating context: inout Context) throws -> SXPJOutputValue {
-    return try evaluate(expression: expression, in: &context).requireValue
+    try evaluate(expression: expression, in: &context).requireValue
 }
 
 func evaluate(expression: Expression, in context: inout Context) throws -> IntermediateValue {

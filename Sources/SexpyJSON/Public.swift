@@ -90,33 +90,33 @@ public enum SXPJOutputValue: Equatable {
     }
 }
 
-public extension SXPJOutputValue {
-    var string: String? {
+extension SXPJOutputValue {
+    public var string: String? {
         guard case let .string(s) = self else { return nil }
         return s
     }
 
-    var number: Double? {
+    public var number: Double? {
         guard case let .number(n) = self else { return nil }
         return n
     }
 
-    var array: [SXPJOutputValue]? {
+    public var array: [SXPJOutputValue]? {
         guard case let .array(a) = self else { return nil }
         return a
     }
 
-    var object: [SXPJOutputObjectMember]? {
+    public var object: [SXPJOutputObjectMember]? {
         guard case let .object(o) = self else { return nil }
         return o
     }
 
-    var boolean: Bool? {
+    public var boolean: Bool? {
         guard case let .boolean(b) = self else { return nil }
         return b
     }
 
-    var isNull: Bool {
+    public var isNull: Bool {
         guard case .null = self else { return false }
         return true
     }
@@ -127,7 +127,6 @@ public struct SXPJOutputObjectMember: Equatable {
     public var value: SXPJOutputValue
 }
 
-
 /// `SXPJError` enumerates the errors that SexpyJSON may throw.
 public enum SXPJError: Error {
     case evaluationFailure(String)
@@ -135,4 +134,3 @@ public enum SXPJError: Error {
     case parseFailure
     case unparsedInput(Substring)
 }
-

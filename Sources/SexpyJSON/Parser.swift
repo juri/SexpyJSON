@@ -37,7 +37,7 @@ extension Parser {
             return matchB
         }
     }
-    
+
     func debug(_ f: @escaping (A?, Substring) -> Void) -> Parser<A> {
         Parser<A> { str -> A? in
             let result = self.run(&str)
@@ -157,7 +157,6 @@ func wrapped<A>(_ p: @escaping () -> Parser<A>) -> Parser<A> {
         p().run(&str)
     }
 }
-
 
 func debugging<A>(_ f: @escaping (Substring) -> Void, parser: Parser<A>) -> Parser<A> {
     Parser<A> { str in

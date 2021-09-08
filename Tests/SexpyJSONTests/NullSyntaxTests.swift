@@ -1,5 +1,5 @@
-import XCTest
 @testable import SexpyJSON
+import XCTest
 
 final class NullSyntaxTests: XCTestCase {
     func testNull() throws {

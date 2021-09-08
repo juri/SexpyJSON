@@ -1,5 +1,5 @@
-import XCTest
 @testable import SexpyJSON
+import XCTest
 
 final class CombinatorTests: XCTestCase {
     func testCapturingLiteral() throws {
@@ -9,4 +9,3 @@ final class CombinatorTests: XCTestCase {
         XCTAssertEqual(remainder, ""[...])
     }
 }
-

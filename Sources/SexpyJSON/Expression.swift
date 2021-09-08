@@ -88,7 +88,7 @@ extension Expression {
             self = .symbol(Symbol(sexpyJSONSymbol: symbol))
         }
     }
-    
+
     init(sExpression: SExpression) {
         switch sExpression {
         case .empty:
@@ -103,7 +103,7 @@ extension Expression {
             }
         }
     }
-    
+
     init(sexpyJSONTarget: SexpyJSONTarget) {
         switch sexpyJSONTarget {
         case let .symbol(sexpyJSONSymbol):
@@ -112,7 +112,7 @@ extension Expression {
             self = Expression(sExpression: sExpression)
         }
     }
-    
+
     init(sExpressionParameter: SExpressionParameter) {
         switch sExpressionParameter {
         case let .element(sexpyJSONElement):
@@ -141,4 +141,3 @@ extension Symbol {
         self.init(name: sexpyJSONSymbol.name)
     }
 }
-
