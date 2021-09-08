@@ -4,9 +4,9 @@ private func addf(_ params: [Expression], _ context: inout Context) throws -> In
         throw EvaluatorError.badParameterList(params, "Add requires numbers")
     }
     switch numbers {
-    case .integers(let array):
+    case let .integers(array):
         return .integer(array.reduce(0, +))
-    case .doubles(let array):
+    case let .doubles(array):
         return .double(array.reduce(0, +))
     }
 }

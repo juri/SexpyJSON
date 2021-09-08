@@ -4,9 +4,9 @@ private func multiplyf(_ params: [Expression], _ context: inout Context) throws 
         throw EvaluatorError.badParameterList(params, "Multiply requires numbers")
     }
     switch numbers {
-    case .integers(let array):
+    case let .integers(array):
         return .integer(array.reduce(1, *))
-    case .doubles(let array):
+    case let .doubles(array):
         return .double(array.reduce(1, *))
     }
 }

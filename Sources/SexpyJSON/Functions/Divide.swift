@@ -5,14 +5,14 @@ private func dividef(_ params: [Expression], _ context: inout Context) throws ->
     }
 
     switch numbers {
-    case .integers(let array):
+    case let .integers(array):
         guard let first = array.first else { return .integer(0) }
         let result = try array.dropFirst().reduce(first) { total, num in
             guard num != 0 else { throw EvaluatorError.divisionByZero(total) }
             return total / num
         }
         return .integer(result)
-    case .doubles(let array):
+    case let .doubles(array):
         guard let first = array.first else { return .double(0) }
         return .double(array.dropFirst().reduce(first, /))
     }
