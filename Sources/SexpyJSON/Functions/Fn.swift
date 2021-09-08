@@ -25,16 +25,17 @@ private func fnf(_ params: [Expression], _ context: inout Context) throws -> Int
     }
 
     let fnExpressions = params.dropFirst()
-    return .function(.init(f: { args, context in
+    let originalContext = context
+    return .function(.init(f: { args, callContext in
         guard args.count == functionArguments.count else {
             throw EvaluatorError.badParameterList(args, "Function requires \(args.count) parameters")
         }
 
         let namespacePairs = try zip(functionArguments, args).map { name, value in
-            (Symbol(name: name), try evaluate(expression: value, in: &context))
+            (Symbol(name: name), try evaluate(expression: value, in: &callContext))
         }
         let nsDict = Dictionary(namespacePairs, uniquingKeysWith: { $1 })
-        var evalContext = context.wrap(names: nsDict)
+        var evalContext = originalContext.wrap(names: nsDict)
         var returnValue: IntermediateValue = .null
         for expr in fnExpressions {
             returnValue = try evaluate(expression: expr, in: &evalContext)

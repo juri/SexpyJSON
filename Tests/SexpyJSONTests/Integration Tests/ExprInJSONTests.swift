@@ -11,7 +11,7 @@ final class ExprInJSONTests: XCTestCase {
         XCTAssertEqual(try XCTUnwrap(obj["calculated"] as? Double), 9.0, accuracy: 0.0001)
     }
 
-    func testFn() throws {
+    func testFnInLetCantSeeItsOwnName() throws {
         let input = #"""
         {
             "zap": "bang",
@@ -22,17 +22,48 @@ final class ExprInJSONTests: XCTestCase {
                                 (testf "c"))
         }
         """#
-//        let input = #"""
-//        {
-//            "zap": "bang",
-//            "calculated": (let (foo (fn (a) null)) asdf)
-//        }
-//        """#
 
         let expr = try SXPJParser().parse(source: input)
+        XCTAssertThrowsError(try expr.evaluate()) { error in
+            guard let error = error as? SXPJError, case let .evaluationFailure(msg) = error else {
+                XCTFail("Unexpected error: \(error)")
+                return
+            }
+            XCTAssertEqual(msg, #"Missing value: Symbol(name: "testf")"#)
+        }
+    }
+
+    func testOuterSexp() throws {
+        let input = #"(* 5 6)"#
+        let expr = try SXPJParser().parse(source: input)
         let output = try expr.evaluate()
+        let obj = try XCTUnwrap(output.outputToJSONObject() as? Double)
+        XCTAssertEqual(obj, 30.0, accuracy: 0.00001)
+    }
+
+    func testDefine() throws {
+        let definition = #"""
+        (define testf (fn [a]
+                        (if (eq a "ccc")
+                            a
+                            (testf (concat a "c")))))
+        """#
+
+        let input = #"""
+        {
+            "zap": "bang",
+            "calculated": (testf "c")
+        }
+        """#
+
+        let parser = SXPJParser()
+        let definitionExpr = try parser.parse(source: definition)
+        let inputExpr = try parser.parse(source: input)
+        var evaluator = SXPJEvaluator()
+        try evaluator.evaluate(expression: definitionExpr)
+        let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
         XCTAssertEqual(obj["zap"] as? String, "bang")
-        XCTAssertEqual(try XCTUnwrap(obj["calculated"] as? Double), 9.0, accuracy: 0.0001)
+        XCTAssertEqual(try XCTUnwrap(obj["calculated"] as? String), "ccc")
     }
 }

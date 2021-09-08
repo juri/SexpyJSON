@@ -11,7 +11,18 @@ private func definef(_ params: [Expression], _ context: inout Context) throws ->
         throw EvaluatorError.badParameterList(params, "No value found for define")
     }
 
-    let exprResult = try evaluate(expression: expr, in: &context)
+    // Because define modifies the current namespace AND
+    // also makes the name available for inside the defined
+    // value, this is a bit complicated. We must introduce
+    // the name in the context we use when we evaluate the
+    // expression, and then replace the value after we get
+    // it from the evaluator.
+    var newContext = context.wrap(names: [Symbol(name): .null])
+    let exprResult = try evaluate(expression: expr, in: &newContext)
+    // Insert the new name into the namespace potentially captured by
+    // the evaluation.
+    newContext.namespace.overrideName(Symbol(name), value: exprResult)
+    // And also insert it into the we got as a parameter.
     context.namespace = context.namespace.wrap(names: [Symbol(name): exprResult])
 
     return .null
