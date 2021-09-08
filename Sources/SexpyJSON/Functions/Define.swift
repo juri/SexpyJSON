@@ -1,4 +1,4 @@
-// (define fname (fn [a1 a2 a3] (fname a1 a2 a3)))
+// (define fname (fn [a1, a2, a3] (fname a1 a2 a3)))
 private func definef(_ params: [Expression], _ context: inout Context) throws -> IntermediateValue {
     guard params.count == 2 else {
         throw EvaluatorError.badParameterList(params, "Exactly two parameters required for define")
