@@ -7,7 +7,7 @@ private func addf(_ params: [Expression], _ context: inout Context) throws -> In
     case .integers(let array):
         return .integer(array.reduce(0, +))
     case .doubles(let array):
-        return .number(array.reduce(0, +))
+        return .double(array.reduce(0, +))
     }
 }
 

@@ -8,8 +8,8 @@ private func subtractf(_ params: [Expression], _ context: inout Context) throws 
         guard let first = array.first else { return .integer(0) }
         return .integer(array.dropFirst().reduce(first, -))
     case .doubles(let array):
-        guard let first = array.first else { return .number(0) }
-        return .number(array.dropFirst().reduce(first, -))
+        guard let first = array.first else { return .double(0) }
+        return .double(array.dropFirst().reduce(first, -))
     }
 }
 

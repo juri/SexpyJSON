@@ -68,7 +68,7 @@ enum IntermediateValue {
     case function(Function)
     case string(String)
     case integer(Int)
-    case number(Double)
+    case double(Double)
     case array([IntermediateValue])
     case object([IntermediateObjectMember])
     case boolean(Bool)
@@ -83,7 +83,7 @@ enum IntermediateValue {
                 return .string(s)
             case let .integer(i):
                 return .number(Double(i))
-            case let .number(n):
+            case let .double(n):
                 return .number(n)
             case let .array(a):
                 return try .array(a.map { try $0.requireValue })
@@ -109,8 +109,8 @@ extension IntermediateValue {
         return b
     }
 
-    var number: Double? {
-        guard case let .number(d) = self else { return nil }
+    var double: Double? {
+        guard case let .double(d) = self else { return nil }
         return d
     }
 
@@ -153,7 +153,7 @@ func evaluateValue(value: ExpressionValue, in context: inout Context) throws -> 
         if let int = Int(string) {
             return .integer(int)
         } else if let double = Double(string) {
-            return .number(double)
+            return .double(double)
         } else {
             throw EvaluatorError.badExpressionType(value)
         }
@@ -210,7 +210,7 @@ extension IntermediateValue {
                 doubles.append(Double(i))
             case let .integer(i):
                 doubles.append(Double(i))
-            case let .number(n):
+            case let .double(n):
                 doubles.append(n)
                 allIntegers = false
             default:

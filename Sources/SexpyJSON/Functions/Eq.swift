@@ -40,7 +40,7 @@ private func eq(value1: IntermediateValue, value2: IntermediateValue, _ context:
     switch (value1, value2) {
     case let (.string(s1), .string(s2)):
         return s1 == s2
-    case let (.number(n1), .number(n2)):
+    case let (.double(n1), .double(n2)):
         return n1 == n2
     case let (.integer(n1), .integer(n2)):
         return n1 == n2

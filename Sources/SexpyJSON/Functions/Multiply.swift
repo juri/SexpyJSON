@@ -7,7 +7,7 @@ private func multiplyf(_ params: [Expression], _ context: inout Context) throws 
     case .integers(let array):
         return .integer(array.reduce(1, *))
     case .doubles(let array):
-        return .number(array.reduce(1, *))
+        return .double(array.reduce(1, *))
     }
 }
 
