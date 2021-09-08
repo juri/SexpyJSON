@@ -139,25 +139,62 @@ final class MathTests: XCTestCase {
 
     // MARK: Divide
 
-    func testDivideDivideOneNumber() throws {
+    func testDivideOneNumber() throws {
         let expr = Expression.call(.init(target: .symbol(Symbol("/")), params: [.value(.number("-68"))]))
         let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
         XCTAssertEqual(try XCTUnwrap(outputValue.number), -68.0, accuracy: 0.0001)
     }
 
-    func testDivideDivideTwoNumbers() throws {
+    func testDivideTwoIntegers() throws {
         let expr = Expression.call(
-            .init(target: .symbol(Symbol("/")), params: [.value(.number("1")), .value(.number("2"))])
+            .init(target: .symbol(Symbol("/")), params: [.value(.number("6")), .value(.number("2"))])
+        )
+        let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
+        XCTAssertEqual(try XCTUnwrap(outputValue.number), 3.0, accuracy: 0.0001)
+    }
+
+    func testDivideByZero() throws {
+        let expr = Expression.call(
+            .init(target: .symbol(Symbol("/")), params: [.value(.number("6")), .value(.number("0"))])
+        )
+        XCTAssertThrowsError(try evaluateToOutput(expression: expr, in: .withBuiltins))
+    }
+
+    func testDivideTwoDoubles() throws {
+        let expr = Expression.call(
+            .init(target: .symbol(Symbol("/")), params: [.value(.number("1.0")), .value(.number("2.0"))])
         )
         let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
         XCTAssertEqual(try XCTUnwrap(outputValue.number), 0.5, accuracy: 0.0001)
     }
 
-    func testDivideDivideThreeNumbers() throws {
+    func testDivideThreeIntegers() throws {
         let expr = Expression.call(
             .init(
                 target: .symbol(Symbol("/")),
-                params: [.value(.number("1")), .value(.number("2")), .value(.number("-4"))]
+                params: [.value(.number("20")), .value(.number("5")), .value(.number("-2"))]
+            )
+        )
+        let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
+        XCTAssertEqual(try XCTUnwrap(outputValue.number), -2.0, accuracy: 0.0001)
+    }
+
+    func testDivideThreeDoubles() throws {
+        let expr = Expression.call(
+            .init(
+                target: .symbol(Symbol("/")),
+                params: [.value(.number("1.0")), .value(.number("2.0")), .value(.number("-4.0"))]
+            )
+        )
+        let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
+        XCTAssertEqual(try XCTUnwrap(outputValue.number), -0.125, accuracy: 0.0001)
+    }
+
+    func testDivideThreeMixedValues() throws {
+        let expr = Expression.call(
+            .init(
+                target: .symbol(Symbol("/")),
+                params: [.value(.number("1.0")), .value(.number("2")), .value(.number("-4.0"))]
             )
         )
         let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
@@ -171,7 +208,7 @@ final class MathTests: XCTestCase {
                 params: [
                     .value(.number("1")),
                     .call(.init(target: .symbol(Symbol("/")), params: [
-                        .value(.number("11")),
+                        .value(.number("11.0")),
                         .value(.number("12")),
                     ])),
                     .value(.number("-4")),

@@ -67,6 +67,7 @@ struct Function {
 enum IntermediateValue {
     case function(Function)
     case string(String)
+    case integer(Int)
     case number(Double)
     case array([IntermediateValue])
     case object([IntermediateObjectMember])
@@ -80,6 +81,8 @@ enum IntermediateValue {
                 throw EvaluatorError.uncalledFunction
             case let .string(s):
                 return .string(s)
+            case let .integer(i):
+                return .number(Double(i))
             case let .number(n):
                 return .number(n)
             case let .array(a):
@@ -147,10 +150,13 @@ func evaluateValue(value: ExpressionValue, in context: inout Context) throws -> 
     case let .string(string):
         return .string(string)
     case let .number(string):
-        guard let num = numberFormatter.number(from: string)?.doubleValue else {
+        if let int = Int(string) {
+            return .integer(int)
+        } else if let double = Double(string) {
+            return .number(double)
+        } else {
             throw EvaluatorError.badExpressionType(value)
         }
-        return .number(num)
     case let .array(array):
         return try .array(array.map { try evaluate(expression: $0, in: &context) })
     case let .object(array):
@@ -180,6 +186,38 @@ enum EvaluatorError: Error {
     case badCallTarget(IntermediateValue)
     case badExpressionType(ExpressionValue)
     case badParameterList([Expression], String)
+    case divisionByZero(Int)
     case missingValue(Symbol)
     case uncalledFunction
+}
+
+enum NumberList {
+    case integers([Int])
+    case doubles([Double])
+}
+
+extension IntermediateValue {
+    static func numbers(from values: [IntermediateValue]) -> NumberList? {
+        var integers = [Int]()
+        var doubles = [Double]()
+        integers.reserveCapacity(values.count)
+        doubles.reserveCapacity(values.count)
+        var allIntegers = true
+        for value in values {
+            switch value {
+            case let .integer(i) where allIntegers:
+                integers.append(i)
+                doubles.append(Double(i))
+            case let .integer(i):
+                doubles.append(Double(i))
+            case let .number(n):
+                doubles.append(n)
+                allIntegers = false
+            default:
+                return nil
+            }
+        }
+
+        return allIntegers ? .integers(integers) : .doubles(doubles)
+    }
 }

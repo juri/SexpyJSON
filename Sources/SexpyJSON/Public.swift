@@ -59,6 +59,8 @@ private func describe(error: EvaluatorError) -> String {
         return "Bad expression type"
     case let .badParameterList(_, message):
         return "Bad parameter list: \(message)"
+    case let .divisionByZero(divident):
+        return "Division by zero: \(divident)/0"
     case let .missingValue(name):
         return "Missing value: \(name)"
     case .uncalledFunction:

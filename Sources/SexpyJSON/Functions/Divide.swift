@@ -1,15 +1,21 @@
 private func dividef(_ params: [Expression], _ context: inout Context) throws -> IntermediateValue {
     let values = try params.map { try evaluate(expression: $0, in: &context) }
-    let numbers = try values.map { v -> Double in
-        switch v {
-        case let .number(n):
-            return n
-        default:
-            throw EvaluatorError.badParameterList(params, "Divide requires numbers")
-        }
+    guard let numbers = IntermediateValue.numbers(from: values) else {
+        throw EvaluatorError.badParameterList(params, "Divide requires numbers")
     }
-    guard let first = numbers.first else { return .number(0) }
-    return .number(numbers.dropFirst().reduce(first, /))
+
+    switch numbers {
+    case .integers(let array):
+        guard let first = array.first else { return .integer(0) }
+        let result = try array.dropFirst().reduce(first) { total, num in
+            guard num != 0 else { throw EvaluatorError.divisionByZero(total) }
+            return total / num
+        }
+        return .integer(result)
+    case .doubles(let array):
+        guard let first = array.first else { return .number(0) }
+        return .number(array.dropFirst().reduce(first, /))
+    }
 }
 
 extension Function {

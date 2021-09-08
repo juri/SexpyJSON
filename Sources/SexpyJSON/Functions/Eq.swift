@@ -42,6 +42,8 @@ private func eq(value1: IntermediateValue, value2: IntermediateValue, _ context:
         return s1 == s2
     case let (.number(n1), .number(n2)):
         return n1 == n2
+    case let (.integer(n1), .integer(n2)):
+        return n1 == n2
     case let (.boolean(b1), .boolean(b2)):
         return b1 == b2
     case let (.array(a1), .array(a2)):

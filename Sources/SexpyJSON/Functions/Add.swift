@@ -1,14 +1,14 @@
 private func addf(_ params: [Expression], _ context: inout Context) throws -> IntermediateValue {
     let values = try params.map { try evaluate(expression: $0, in: &context) }
-    let numbers = try values.map { v -> Double in
-        switch v {
-        case let .number(n):
-            return n
-        default:
-            throw EvaluatorError.badParameterList(params, "Add requires numbers")
-        }
+    guard let numbers = IntermediateValue.numbers(from: values) else {
+        throw EvaluatorError.badParameterList(params, "Add requires numbers")
     }
-    return .number(numbers.reduce(0, +))
+    switch numbers {
+    case .integers(let array):
+        return .integer(array.reduce(0, +))
+    case .doubles(let array):
+        return .number(array.reduce(0, +))
+    }
 }
 
 extension Function {
