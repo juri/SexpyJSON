@@ -44,6 +44,14 @@ final class Namespace {
     static let empty = Namespace(names: [:], wrappedNamespace: nil)
 }
 
+extension Namespace: CustomDebugStringConvertible {
+    var debugDescription: String {
+        let keys = self.names.keys.map(\.name).joined(separator: ", ")
+        let wrapped = self.wrappedNamespace.map(\.debugDescription) ?? "(none)"
+        return "namespace: \(keys), wrapped: \(wrapped)"
+    }
+}
+
 struct Function {
     let f: ([Expression], inout Context) throws -> IntermediateValue
 
