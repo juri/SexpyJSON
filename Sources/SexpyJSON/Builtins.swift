@@ -12,5 +12,6 @@ let builtins: [Symbol: IntermediateValue] = [
     Symbol("eq"): .function(.eqFunction),
     Symbol("fn"): .function(.fnFunction),
     Symbol("if"): .function(.ifFunction),
+    Symbol("len"): .function(.lenFunction),
     Symbol("let"): .function(.letFunction),
 ]
