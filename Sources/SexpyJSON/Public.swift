@@ -35,6 +35,7 @@ public struct SXPJParsedExpression {
 public struct SXPJEvaluator {
     private var context = Context.withBuiltins
 
+    @discardableResult
     public mutating func evaluate(expression: SXPJParsedExpression) throws -> SXPJOutputValue {
         let originalContext = self.context
 
