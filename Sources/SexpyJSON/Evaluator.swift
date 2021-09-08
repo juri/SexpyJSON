@@ -14,7 +14,7 @@ struct Context {
 }
 
 final class Namespace {
-    let names: [Symbol: IntermediateValue]
+    private(set) var names: [Symbol: IntermediateValue]
     let wrappedNamespace: Namespace?
 
     init(
@@ -39,6 +39,10 @@ final class Namespace {
             }
             throw EvaluatorError.missingValue(key)
         }
+    }
+
+    func overrideName(_ symbol: Symbol, value: IntermediateValue) {
+        self.names[symbol] = value
     }
 
     static let empty = Namespace(names: [:], wrappedNamespace: nil)
