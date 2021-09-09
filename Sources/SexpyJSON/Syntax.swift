@@ -97,9 +97,6 @@ let null = literal("null")
 
 // MARK: Sexp syntax
 
-// sexp := (target p1 p2 p3)
-// target := + | - | * | / | sexp
-
 let openParen = literal("(")
 let closeParen = literal(")")
 
