@@ -100,18 +100,25 @@ let null = literal("null")
 let openParen = literal("(")
 let closeParen = literal(")")
 
-private let specials: Set<Character> = ["+", "-", "*", "/", "#", "@", "$", "!", "%", "&", "?", "_"]
+private let restrictedOperators: Set<Character> = ["+", "-"]
+
+private let specials: Set<Character> = ["*", "/", "#", "@", "$", "!", "%", "&", "?", "_", "<", ">", "="]
 extension Character {
+    fileprivate var isRestrictedOperator: Bool { restrictedOperators.contains(self) }
     fileprivate var isSpecial: Bool { specials.contains(self) }
 }
 
-let symbol = oneOf([
-    capturingLiteral("+").map(SexpyJSONSymbol.init(name:)),
-    capturingLiteral("-").map(SexpyJSONSymbol.init(name:)),
-    capturingLiteral("*").map(SexpyJSONSymbol.init(name:)),
-    capturingLiteral("/").map(SexpyJSONSymbol.init(name:)),
+let singleCharOperators = restrictedOperators.map {
+    capturingLiteral(String($0)).map(SexpyJSONSymbol.init(name:))
+}
 
-    zip(char.filter { $0.isLetter || $0 == "_" }, zeroOrMore(char.filter { $0.isLetter || $0.isNumber || $0.isSpecial }, separatedBy: always(())))
+private func canStartFunctionName(_ c: Character) -> Bool { c.isLetter || c.isSpecial }
+private func canContinueFunctionName(_ c: Character) -> Bool {
+    c.isLetter || c.isNumber || c.isSpecial || c.isRestrictedOperator
+}
+
+let symbol = oneOf(singleCharOperators + [
+    zip(char.filter(canStartFunctionName(_:)), zeroOrMore(char.filter(canContinueFunctionName(_:)), separatedBy: always(())))
         .map { String([$0] + $1) }
         .map(SexpyJSONSymbol.init(name:)),
 ])
