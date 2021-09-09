@@ -2,9 +2,9 @@ private func lenf(_ params: [Expression], _ context: inout Context) throws -> In
     guard params.count == 1 else {
         throw EvaluatorError.badParameterList(params, "len requires one argument")
     }
-    switch params[0] {
-    case let .value(.string(s)): return .integer(s.count)
-    case let .value(.array(a)): return .integer(a.count)
+    switch try evaluate(expression: params[0], in: &context) {
+    case let .string(s): return .integer(s.count)
+    case let .array(a): return .integer(a.count)
     default:
         throw EvaluatorError.badParameterList(params, "len requires string or array argument")
     }
