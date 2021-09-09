@@ -179,8 +179,6 @@ func buildParser() -> Parser<SexpyJSONElement> {
         boolFalse.map(SexpyJSONElement.boolean),
         null.map { SexpyJSONElement.null },
         sexp.map(SexpyJSONElement.sexp),
-//        symbolValue,
-//        symbol.map { SexpyJSONElement.sexp(.call(.init(target: .symbol(.name("value")), params: [.symbol(.name($0))])))},
     ])
 
     let valueBodyIgnoringWhitespace = zip(whitespace, valueBodyParser, whitespace).map(\.1)
