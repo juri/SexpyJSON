@@ -35,6 +35,26 @@ public struct SXPJParsedExpression {
 public struct SXPJEvaluator {
     private var context = Context.withBuiltins
 
+    public func set(value: String, for key: String) {
+        self.context.set(value: .string(value), for: Symbol(key))
+    }
+
+    public func set(value: Int, for key: String) {
+        self.context.set(value: .integer(value), for: Symbol(key))
+    }
+
+    public func set(value: Double, for key: String) {
+        self.context.set(value: .double(value), for: Symbol(key))
+    }
+
+    public func set(value: Bool, for key: String) {
+        self.context.set(value: .boolean(value), for: Symbol(key))
+    }
+
+    public func setNull(for key: String) {
+        self.context.set(value: .null, for: Symbol(key))
+    }
+
     @discardableResult
     public mutating func evaluate(expression: SXPJParsedExpression) throws -> SXPJOutputValue {
         let originalContext = self.context

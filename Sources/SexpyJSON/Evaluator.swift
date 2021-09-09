@@ -5,6 +5,10 @@ struct Context {
         try self.namespace[symbol]
     }
 
+    func set(value: IntermediateValue, for key: Symbol) {
+        self.namespace.overrideName(key, value: value)
+    }
+
     func wrap(names: [Symbol: IntermediateValue]) -> Context {
         Context(namespace: .init(names: names, wrappedNamespace: self.namespace))
     }
