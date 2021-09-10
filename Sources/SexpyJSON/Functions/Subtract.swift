@@ -1,7 +1,6 @@
-private func subtractf(_ params: [Expression], _ context: inout Context) throws -> IntermediateValue {
-    let values = try params.map { try evaluate(expression: $0, in: &context) }
+private func subtractf(_ values: [IntermediateValue]) throws -> IntermediateValue {
     guard let numbers = IntermediateValue.numbers(from: values) else {
-        throw EvaluatorError.badParameterList(params, "Subtract requires numbers")
+        throw EvaluatorError.badFunctionParameters(values, "Subtract requires numbers")
     }
     switch numbers {
     case let .integers(array):
@@ -14,5 +13,5 @@ private func subtractf(_ params: [Expression], _ context: inout Context) throws 
 }
 
 extension Callable {
-    static let subtractFunction = Callable.specialOperator(SpecialOperator(f: subtractf(_:_:)))
+    static let subtractFunction = Callable.functionVarargs(FunctionVarargs(f: subtractf(_:)))
 }

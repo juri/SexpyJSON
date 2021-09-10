@@ -1,7 +1,6 @@
-private func multiplyf(_ params: [Expression], _ context: inout Context) throws -> IntermediateValue {
-    let values = try params.map { try evaluate(expression: $0, in: &context) }
+private func multiplyf(_ values: [IntermediateValue]) throws -> IntermediateValue {
     guard let numbers = IntermediateValue.numbers(from: values) else {
-        throw EvaluatorError.badParameterList(params, "Multiply requires numbers")
+        throw EvaluatorError.badFunctionParameters(values, "Multiply requires numbers")
     }
     switch numbers {
     case let .integers(array):
@@ -12,5 +11,5 @@ private func multiplyf(_ params: [Expression], _ context: inout Context) throws 
 }
 
 extension Callable {
-    static let multiplyFunction = Callable.specialOperator(SpecialOperator(f: multiplyf(_:_:)))
+    static let multiplyFunction = Callable.functionVarargs(FunctionVarargs(f: multiplyf(_:)))
 }

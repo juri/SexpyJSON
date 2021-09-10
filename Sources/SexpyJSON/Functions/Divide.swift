@@ -1,7 +1,6 @@
-private func dividef(_ params: [Expression], _ context: inout Context) throws -> IntermediateValue {
-    let values = try params.map { try evaluate(expression: $0, in: &context) }
+private func dividef(_ values: [IntermediateValue]) throws -> IntermediateValue {
     guard let numbers = IntermediateValue.numbers(from: values) else {
-        throw EvaluatorError.badParameterList(params, "Divide requires numbers")
+        throw EvaluatorError.badFunctionParameters(values, "Divide requires numbers")
     }
 
     switch numbers {
@@ -19,5 +18,5 @@ private func dividef(_ params: [Expression], _ context: inout Context) throws ->
 }
 
 extension Callable {
-    static let divideFunction = Callable.specialOperator(SpecialOperator(f: dividef(_:_:)))
+    static let divideFunction = Callable.functionVarargs(FunctionVarargs(f: dividef(_:)))
 }
