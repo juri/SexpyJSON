@@ -98,7 +98,7 @@ enum Callable {
 }
 
 enum IntermediateValue {
-    case function(Callable)
+    case callable(Callable)
     case string(String)
     case integer(Int)
     case double(Double)
@@ -110,7 +110,7 @@ enum IntermediateValue {
     var requireValue: SXPJOutputValue {
         get throws {
             switch self {
-            case .function:
+            case .callable:
                 throw EvaluatorError.uncalledFunction
             case let .string(s):
                 return .string(s)
@@ -209,7 +209,7 @@ func evaluateSymbol(symbol: Symbol, in context: inout Context) throws -> Interme
 
 func evaluateCall(call: Call, in context: inout Context) throws -> IntermediateValue {
     let target = try evaluate(expression: call.target, in: &context)
-    guard case let .function(callable) = target else {
+    guard case let .callable(callable) = target else {
         throw EvaluatorError.badCallTarget(target)
     }
     switch callable {

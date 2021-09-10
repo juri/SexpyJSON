@@ -1,10 +1,9 @@
-private func concatf(_ params: [Expression], _ context: inout Context) throws -> IntermediateValue {
-    guard params.count > 1 else {
-        throw EvaluatorError.badParameterList(params, "concat requires at least two arguments")
+private func concatf(_ values: [IntermediateValue]) throws -> IntermediateValue {
+    guard values.count > 1 else {
+        throw EvaluatorError.badFunctionParameters(values, "concat requires at least two arguments")
     }
-    let values = try params.map { try evaluate(expression: $0, in: &context) }
     guard let output = concatStrings(values) ?? concatArrays(values) else {
-        throw EvaluatorError.badParameterList(params, "Couldn't concat parameters")
+        throw EvaluatorError.badFunctionParameters(values, "Couldn't concat parameters")
     }
 
     return output
@@ -33,5 +32,5 @@ private func concatArrays(_ values: [IntermediateValue]) -> IntermediateValue? {
 }
 
 extension Callable {
-    static let concatFunction = Callable.specialOperator(SpecialOperator(f: concatf(_:_:)))
+    static let concatFunction = Callable.functionVarargs(FunctionVarargs(f: concatf(_:)))
 }

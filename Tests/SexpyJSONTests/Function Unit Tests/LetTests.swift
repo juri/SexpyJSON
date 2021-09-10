@@ -111,7 +111,7 @@ final class LetTests: XCTestCase {
             )
         )
 
-        let context = Context.withBuiltins.wrap(names: [Symbol("extraFunc"): .function(.specialOperator(extraFunc))])
+        let context = Context.withBuiltins.wrap(names: [Symbol("extraFunc"): .callable(.specialOperator(extraFunc))])
         let outputValue = try evaluateToOutput(expression: expr, in: context)
         XCTAssertEqual(outputValue, .string("foo"))
         XCTAssertEqual(extraFuncArgumentValue, "bar")
