@@ -68,7 +68,7 @@ struct SpecialOperator {
     }
 }
 
-struct SimpleFunction1 {
+struct Function1 {
     let f: (IntermediateValue) throws -> IntermediateValue
     let name: String
 
@@ -83,7 +83,7 @@ struct SimpleFunction1 {
 }
 
 enum Callable {
-    case simpleFunction1(SimpleFunction1)
+    case function1(Function1)
     case specialOperator(SpecialOperator)
 }
 
@@ -205,7 +205,7 @@ func evaluateCall(call: Call, in context: inout Context) throws -> IntermediateV
     switch callable {
     case let .specialOperator(fun):
         return try fun.call(call.params, context: &context)
-    case let .simpleFunction1(fun):
+    case let .function1(fun):
         return try fun.call(call.params, context: &context)
     }
 }

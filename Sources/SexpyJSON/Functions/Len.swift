@@ -8,5 +8,5 @@ private func lenf(_ param: IntermediateValue) throws -> IntermediateValue {
 }
 
 extension Callable {
-    static let lenFunction = Callable.simpleFunction1(SimpleFunction1(f: lenf, name: "len"))
+    static let lenFunction = Callable.function1(Function1(f: lenf, name: "len"))
 }
