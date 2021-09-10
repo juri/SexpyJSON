@@ -28,6 +28,6 @@ private func definef(_ params: [Expression], _ context: inout Context) throws ->
     return .null
 }
 
-extension Function {
-    static let defineFunction = Function(f: definef(_:_:))
+extension Callable {
+    static let defineFunction = Callable.specialOperator(SpecialOperator(f: definef(_:_:)))
 }

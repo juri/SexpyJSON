@@ -77,6 +77,8 @@ private func describe(error: EvaluatorError) -> String {
         return "Trying to call a value that is not a function"
     case .badExpressionType:
         return "Bad expression type"
+    case let .badFunctionParameters(params, message):
+        return "Bad parameter list (\(params)): \(message)"
     case let .badParameterList(_, message):
         return "Bad parameter list: \(message)"
     case let .divisionByZero(divident):

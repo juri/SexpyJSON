@@ -11,6 +11,6 @@ private func multiplyf(_ params: [Expression], _ context: inout Context) throws 
     }
 }
 
-extension Function {
-    static let multiplyFunction = Function(f: multiplyf(_:_:))
+extension Callable {
+    static let multiplyFunction = Callable.specialOperator(SpecialOperator(f: multiplyf(_:_:)))
 }

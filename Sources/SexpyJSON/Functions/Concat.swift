@@ -32,6 +32,6 @@ private func concatArrays(_ values: [IntermediateValue]) -> IntermediateValue? {
     return .array(Array(arrays.joined(separator: [])))
 }
 
-extension Function {
-    static let concatFunction = Function(f: concatf(_:_:))
+extension Callable {
+    static let concatFunction = Callable.specialOperator(SpecialOperator(f: concatf(_:_:)))
 }

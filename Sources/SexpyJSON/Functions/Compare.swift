@@ -27,9 +27,9 @@ private func makeComp(
     }
 }
 
-extension Function {
-    static let gtFunction = Function(f: makeComp(intTest: >, doubleTest: >))
-    static let gteFunction = Function(f: makeComp(intTest: >=, doubleTest: >=))
-    static let ltFunction = Function(f: makeComp(intTest: <, doubleTest: <))
-    static let lteFunction = Function(f: makeComp(intTest: <=, doubleTest: <=))
+extension Callable {
+    static let gtFunction = Callable.specialOperator(SpecialOperator(f: makeComp(intTest: >, doubleTest: >)))
+    static let gteFunction = Callable.specialOperator(SpecialOperator(f: makeComp(intTest: >=, doubleTest: >=)))
+    static let ltFunction = Callable.specialOperator(SpecialOperator(f: makeComp(intTest: <, doubleTest: <)))
+    static let lteFunction = Callable.specialOperator(SpecialOperator(f: makeComp(intTest: <=, doubleTest: <=)))
 }

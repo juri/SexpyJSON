@@ -11,6 +11,6 @@ private func addf(_ params: [Expression], _ context: inout Context) throws -> In
     }
 }
 
-extension Function {
-    static let addFunction = Function(f: addf(_:_:))
+extension Callable {
+    static let addFunction = Callable.specialOperator(SpecialOperator(f: addf(_:_:)))
 }

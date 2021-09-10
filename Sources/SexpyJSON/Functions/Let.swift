@@ -43,6 +43,6 @@ private func makeNameExtractor(params: [Expression]) -> (Expression) throws -> S
     }
 }
 
-extension Function {
-    static let letFunction = Function(f: letf(_:_:))
+extension Callable {
+    static let letFunction = Callable.specialOperator(SpecialOperator(f: letf(_:_:)))
 }

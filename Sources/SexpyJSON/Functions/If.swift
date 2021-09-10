@@ -12,6 +12,6 @@ private func iff(_ params: [Expression], _ context: inout Context) throws -> Int
     return try evaluate(expression: params[condBool ? 1 : 2], in: &context)
 }
 
-extension Function {
-    static let ifFunction = Function(f: iff)
+extension Callable {
+    static let ifFunction = Callable.specialOperator(SpecialOperator(f: iff))
 }

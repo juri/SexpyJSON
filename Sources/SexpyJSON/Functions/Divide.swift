@@ -18,6 +18,6 @@ private func dividef(_ params: [Expression], _ context: inout Context) throws ->
     }
 }
 
-extension Function {
-    static let divideFunction = Function(f: dividef(_:_:))
+extension Callable {
+    static let divideFunction = Callable.specialOperator(SpecialOperator(f: dividef(_:_:)))
 }

@@ -26,7 +26,7 @@ private func fnf(_ params: [Expression], _ context: inout Context) throws -> Int
 
     let fnExpressions = params.dropFirst()
     let originalContext = context
-    return .function(.init(f: { args, callContext in
+    return .function(.specialOperator(.init(f: { args, callContext in
         guard args.count == functionArguments.count else {
             throw EvaluatorError.badParameterList(args, "Function requires \(args.count) parameters")
         }
@@ -41,7 +41,7 @@ private func fnf(_ params: [Expression], _ context: inout Context) throws -> Int
             returnValue = try evaluate(expression: expr, in: &evalContext)
         }
         return returnValue
-    }))
+    })))
 }
 
 private func makeNameExtractor(params: [Expression]) -> (Expression) throws -> String {
@@ -54,6 +54,6 @@ private func makeNameExtractor(params: [Expression]) -> (Expression) throws -> S
     }
 }
 
-extension Function {
-    static let fnFunction = Function(f: fnf(_:_:))
+extension Callable {
+    static let fnFunction = Callable.specialOperator(SpecialOperator(f: fnf(_:_:)))
 }

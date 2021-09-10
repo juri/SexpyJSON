@@ -76,7 +76,7 @@ final class LetTests: XCTestCase {
 
     func testMultipleExpressions() throws {
         var extraFuncArgumentValue: String?
-        let extraFunc = Function(f: { args, context in
+        let extraFunc = SpecialOperator(f: { args, context in
             XCTAssertEqual(args.count, 1)
             let arg = try XCTUnwrap(args.first)
             let argValue = try evaluate(expression: arg, in: &context)
@@ -111,7 +111,7 @@ final class LetTests: XCTestCase {
             )
         )
 
-        let context = Context.withBuiltins.wrap(names: [Symbol("extraFunc"): .function(extraFunc)])
+        let context = Context.withBuiltins.wrap(names: [Symbol("extraFunc"): .function(.specialOperator(extraFunc))])
         let outputValue = try evaluateToOutput(expression: expr, in: context)
         XCTAssertEqual(outputValue, .string("foo"))
         XCTAssertEqual(extraFuncArgumentValue, "bar")

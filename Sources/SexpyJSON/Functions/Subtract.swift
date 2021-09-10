@@ -13,6 +13,6 @@ private func subtractf(_ params: [Expression], _ context: inout Context) throws 
     }
 }
 
-extension Function {
-    static let subtractFunction = Function(f: subtractf(_:_:))
+extension Callable {
+    static let subtractFunction = Callable.specialOperator(SpecialOperator(f: subtractf(_:_:)))
 }

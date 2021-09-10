@@ -60,7 +60,7 @@ extension Namespace: CustomDebugStringConvertible {
     }
 }
 
-struct Function {
+struct SpecialOperator {
     let f: ([Expression], inout Context) throws -> IntermediateValue
 
     func call(_ params: [Expression], context: inout Context) throws -> IntermediateValue {
@@ -68,8 +68,27 @@ struct Function {
     }
 }
 
+struct SimpleFunction1 {
+    let f: (IntermediateValue) throws -> IntermediateValue
+    let name: String
+
+    func call(_ params: [Expression], context: inout Context) throws -> IntermediateValue {
+        guard params.count == 1 else {
+            throw EvaluatorError.badParameterList(params, "\(self.name) requires one argument")
+        }
+        let paramValue = try evaluate(expression: params[0], in: &context)
+
+        return try self.f(paramValue)
+    }
+}
+
+enum Callable {
+    case simpleFunction1(SimpleFunction1)
+    case specialOperator(SpecialOperator)
+}
+
 enum IntermediateValue {
-    case function(Function)
+    case function(Callable)
     case string(String)
     case integer(Int)
     case double(Double)
@@ -180,15 +199,21 @@ func evaluateSymbol(symbol: Symbol, in context: inout Context) throws -> Interme
 
 func evaluateCall(call: Call, in context: inout Context) throws -> IntermediateValue {
     let target = try evaluate(expression: call.target, in: &context)
-    guard case let .function(fun) = target else {
+    guard case let .function(callable) = target else {
         throw EvaluatorError.badCallTarget(target)
     }
-    return try fun.call(call.params, context: &context)
+    switch callable {
+    case let .specialOperator(fun):
+        return try fun.call(call.params, context: &context)
+    case let .simpleFunction1(fun):
+        return try fun.call(call.params, context: &context)
+    }
 }
 
 enum EvaluatorError: Error {
     case badCallTarget(IntermediateValue)
     case badExpressionType(ExpressionValue)
+    case badFunctionParameters([IntermediateValue], String)
     case badParameterList([Expression], String)
     case divisionByZero(Int)
     case missingValue(Symbol)

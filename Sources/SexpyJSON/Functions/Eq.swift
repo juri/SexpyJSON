@@ -57,6 +57,6 @@ private func eq(value1: IntermediateValue, value2: IntermediateValue, _ context:
     }
 }
 
-extension Function {
-    static let eqFunction = Function(f: eqf(_:_:))
+extension Callable {
+    static let eqFunction = Callable.specialOperator(SpecialOperator(f: eqf(_:_:)))
 }
