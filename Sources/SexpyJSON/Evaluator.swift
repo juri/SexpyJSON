@@ -95,6 +95,17 @@ enum Callable {
     case function1(Function1)
     case functionVarargs(FunctionVarargs)
     case specialOperator(SpecialOperator)
+
+    func call(_ params: [Expression], context: inout Context) throws -> IntermediateValue {
+        switch self {
+        case let .specialOperator(fun):
+            return try fun.call(params, context: &context)
+        case let .function1(fun):
+            return try fun.call(params, context: &context)
+        case let .functionVarargs(fun):
+            return try fun.call(params, context: &context)
+        }
+    }
 }
 
 enum IntermediateValue {
@@ -212,14 +223,7 @@ func evaluateCall(call: Call, in context: inout Context) throws -> IntermediateV
     guard case let .callable(callable) = target else {
         throw EvaluatorError.badCallTarget(target)
     }
-    switch callable {
-    case let .specialOperator(fun):
-        return try fun.call(call.params, context: &context)
-    case let .function1(fun):
-        return try fun.call(call.params, context: &context)
-    case let .functionVarargs(fun):
-        return try fun.call(call.params, context: &context)
-    }
+    return try callable.call(call.params, context: &context)
 }
 
 enum EvaluatorError: Error {
