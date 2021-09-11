@@ -39,7 +39,6 @@
 --nowrapoperators 
 --octalgrouping 4,8
 --operatorfunc spaced
---organizetypes class,enum,struct
 --patternlet hoist
 --ranges spaced
 --redundanttype inferred
