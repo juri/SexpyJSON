@@ -25,4 +25,27 @@ final class FilterTests: XCTestCase {
         XCTAssertEqual(value[0], 4.0, accuracy: 0.00001)
         XCTAssertEqual(value[1], 5.0, accuracy: 0.00001)
     }
+
+    func testFilterWithNot() throws {
+        let definition = #"""
+        (define values ["aaa", "bb", "cccc"])
+        """#
+
+        let input = #"""
+        {
+            "k1": (filter (fn [val] (not (> (len val) 2))) values)
+        }
+        """#
+
+        let parser = SXPJParser()
+        let definitionExpr = try parser.parse(source: definition)
+        let inputExpr = try parser.parse(source: input)
+        var evaluator = SXPJEvaluator()
+        try evaluator.evaluate(expression: definitionExpr)
+        let output = try evaluator.evaluate(expression: inputExpr)
+        let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        let value = try XCTUnwrap(obj["k1"] as? [String])
+        XCTAssertEqual(value.count, 1)
+        XCTAssertEqual(value[0], "bb")
+    }
 }
