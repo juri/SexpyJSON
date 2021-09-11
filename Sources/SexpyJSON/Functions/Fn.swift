@@ -26,13 +26,13 @@ private func fnf(_ params: [Expression], _ context: inout Context) throws -> Int
 
     let fnExpressions = params.dropFirst()
     let originalContext = context
-    return .callable(.specialOperator(.init(f: { args, callContext in
+    return .callable(.functionVarargs(.init(f: { args in
         guard args.count == functionArguments.count else {
-            throw EvaluatorError.badParameterList(args, "Function requires \(args.count) parameters")
+            throw EvaluatorError.badFunctionParameters(args, "Function requires \(args.count) parameters")
         }
 
-        let namespacePairs = try zip(functionArguments, args).map { name, value in
-            (Symbol(name: name), try evaluate(expression: value, in: &callContext))
+        let namespacePairs = zip(functionArguments, args).map { name, value in
+            (Symbol(name: name), value)
         }
         let nsDict = Dictionary(namespacePairs, uniquingKeysWith: { $1 })
         var evalContext = originalContext.wrap(names: nsDict)
