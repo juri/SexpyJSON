@@ -10,6 +10,7 @@ let builtins: [Symbol: IntermediateValue] = [
     Symbol("concat"): .callable(.concatFunction),
     Symbol("define"): .callable(.defineFunction),
     Symbol("eq"): .callable(.eqFunction),
+    Symbol("filter"): .callable(.filterFunction),
     Symbol("fn"): .callable(.fnFunction),
     Symbol("if"): .callable(.ifFunction),
     Symbol("len"): .callable(.lenFunction),
