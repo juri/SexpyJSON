@@ -20,7 +20,17 @@ enum Callable {
         }
     }
 
+    func callFunction(_ params: [IntermediateValue], context: inout Context) throws -> IntermediateValue {
+        switch self {
+        case .specialOperator:
+            throw EvaluatorError.badCallTarget(.callable(self))
+        case let .function1(fun):
+            return try fun.call(params)
+        case let .function2WithContext(fun):
+            return try fun.call(params, context: &context)
         case let .functionVarargs(fun):
+            return try fun.call(params)
+        case let .functionVarargsWithContext(fun):
             return try fun.call(params, context: &context)
         }
     }
@@ -46,6 +56,16 @@ struct Function1 {
 
         return try self.f(paramValue)
     }
+
+    func call(_ params: [IntermediateValue]) throws -> IntermediateValue {
+        guard params.count == 1 else {
+            throw EvaluatorError.badFunctionParameters(params, "\(self.name) requires one argument")
+        }
+
+        return try self.f(params[0])
+    }
+}
+
 struct FunctionWithContext2 {
     let f: (IntermediateValue, IntermediateValue, inout Context) throws -> IntermediateValue
     let name: String
@@ -59,6 +79,14 @@ struct FunctionWithContext2 {
 
         return try self.f(param1Value, param2Value, &context)
     }
+
+    func call(_ params: [IntermediateValue], context: inout Context) throws -> IntermediateValue {
+        guard params.count == 2 else {
+            throw EvaluatorError.badFunctionParameters(params, "\(self.name) requires two arguments")
+        }
+
+        return try self.f(params[0], params[1], &context)
+    }
 }
 
 struct FunctionVarargs {
@@ -69,11 +97,20 @@ struct FunctionVarargs {
         return try self.f(paramValues)
     }
 
+    func call(_ params: [IntermediateValue]) throws -> IntermediateValue {
+        try self.f(params)
+    }
+}
+
 struct FunctionVarargsWithContext {
     let f: ([IntermediateValue], Context) throws -> IntermediateValue
 
     func call(_ params: [Expression], context: inout Context) throws -> IntermediateValue {
         let paramValues = try params.map { try evaluate(expression: $0, in: &context) }
         return try self.f(paramValues, context)
+    }
+
+    func call(_ params: [IntermediateValue], context: inout Context) throws -> IntermediateValue {
+        try self.f(params, context)
     }
 }
