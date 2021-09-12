@@ -13,5 +13,5 @@ private func subtractf(_ values: [IntermediateValue]) throws -> IntermediateValu
 }
 
 extension Callable {
-    static let subtractFunction = Callable.functionVarargs(FunctionVarargs(f: subtractf(_:)))
+    static let subtractFunction = Callable.functionVarargs(FunctionVarargs(noContext: subtractf(_:)))
 }

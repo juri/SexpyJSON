@@ -18,5 +18,5 @@ private func dividef(_ values: [IntermediateValue]) throws -> IntermediateValue 
 }
 
 extension Callable {
-    static let divideFunction = Callable.functionVarargs(FunctionVarargs(f: dividef(_:)))
+    static let divideFunction = Callable.functionVarargs(FunctionVarargs(noContext: dividef(_:)))
 }

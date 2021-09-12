@@ -2,7 +2,6 @@ enum Callable {
     case function1(Function1)
     case function2(Function2)
     case functionVarargs(FunctionVarargs)
-    case functionVarargsWithContext(FunctionVarargsWithContext)
     case specialOperator(SpecialOperator)
 
     func call(_ params: [Expression], context: inout Context) throws -> IntermediateValue {
@@ -14,8 +13,6 @@ enum Callable {
         case let .function2(fun):
             return try fun.call(params, context: &context)
         case let .functionVarargs(fun):
-            return try fun.call(params, context: &context)
-        case let .functionVarargsWithContext(fun):
             return try fun.call(params, context: &context)
         }
     }
@@ -29,8 +26,6 @@ enum Callable {
         case let .function2(fun):
             return try fun.call(params, context: &context)
         case let .functionVarargs(fun):
-            return try fun.call(params)
-        case let .functionVarargsWithContext(fun):
             return try fun.call(params, context: &context)
         }
     }
@@ -96,19 +91,6 @@ extension Function2 {
 }
 
 struct FunctionVarargs {
-    let f: ([IntermediateValue]) throws -> IntermediateValue
-
-    func call(_ params: [Expression], context: inout Context) throws -> IntermediateValue {
-        let paramValues = try params.map { try evaluate(expression: $0, in: &context) }
-        return try self.f(paramValues)
-    }
-
-    func call(_ params: [IntermediateValue]) throws -> IntermediateValue {
-        try self.f(params)
-    }
-}
-
-struct FunctionVarargsWithContext {
     let f: ([IntermediateValue], Context) throws -> IntermediateValue
 
     func call(_ params: [Expression], context: inout Context) throws -> IntermediateValue {
@@ -118,5 +100,11 @@ struct FunctionVarargsWithContext {
 
     func call(_ params: [IntermediateValue], context: inout Context) throws -> IntermediateValue {
         try self.f(params, context)
+    }
+}
+
+extension FunctionVarargs {
+    init(noContext f: @escaping ([IntermediateValue]) throws -> IntermediateValue) {
+        self.init(f: { params, _ in try f(params) })
     }
 }

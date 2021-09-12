@@ -11,5 +11,5 @@ private func multiplyf(_ values: [IntermediateValue]) throws -> IntermediateValu
 }
 
 extension Callable {
-    static let multiplyFunction = Callable.functionVarargs(FunctionVarargs(f: multiplyf(_:)))
+    static let multiplyFunction = Callable.functionVarargs(FunctionVarargs(noContext: multiplyf(_:)))
 }

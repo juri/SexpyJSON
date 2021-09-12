@@ -26,7 +26,7 @@ private func fnf(_ params: [Expression], _ context: inout Context) throws -> Int
 
     let fnExpressions = params.dropFirst()
     let originalContext = context
-    return .callable(.functionVarargs(.init(f: { args in
+    return .callable(.functionVarargs(.init(noContext: { args in
         guard args.count == functionArguments.count else {
             throw EvaluatorError.badFunctionParameters(args, "Function requires \(args.count) parameters")
         }

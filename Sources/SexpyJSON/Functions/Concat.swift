@@ -32,5 +32,5 @@ private func concatArrays(_ values: [IntermediateValue]) throws -> IntermediateV
 }
 
 extension Callable {
-    static let concatFunction = Callable.functionVarargs(FunctionVarargs(f: concatf(_:)))
+    static let concatFunction = Callable.functionVarargs(FunctionVarargs(noContext: concatf(_:)))
 }

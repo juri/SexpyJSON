@@ -11,5 +11,5 @@ private func addf(_ values: [IntermediateValue]) throws -> IntermediateValue {
 }
 
 extension Callable {
-    static let addFunction = Callable.functionVarargs(FunctionVarargs(f: addf))
+    static let addFunction = Callable.functionVarargs(FunctionVarargs(noContext: addf))
 }

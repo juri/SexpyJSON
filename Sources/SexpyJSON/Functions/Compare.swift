@@ -27,8 +27,8 @@ private func makeComp(
 }
 
 extension Callable {
-    static let gtFunction = Callable.functionVarargs(FunctionVarargs(f: makeComp(intTest: >, doubleTest: >)))
-    static let gteFunction = Callable.functionVarargs(FunctionVarargs(f: makeComp(intTest: >=, doubleTest: >=)))
-    static let ltFunction = Callable.functionVarargs(FunctionVarargs(f: makeComp(intTest: <, doubleTest: <)))
-    static let lteFunction = Callable.functionVarargs(FunctionVarargs(f: makeComp(intTest: <=, doubleTest: <=)))
+    static let gtFunction = Callable.functionVarargs(FunctionVarargs(noContext: makeComp(intTest: >, doubleTest: >)))
+    static let gteFunction = Callable.functionVarargs(FunctionVarargs(noContext: makeComp(intTest: >=, doubleTest: >=)))
+    static let ltFunction = Callable.functionVarargs(FunctionVarargs(noContext: makeComp(intTest: <, doubleTest: <)))
+    static let lteFunction = Callable.functionVarargs(FunctionVarargs(noContext: makeComp(intTest: <=, doubleTest: <=)))
 }
