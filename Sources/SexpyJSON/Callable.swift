@@ -1,6 +1,6 @@
 enum Callable {
     case function1(Function1)
-    case function2WithContext(FunctionWithContext2)
+    case function2(Function2)
     case functionVarargs(FunctionVarargs)
     case functionVarargsWithContext(FunctionVarargsWithContext)
     case specialOperator(SpecialOperator)
@@ -11,7 +11,7 @@ enum Callable {
             return try fun.call(params, context: &context)
         case let .function1(fun):
             return try fun.call(params, context: &context)
-        case let .function2WithContext(fun):
+        case let .function2(fun):
             return try fun.call(params, context: &context)
         case let .functionVarargs(fun):
             return try fun.call(params, context: &context)
@@ -26,7 +26,7 @@ enum Callable {
             throw EvaluatorError.badCallTarget(.callable(self))
         case let .function1(fun):
             return try fun.call(params)
-        case let .function2WithContext(fun):
+        case let .function2(fun):
             return try fun.call(params, context: &context)
         case let .functionVarargs(fun):
             return try fun.call(params)
@@ -66,7 +66,7 @@ struct Function1 {
     }
 }
 
-struct FunctionWithContext2 {
+struct Function2 {
     let f: (IntermediateValue, IntermediateValue, inout Context) throws -> IntermediateValue
     let name: String
 
@@ -89,7 +89,7 @@ struct FunctionWithContext2 {
     }
 }
 
-extension FunctionWithContext2 {
+extension Function2 {
     init(noContext f: @escaping (IntermediateValue, IntermediateValue) throws -> IntermediateValue, name: String) {
         self.init(f: { p1, p2, _ in try f(p1, p2) }, name: name)
     }

@@ -27,5 +27,5 @@ private func subf(_ container: IntermediateValue, _ subs: IntermediateValue) thr
 }
 
 extension Callable {
-    static let subFunction = Callable.function2WithContext(FunctionWithContext2(noContext: subf(_:_:), name: "sub"))
+    static let subFunction = Callable.function2(Function2(noContext: subf(_:_:), name: "sub"))
 }

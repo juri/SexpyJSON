@@ -35,5 +35,5 @@ private func filterArray(
 private struct BadPredicateReturnType: Error {}
 
 extension Callable {
-    static let filterFunction = Callable.function2WithContext(.init(f: filterf(param1:param2:_:), name: "filter"))
+    static let filterFunction = Callable.function2(.init(f: filterf(param1:param2:_:), name: "filter"))
 }

@@ -42,5 +42,5 @@ private func mapArray(callable: Callable, over array: [IntermediateValue], conte
 private struct BadReturnValue: Error {}
 
 extension Callable {
-    static let mapFunction = Callable.function2WithContext(.init(f: mapf(param1:param2:_:), name: "map"))
+    static let mapFunction = Callable.function2(.init(f: mapf(param1:param2:_:), name: "map"))
 }
