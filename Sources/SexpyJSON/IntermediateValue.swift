@@ -7,6 +7,7 @@ enum IntermediateValue {
     case object([IntermediateObjectMember])
     case boolean(Bool)
     case null
+    case nativeArray([Any])
 
     var requireValue: SXPJOutputValue {
         get throws {
@@ -27,7 +28,25 @@ enum IntermediateValue {
                 return .boolean(b)
             case .null:
                 return .null
+            case let .nativeArray(arr):
+                return try IntermediateValue.tryInitArray(nativeValue: arr).requireValue
             }
+        }
+    }
+
+    init?(nativeValue: Any?) {
+        if let int = nativeValue as? Int {
+            self = .integer(int)
+        } else if let str = nativeValue as? String {
+            self = .string(str)
+        } else if let double = nativeValue as? Double {
+            self = .double(double)
+        } else if let bool = nativeValue as? Bool {
+            self = .boolean(bool)
+        } else if nativeValue == nil {
+            self = .null
+        } else {
+            return nil
         }
     }
 }
@@ -36,6 +55,13 @@ extension IntermediateValue {
     var array: [IntermediateValue]? {
         guard case let .array(a) = self else { return nil }
         return a
+    }
+
+    var anyArray: [IntermediateValue]? {
+        get throws {
+            if let arr = self.array { return arr }
+            return try self.nativeArray.flatMap { try IntermediateValue.tryInitArray(nativeValue: $0).array }
+        }
     }
 
     var boolean: Bool? {
@@ -52,6 +78,11 @@ extension IntermediateValue {
         guard case let .string(s) = self else { return nil }
         return s
     }
+
+    var nativeArray: [Any]? {
+        guard case let .nativeArray(a) = self else { return nil }
+        return a
+    }
 }
 
 struct IntermediateObjectMember {
@@ -65,6 +96,21 @@ enum NumberList {
 }
 
 extension IntermediateValue {
+    static func tryInitUnwrappedArray(nativeValue arr: [Any]) throws -> [IntermediateValue] {
+        try arr.map(IntermediateValue.tryInit(nativeValue:))
+    }
+
+    static func tryInitArray(nativeValue arr: [Any]) throws -> IntermediateValue {
+        IntermediateValue.array(try self.tryInitUnwrappedArray(nativeValue: arr))
+    }
+
+    static func tryInit(nativeValue: Any?) throws -> IntermediateValue {
+        guard let iv = IntermediateValue(nativeValue: nativeValue) else {
+            throw EvaluatorError.unrecognizedNativeType(nativeValue)
+        }
+        return iv
+    }
+
     static func numbers(from values: [IntermediateValue]) -> NumberList? {
         var integers = [Int]()
         var doubles = [Double]()

@@ -3,18 +3,36 @@ private func filterf(param1: IntermediateValue, param2: IntermediateValue, _ con
         throw EvaluatorError.badFunctionParameters([param1, param2], "First parameter to fliter must be callable")
     }
 
-    guard case let .array(a) = param2 else {
-        throw EvaluatorError.badFunctionParameters([param1, param2], "Second parameter to filter must be array")
+    do {
+        switch param2 {
+        case let .array(a):
+            return try filterArray(a, callable: callable, context: &context)
+        case let .nativeArray(a):
+            let convertedArray = try IntermediateValue.tryInitUnwrappedArray(nativeValue: a)
+            return try filterArray(convertedArray, callable: callable, context: &context)
+        default:
+            throw EvaluatorError.badFunctionParameters([param1, param2], "Second parameter to filter must be array")
+        }
+    } catch is BadPredicateReturnType {
+        throw EvaluatorError.badFunctionParameters([param1, param2], "Filter function must return booleans")
     }
+}
 
-    let filtered = try a.filter { elem in
+private func filterArray(
+    _ array: [IntermediateValue],
+    callable: Callable,
+    context: inout Context
+) throws -> IntermediateValue {
+    let filtered = try array.filter { elem in
         guard let bool = try callable.callFunction([elem], context: &context).boolean else {
-            throw EvaluatorError.badFunctionParameters([param1, param2], "Filter function must return booleans")
+            throw BadPredicateReturnType()
         }
         return bool
     }
     return .array(filtered)
 }
+
+private struct BadPredicateReturnType: Error {}
 
 extension Callable {
     static let filterFunction = Callable.function2WithContext(.init(f: filterf(param1:param2:_:), name: "filter"))

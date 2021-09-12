@@ -125,4 +125,5 @@ enum EvaluatorError: Error {
     case divisionByZero(Int)
     case missingValue(Symbol)
     case uncalledFunction
+    case unrecognizedNativeType(Any?)
 }

@@ -55,6 +55,14 @@ public struct SXPJEvaluator {
         self.context.set(value: .null, for: Symbol(key))
     }
 
+    public func set(array: [Any], for key: String) {
+        self.context.set(value: .nativeArray(array), for: Symbol(key))
+    }
+
+    public func setPreconvert(array: [Any], for key: String) throws {
+        try self.context.set(value: IntermediateValue.tryInitArray(nativeValue: array), for: Symbol(key))
+    }
+
     @discardableResult
     public mutating func evaluate(expression: SXPJParsedExpression) throws -> SXPJOutputValue {
         let originalContext = self.context
@@ -87,6 +95,8 @@ private func describe(error: EvaluatorError) -> String {
         return "Missing value: \(name)"
     case .uncalledFunction:
         return "Found an uncalled function in output"
+    case let .unrecognizedNativeType(value):
+        return "Unrecognized native type: \(String(describing: value))"
     }
 }
 

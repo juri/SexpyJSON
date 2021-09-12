@@ -12,6 +12,9 @@ private func mapf(param1: IntermediateValue, param2: IntermediateValue, _ contex
         }
     case let .array(a):
         return try .array(mapArray(callable: callable, over: a, context: &context))
+    case let .nativeArray(a):
+        let convertedArray = try IntermediateValue.tryInitUnwrappedArray(nativeValue: a)
+        return try .array(mapArray(callable: callable, over: convertedArray, context: &context))
     default:
         throw EvaluatorError.badFunctionParameters([param1, param2], "Second parameter to map must be string or array")
     }
