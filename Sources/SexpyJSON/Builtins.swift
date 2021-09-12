@@ -13,6 +13,7 @@ let builtins: [Symbol: IntermediateValue] = [
     Symbol("filter"): .callable(.filterFunction),
     Symbol("fn"): .callable(.fnFunction),
     Symbol("if"): .callable(.ifFunction),
+    Symbol("is-nil"): .callable(.isNilFunction),
     Symbol("len"): .callable(.lenFunction),
     Symbol("let"): .callable(.letFunction),
     Symbol("map"): .callable(.mapFunction),
