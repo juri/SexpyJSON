@@ -1,4 +1,4 @@
-private func subf(_ container: IntermediateValue, _ subs: IntermediateValue, _: inout Context) throws -> IntermediateValue {
+private func subf(_ container: IntermediateValue, _ subs: IntermediateValue) throws -> IntermediateValue {
     switch container {
     case let .array(arr):
         guard case let .integer(index) = subs else {
@@ -27,5 +27,5 @@ private func subf(_ container: IntermediateValue, _ subs: IntermediateValue, _: 
 }
 
 extension Callable {
-    static let subFunction = Callable.function2WithContext(FunctionWithContext2(f: subf(_:_:_:), name: "sub"))
+    static let subFunction = Callable.function2WithContext(FunctionWithContext2(noContext: subf(_:_:), name: "sub"))
 }

@@ -89,6 +89,12 @@ struct FunctionWithContext2 {
     }
 }
 
+extension FunctionWithContext2 {
+    init(noContext f: @escaping (IntermediateValue, IntermediateValue) throws -> IntermediateValue, name: String) {
+        self.init(f: { p1, p2, _ in try f(p1, p2) }, name: name)
+    }
+}
+
 struct FunctionVarargs {
     let f: ([IntermediateValue]) throws -> IntermediateValue
 
