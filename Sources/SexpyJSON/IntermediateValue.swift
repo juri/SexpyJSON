@@ -34,19 +34,22 @@ enum IntermediateValue {
         }
     }
 
-    init?(nativeValue: Any?) {
-        if let int = nativeValue as? Int {
+    init(nativeValue: Any?) throws {
+        switch nativeValue {
+        case let int as Int:
             self = .integer(int)
-        } else if let str = nativeValue as? String {
+        case let str as String:
             self = .string(str)
-        } else if let double = nativeValue as? Double {
+        case let double as Double:
             self = .double(double)
-        } else if let bool = nativeValue as? Bool {
+        case let bool as Bool:
             self = .boolean(bool)
-        } else if nativeValue == nil {
+        case let arr as [Any]:
+            self = try IntermediateValue.array(arr.map(IntermediateValue.init(nativeValue:)))
+        case nil:
             self = .null
-        } else {
-            return nil
+        default:
+            throw EvaluatorError.unrecognizedNativeType(nativeValue)
         }
     }
 }
@@ -105,10 +108,7 @@ extension IntermediateValue {
     }
 
     static func tryInit(nativeValue: Any?) throws -> IntermediateValue {
-        guard let iv = IntermediateValue(nativeValue: nativeValue) else {
-            throw EvaluatorError.unrecognizedNativeType(nativeValue)
-        }
-        return iv
+        try IntermediateValue(nativeValue: nativeValue)
     }
 
     static func numbers(from values: [IntermediateValue]) -> NumberList? {

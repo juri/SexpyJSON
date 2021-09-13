@@ -63,6 +63,18 @@ public struct SXPJEvaluator {
         try self.context.set(value: IntermediateValue.tryInitArray(nativeValue: array), for: Symbol(key))
     }
 
+    public func set(value: @escaping ([SXPJOutputValue]) throws -> Any?, for key: String) {
+        self.context.set(value: .callable(.nativeFunction(NativeFunction(f: value))), for: Symbol(key))
+    }
+
+    public func set(value: @escaping ([SXPJOutputValue]) throws -> Void, for key: String) {
+        let nf = NativeFunction {
+            try value($0)
+            return .none
+        }
+        self.context.set(value: .callable(.nativeFunction(nf)), for: Symbol(key))
+    }
+
     @discardableResult
     public mutating func evaluate(expression: SXPJParsedExpression) throws -> SXPJOutputValue {
         let originalContext = self.context

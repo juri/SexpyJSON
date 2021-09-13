@@ -3,6 +3,7 @@ enum Callable {
     case function2(Function2)
     case functionVarargs(FunctionVarargs)
     case specialOperator(SpecialOperator)
+    case nativeFunction(NativeFunction)
 
     func call(_ params: [Expression], context: inout Context) throws -> IntermediateValue {
         switch self {
@@ -13,6 +14,8 @@ enum Callable {
         case let .function2(fun):
             return try fun.call(params, context: &context)
         case let .functionVarargs(fun):
+            return try fun.call(params, context: &context)
+        case let .nativeFunction(fun):
             return try fun.call(params, context: &context)
         }
     }
@@ -26,6 +29,8 @@ enum Callable {
         case let .function2(fun):
             return try fun.call(params, context: &context)
         case let .functionVarargs(fun):
+            return try fun.call(params, context: &context)
+        case let .nativeFunction(fun):
             return try fun.call(params, context: &context)
         }
     }
@@ -106,5 +111,26 @@ struct FunctionVarargs {
 extension FunctionVarargs {
     init(noContext f: @escaping ([IntermediateValue]) throws -> IntermediateValue) {
         self.init(f: { params, _ in try f(params) })
+    }
+}
+
+struct NativeFunction {
+    let f: ([SXPJOutputValue]) throws -> Any?
+
+    func call(_ params: [Expression], context: inout Context) throws -> IntermediateValue {
+        let ivalues = try params.map { try evaluate(expression: $0, in: &context) }
+        return try self.call(ivalues, context: &context)
+    }
+
+    func call(_ params: [IntermediateValue], context: inout Context) throws -> IntermediateValue {
+        let paramValues = try params.map { try $0.requireValue }
+
+        let returnValue = try self.f(paramValues)
+        switch returnValue {
+        case let .some(val):
+            return try IntermediateValue.tryInit(nativeValue: val)
+        case .none:
+            return .null
+        }
     }
 }
