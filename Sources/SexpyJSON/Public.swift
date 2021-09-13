@@ -55,12 +55,12 @@ public struct SXPJEvaluator {
         self.context.set(value: .null, for: Symbol(key))
     }
 
-    public func set(array: [Any], for key: String) {
-        self.context.set(value: .nativeArray(array), for: Symbol(key))
+    public func set(value: [Any], for key: String) {
+        self.context.set(value: .nativeArray(value), for: Symbol(key))
     }
 
-    public func setPreconvert(array: [Any], for key: String) throws {
-        try self.context.set(value: IntermediateValue.tryInitArray(nativeValue: array), for: Symbol(key))
+    public func setAndPreconvert(value: [Any], for key: String) throws {
+        try self.context.set(value: IntermediateValue.tryInitArray(nativeValue: value), for: Symbol(key))
     }
 
     public func set(value: @escaping ([SXPJOutputValue]) throws -> Any?, for key: String) {

@@ -113,9 +113,9 @@ final class ExternalValuesTests: XCTestCase {
         let parser = SXPJParser()
         let inputExpr = try parser.parse(source: input)
         var evaluator = SXPJEvaluator()
-        evaluator.set(array: [1, 2, 3], for: "arr1")
-        evaluator.set(array: [10, 20, 30], for: "arr2")
-        try evaluator.setPreconvert(array: [100, 200, 300], for: "arr3")
+        evaluator.set(value: [1, 2, 3], for: "arr1")
+        evaluator.set(value: [10, 20, 30], for: "arr2")
+        try evaluator.setAndPreconvert(value: [100, 200, 300], for: "arr3")
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
 

@@ -17,7 +17,7 @@ final class SubTests: XCTestCase {
         let parser = SXPJParser()
         let inputExpr = try parser.parse(source: input)
         var evaluator = SXPJEvaluator()
-        evaluator.set(array: [101, 102, 103, 104, 105, 106], for: "nArr")
+        evaluator.set(value: [101, 102, 103, 104, 105, 106], for: "nArr")
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
 
