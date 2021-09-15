@@ -116,6 +116,19 @@ extension IntermediateValue {
         IntermediateValue.array(try self.tryInitUnwrappedArray(nativeValue: arr))
     }
 
+    static func tryInitObject(nativeValue dict: [String: Any]) throws -> IntermediateValue {
+        let members = try dict.keys
+            .map { key -> IntermediateObjectMember in
+                let value = dict[key]
+                if let subDict = value as? [String: Any] {
+                    let convertedValue = try IntermediateValue.tryInitObject(nativeValue: subDict)
+                    return IntermediateObjectMember(name: key, value: convertedValue)
+                }
+                return try IntermediateObjectMember(name: key, value: IntermediateValue(nativeValue: value))
+            }
+        return .object(members)
+    }
+
     static func tryInit(nativeValue: Any?) throws -> IntermediateValue {
         try IntermediateValue(nativeValue: nativeValue)
     }

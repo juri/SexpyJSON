@@ -156,4 +156,23 @@ final class ExternalValuesTests: XCTestCase {
         XCTAssertEqual(try XCTUnwrap(obj["k1"] as? String), "hello")
         XCTAssertEqual(try XCTUnwrap(obj["k2"] as? String), "world")
     }
+
+    func testPreconvertedDict() throws {
+        let input = #"""
+        {
+            "k1": (sub d "key1"),
+            "k2": (sub (sub d "key2") "subkey1")
+        }
+        """#
+
+        let parser = SXPJParser()
+        let inputExpr = try parser.parse(source: input)
+        var evaluator = SXPJEvaluator()
+        try evaluator.setAndPreconvert(value: ["key1": "hello", "key2": ["subkey1": "world"]], for: "d")
+        let output = try evaluator.evaluate(expression: inputExpr)
+        let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+
+        XCTAssertEqual(try XCTUnwrap(obj["k1"] as? String), "hello")
+        XCTAssertEqual(try XCTUnwrap(obj["k2"] as? String), "world")
+    }
 }
