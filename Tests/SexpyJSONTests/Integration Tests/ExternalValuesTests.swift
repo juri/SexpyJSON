@@ -137,4 +137,23 @@ final class ExternalValuesTests: XCTestCase {
         assertEqual(filtered2, [10.0], accuracy: 0.0001)
         assertEqual(filtered3, [100.0], accuracy: 0.0001)
     }
+
+    func testDict() throws {
+        let input = #"""
+        {
+            "k1": (sub d "key1"),
+            "k2": (sub (sub d "key2") "subkey1")
+        }
+        """#
+
+        let parser = SXPJParser()
+        let inputExpr = try parser.parse(source: input)
+        var evaluator = SXPJEvaluator()
+        evaluator.set(value: ["key1": "hello", "key2": ["subkey1": "world"]], for: "d")
+        let output = try evaluator.evaluate(expression: inputExpr)
+        let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+
+        XCTAssertEqual(try XCTUnwrap(obj["k1"] as? String), "hello")
+        XCTAssertEqual(try XCTUnwrap(obj["k2"] as? String), "world")
+    }
 }

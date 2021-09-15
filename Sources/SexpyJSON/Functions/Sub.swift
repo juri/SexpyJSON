@@ -21,6 +21,11 @@ private func subf(_ container: IntermediateValue, _ subs: IntermediateValue) thr
             throw EvaluatorError.badFunctionParameters([container, subs], "The sub function requires second parameter to be a string for objects")
         }
         return members.first(where: { $0.name == key })?.value ?? .null
+    case let .dict(dict):
+        guard case let .string(key) = subs else {
+            throw EvaluatorError.badFunctionParameters([container, subs], "The sub function requires second parameter to be a string for objects")
+        }
+        return try IntermediateValue(nativeValue: dict[key])
     default:
         throw EvaluatorError.badFunctionParameters([container, subs], "The sub function requires first parameter to be an array or object")
     }

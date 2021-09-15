@@ -75,6 +75,10 @@ public struct SXPJEvaluator {
         self.context.set(value: .callable(.nativeFunction(nf)), for: Symbol(key))
     }
 
+    public func set(value: [String: Any], for key: String) {
+        self.context.set(value: .dict(value), for: Symbol(key))
+    }
+
     @discardableResult
     public mutating func evaluate(expression: SXPJParsedExpression) throws -> SXPJOutputValue {
         let originalContext = self.context

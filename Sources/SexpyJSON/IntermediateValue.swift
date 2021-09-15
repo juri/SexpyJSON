@@ -8,6 +8,7 @@ enum IntermediateValue {
     case boolean(Bool)
     case null
     case nativeArray([Any])
+    case dict([String: Any])
 
     var requireValue: SXPJOutputValue {
         get throws {
@@ -30,6 +31,12 @@ enum IntermediateValue {
                 return .null
             case let .nativeArray(arr):
                 return try IntermediateValue.tryInitArray(nativeValue: arr).requireValue
+            case let .dict(d):
+                return try .object(
+                    d.map { k, v in
+                        SXPJOutputObjectMember(name: k, value: try IntermediateValue(nativeValue: v).requireValue)
+                    }
+                )
             }
         }
     }
@@ -46,6 +53,8 @@ enum IntermediateValue {
             self = .boolean(bool)
         case let arr as [Any]:
             self = try IntermediateValue.array(arr.map(IntermediateValue.init(nativeValue:)))
+        case let dict as [String: Any]:
+            self = .dict(dict)
         case nil:
             self = .null
         default:
