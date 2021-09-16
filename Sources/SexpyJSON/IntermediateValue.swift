@@ -45,6 +45,8 @@ enum IntermediateValue {
 
     init(nativeValue: Any?) throws {
         switch nativeValue {
+        case let iv as IntermediateValue:
+            self = iv
         case let int as Int:
             self = .integer(int)
         case let str as String:
