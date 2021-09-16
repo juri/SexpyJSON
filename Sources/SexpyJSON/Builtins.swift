@@ -7,6 +7,8 @@ let builtins: [Symbol: IntermediateValue] = [
     Symbol(">="): .callable(.gteFunction),
     Symbol("<"): .callable(.ltFunction),
     Symbol("<="): .callable(.lteFunction),
+    Symbol("as-dict"): .callable(.asDictFunction),
+    Symbol("as-object"): .callable(.asObjectFunction),
     Symbol("concat"): .callable(.concatFunction),
     Symbol("define"): .callable(.defineFunction),
     Symbol("eq"): .callable(.eqFunction),
