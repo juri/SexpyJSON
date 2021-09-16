@@ -121,15 +121,13 @@ extension IntermediateValue {
     }
 
     static func tryInitObject(nativeValue dict: [String: Any]) throws -> IntermediateValue {
-        let members = try dict.keys
-            .map { key -> IntermediateObjectMember in
-                let value = dict[key]
-                if let subDict = value as? [String: Any] {
-                    let convertedValue = try IntermediateValue.tryInitObject(nativeValue: subDict)
-                    return IntermediateObjectMember(name: key, value: convertedValue)
-                }
-                return try IntermediateObjectMember(name: key, value: IntermediateValue(nativeValue: value))
+        let members = try dict.map { key, value -> IntermediateObjectMember in
+            if let subDict = value as? [String: Any] {
+                let convertedValue = try IntermediateValue.tryInitObject(nativeValue: subDict)
+                return IntermediateObjectMember(name: key, value: convertedValue)
             }
+            return try IntermediateObjectMember(name: key, value: IntermediateValue(nativeValue: value))
+        }
         return .object(members)
     }
 
