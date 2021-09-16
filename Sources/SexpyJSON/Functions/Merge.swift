@@ -30,6 +30,7 @@ private func asDict(_ value: IntermediateValue) throws -> [String: Any] {
         return d
     case let .object(members):
         var output = [String: Any]()
+        output.reserveCapacity(members.count)
         for member in members {
             output[member.name] = member.value
         }
