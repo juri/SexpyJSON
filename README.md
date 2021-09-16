@@ -9,6 +9,11 @@ It might not live up to your definition of Lisp, but it looks a lot like it.
 
 SexpyJSON is distributed under the terms of the MIT license. See LICENSE for details.
 
+## Code of Conduct
+
+This project is released with a Contributor Covenant Code of Conduct. By participating in this project you agree 
+to abide by its terms.
+
 ## Syntax
 
 The top-level element of a SexpyJSON document can be any JSON value (object, array, string, number, null) or
