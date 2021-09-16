@@ -17,6 +17,7 @@ let builtins: [Symbol: IntermediateValue] = [
     Symbol("len"): .callable(.lenFunction),
     Symbol("let"): .callable(.letFunction),
     Symbol("map"): .callable(.mapFunction),
+    Symbol("merge"): .callable(.mergeFunction),
     Symbol("not"): .callable(.notFunction),
     Symbol("sub"): .callable(.subFunction),
 ]

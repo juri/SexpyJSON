@@ -34,7 +34,9 @@ enum IntermediateValue {
             case let .dict(d):
                 return try .object(
                     d.map { k, v in
-                        SXPJOutputObjectMember(name: k, value: try IntermediateValue(nativeValue: v).requireValue)
+                        let iv = try v as? IntermediateValue ?? IntermediateValue(nativeValue: v)
+                        let ov = try iv.requireValue
+                        return SXPJOutputObjectMember(name: k, value: ov)
                     }
                 )
             }
