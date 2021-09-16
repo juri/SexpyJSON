@@ -5,6 +5,10 @@ This implementation is in Swift.
 
 It might not live up to your definition of Lisp, but it looks a lot like it.
 
+## License
+
+SexpyJSON is distributed under the terms of the MIT license. See LICENSE for details.
+
 ## Syntax
 
 The top-level element of a SexpyJSON document can be any JSON value (object, array, string, number, null) or
