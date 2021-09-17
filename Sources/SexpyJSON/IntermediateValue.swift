@@ -85,6 +85,11 @@ extension IntermediateValue {
         return b
     }
 
+    var callable: Callable? {
+        guard case let .callable(c) = self else { return nil }
+        return c
+    }
+
     var double: Double? {
         guard case let .double(d) = self else { return nil }
         return d
