@@ -66,4 +66,20 @@ final class ExprInJSONTests: XCTestCase {
         XCTAssertEqual(obj["zap"] as? String, "bang")
         XCTAssertEqual(try XCTUnwrap(obj["calculated"] as? String), "ccc")
     }
+
+    func testConcatArrays() throws {
+        let input = #"""
+        {
+            "zap": (concat [1, 2] [3, 4])
+        }
+        """#
+
+        let parser = SXPJParser()
+        let inputExpr = try parser.parse(source: input)
+        var evaluator = SXPJEvaluator()
+        let output = try evaluator.evaluate(expression: inputExpr)
+        let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        let zap = try XCTUnwrap(obj["zap"] as? [Double])
+        assertEqual(zap, [1.0, 2.0, 3.0, 4.0], accuracy: 0.0001)
+    }
 }
