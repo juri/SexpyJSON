@@ -1,9 +1,7 @@
 # SexpyJSON
 
-SexpyJSON is a JSON templating language that allows you to embed Lisp in JSON in Lisp in JSON.
-This implementation is in Swift.
-
-It might not live up to your definition of Lisp, but it looks a lot like it.
+SexpyJSON is a JSON templating language that allows you to embed (something that looks a lot like) Lisp in
+JSON in Lisp in JSON. This implementation is in Swift.
 
 ## License
 
