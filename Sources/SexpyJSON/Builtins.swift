@@ -11,6 +11,7 @@ let builtins: [Symbol: IntermediateValue] = [
     Symbol("as-object"): .callable(.asObjectFunction),
     Symbol("concat"): .callable(.concatFunction),
     Symbol("define"): .callable(.defineFunction),
+    Symbol("dict"): .callable(.dictFunction),
     Symbol("eq"): .callable(.eqFunction),
     Symbol("filter"): .callable(.filterFunction),
     Symbol("flatmap"): .callable(.flatmapFunction),
@@ -22,5 +23,6 @@ let builtins: [Symbol: IntermediateValue] = [
     Symbol("map"): .callable(.mapFunction),
     Symbol("merge"): .callable(.mergeFunction),
     Symbol("not"): .callable(.notFunction),
+    Symbol("object"): .callable(.objectFunction),
     Symbol("sub"): .callable(.subFunction),
 ]
