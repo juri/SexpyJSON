@@ -34,7 +34,7 @@ name definitions), but must in the end return a value convertible to JSON.
 ```
 
 ```
-["hello", (concat "wor", "ld")]
+["hello", (concat "wor" "ld")]
 ```
 
 ```
