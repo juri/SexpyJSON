@@ -13,8 +13,13 @@ struct Context {
         Context(namespace: .init(names: names, wrappedNamespace: self.namespace))
     }
 
-    static let withBuiltins = Context(namespace: .init(names: builtins, wrappedNamespace: nil))
-    static let empty = Context(namespace: .empty)
+    static var withBuiltins: Context {
+        Context(namespace: .init(names: builtins, wrappedNamespace: nil))
+    }
+
+    static var empty: Context {
+        Context(namespace: .empty)
+    }
 }
 
 final class Namespace {
