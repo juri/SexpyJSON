@@ -18,7 +18,7 @@ let builtins: [Symbol: IntermediateValue] = [
     Symbol("flatmap"): .callable(.flatmapFunction),
     Symbol("fn"): .callable(.fnFunction),
     Symbol("if"): .callable(.ifFunction),
-    Symbol("is-nil"): .callable(.isNilFunction),
+    Symbol("is-null"): .callable(.isNullFunction),
     Symbol("len"): .callable(.lenFunction),
     Symbol("let"): .callable(.letFunction),
     Symbol("map"): .callable(.mapFunction),

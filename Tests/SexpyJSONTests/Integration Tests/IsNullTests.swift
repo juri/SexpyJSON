@@ -1,19 +1,19 @@
 @testable import SexpyJSON
 import XCTest
 
-final class IsNilTests: XCTestCase {
+final class IsNullTests: XCTestCase {
     func test() throws {
         let input = #"""
         {
-            "a": (is-nil null),
-            "b": (is-nil externalNull),
-            "c": (is-nil 10),
-            "d": (is-nil true),
-            "e": (is-nil false),
-            "f": (is-nil "hello"),
-            "g": (is-nil []),
-            "h": (is-nil {}),
-            "i": (map is-nil [null, 20, null])
+            "a": (is-null null),
+            "b": (is-null externalNull),
+            "c": (is-null 10),
+            "d": (is-null true),
+            "e": (is-null false),
+            "f": (is-null "hello"),
+            "g": (is-null []),
+            "h": (is-null {}),
+            "i": (map is-null [null, 20, null])
         }
         """#
 

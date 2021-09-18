@@ -99,8 +99,8 @@ final class SubTests: XCTestCase {
         (let (arr ["a", "b", "c", "d"]
               obj {"foo": "bar", "zap": "bang"})
             {
-                "fromObjFound": (not (is-nil (sub obj "foo"))),
-                "fromObjNotFound": (not (is-nil (sub obj "notThere")))
+                "fromObjFound": (not (is-null (sub obj "foo"))),
+                "fromObjNotFound": (not (is-null (sub obj "notThere")))
             }
         )
         """#
