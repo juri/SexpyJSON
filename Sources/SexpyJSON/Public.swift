@@ -2,6 +2,8 @@
 public struct SXPJParser {
     private let parser = buildParser()
 
+    public init() {}
+
     public func parse(source: String) throws -> SXPJParsedExpression {
         let (element, remainder) = self.parser.run(source)
         guard remainder.isEmpty else {
@@ -34,6 +36,8 @@ public struct SXPJParsedExpression {
 /// for multiple `evaluate` calls if you want to keep shared definitions.
 public struct SXPJEvaluator {
     private var context = Context.withBuiltins
+
+    public init() {}
 
     public func set(value: String, for key: String) {
         self.context.set(value: .string(value), for: Symbol(key))
