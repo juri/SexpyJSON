@@ -1,3 +1,20 @@
+/* fundoc name
+ flatmap
+ */
+
+/* fundoc example
+ (flatmap (fn (a) [a, a]) [1, 2])
+ */
+
+/* fundoc expect
+ [1, 1, 2, 2]
+ */
+
+/* fundoc text
+ The `flatmap` function maps over an array with a function that returns arrays and joins the returned
+ arrays.
+ */
+
 private func flatmapf(param1: IntermediateValue, param2: IntermediateValue, _ context: inout Context) throws -> IntermediateValue {
     guard case let .callable(callable) = param1 else {
         throw EvaluatorError.badFunctionParameters([param1, param2], "First parameter to flatmap must be callable")

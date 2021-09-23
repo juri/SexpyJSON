@@ -7,6 +7,10 @@ let package = Package(
     name: "SexpyJSON",
     products: [
         .executable(
+            name: "FunctionDocExtractor",
+            targets: ["FunctionDocExtractor"]
+        ),
+        .executable(
             name: "sxpj",
             targets: ["sxpj"]
         ),
@@ -16,14 +20,27 @@ let package = Package(
         ),
     ],
     dependencies: [
+        .package(name: "SwiftSyntax", url: "https://github.com/apple/swift-syntax.git", .revision("swift-5.5-DEVELOPMENT-SNAPSHOT-2021-09-13-a")),
         .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMinor(from: "1.0.1")),
     ],
     targets: [
+        .executableTarget(
+            name: "FunctionDocExtractor",
+            dependencies: [
+                "FunctionDocExtractorCore",
+            ]
+        ),
         .executableTarget(
             name: "sxpj",
             dependencies: [
                 "SexpyJSON",
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
+            ]
+        ),
+        .target(
+            name: "FunctionDocExtractorCore",
+            dependencies: [
+                "SwiftSyntax",
             ]
         ),
         .target(
@@ -33,6 +50,14 @@ let package = Package(
         .testTarget(
             name: "SexpyJSONTests",
             dependencies: ["SexpyJSON"]
+        ),
+        .testTarget(
+            name: "FunctionDocTests",
+            dependencies: [
+                "FunctionDocExtractorCore",
+                "SexpyJSON",
+                "SwiftSyntax",
+            ]
         ),
     ]
 )

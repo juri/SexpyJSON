@@ -1,3 +1,25 @@
+/* fundoc name
+ let
+ */
+
+/* fundoc example
+ (let (a 2
+       b (* a 3)
+       c (* b a))
+    c)
+ */
+
+/* fundoc expect
+ 12.0
+ */
+
+/* fundoc text
+ The `let` form creates a new namespace with value bindings from the first expression and evaluates the
+ rest of the expressions one by one, returning the value from the last one. The first expression consists
+ of pairs of values, alternating between variable names and values. Each definition sees the ones created
+ before it. The names defined in let are not visible when you leave the let.
+ */
+
 // (let (binding1 value1 binding2 value2 binding3 binding1) expr1 expr2 … exprN)
 private func letf(_ params: [Expression], _ context: inout Context) throws -> IntermediateValue {
     guard let bindings = params.first else {

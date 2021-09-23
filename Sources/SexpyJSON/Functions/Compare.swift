@@ -1,3 +1,52 @@
+/* fundoc name
+ > >= < <=
+ */
+
+/* fundoc example
+ (> 3 2 1)
+  */
+
+/* fundoc expect
+ true
+ */
+
+/* fundoc example
+ (> 3 3 2)
+ */
+
+/* fundoc expect
+ false
+ */
+
+/* fundoc example
+ (>= 3 3 2)
+ */
+
+/* fundoc expect
+ true
+ */
+
+/* fundoc example
+ (< 1 2 3)
+  */
+
+/* fundoc expect
+ true
+  */
+
+/* fundoc example
+ (<= 1 2 1)
+  */
+
+/* fundoc expect
+ false
+ */
+
+/* fundoc text
+ The basic numeric comparison operators are less than (`<`), less than or equal (`<=`),
+ greater than (`>`), and greater than or equal (`>=`). They support any number of arguments.
+ */
+
 private func makeComp(
     intTest: @escaping (Int, Int) -> Bool,
     doubleTest: @escaping (Double, Double) -> Bool

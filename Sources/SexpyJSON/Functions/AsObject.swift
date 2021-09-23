@@ -1,3 +1,15 @@
+/* fundoc name
+ as-object
+ */
+
+/* fundoc example
+ (as-object (merge { "k1": "v1" } { "k2": "v2" }))
+ */
+
+/* fundoc text
+ The `as-object` function converts a dictionary to an object.
+ */
+
 private func asObjectf(_ value: IntermediateValue) throws -> IntermediateValue {
     switch value {
     case .object: return value

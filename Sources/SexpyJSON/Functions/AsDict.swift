@@ -1,3 +1,15 @@
+/* fundoc name
+ as-dict
+ */
+
+/* fundoc example
+ (as-dict { "hello": "world" })
+ */
+
+/* fundoc text
+ The `as-dict` function converts an object to a dictionary.
+ */
+
 private func asDictf(_ value: IntermediateValue) throws -> IntermediateValue {
     switch value {
     case .dict: return value

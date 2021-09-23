@@ -1,3 +1,27 @@
+/* fundoc name
+ concat
+ */
+
+/* fundoc example
+ (concat "ab" "cd" "ef")
+ */
+
+/* fundoc expect
+ "abcdef"
+ */
+
+/* fundoc example
+ (concat [1, 2] [3, 4] [5, 6])
+ */
+
+/* fundoc expect
+ [1, 2, 3, 4, 5, 6]
+ */
+
+/* fundoc text
+ The `concat` function concatenates strings or arrays.
+ */
+
 private func concatf(_ values: [IntermediateValue]) throws -> IntermediateValue {
     guard values.count > 1 else {
         throw EvaluatorError.badFunctionParameters(values, "concat requires at least two arguments")

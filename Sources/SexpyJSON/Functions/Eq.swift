@@ -1,3 +1,22 @@
+/* fundoc name
+ eq
+ */
+
+/* fundoc example
+ (let (a 10
+       b (+ 5 5)
+       c (- 12 2))
+    (eq a b c))
+ */
+
+/* fundoc expect
+ true
+ */
+
+/* fundoc text
+ The `eq` forms compares its parameters to each other and returns a boolean indicating if they're identical.
+ */
+
 private func eqf(_ params: [Expression], _ context: inout Context) throws -> IntermediateValue {
     guard params.count >= 2 else {
         throw EvaluatorError.badParameterList(params, "eq requires at least two parameters")

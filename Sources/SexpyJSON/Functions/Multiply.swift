@@ -1,3 +1,20 @@
+/* fundoc name
+ *
+ */
+
+/* fundoc example
+ (* 12 -13 14)
+ */
+
+/* fundoc expect
+ -2184.0
+ */
+
+/* fundoc text
+ `*` is the multiplication operator. It operates on integers or doubles. It converts integers to doubles
+ if it receives both as arguments.
+ */
+
 private func multiplyf(_ values: [IntermediateValue]) throws -> IntermediateValue {
     guard let numbers = IntermediateValue.numbers(from: values) else {
         throw EvaluatorError.badFunctionParameters(values, "Multiply requires numbers")

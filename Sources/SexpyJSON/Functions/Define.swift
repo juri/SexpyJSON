@@ -1,3 +1,20 @@
+/* fundoc name
+ define
+ */
+
+/* fundoc example
+ (define name "value")
+ */
+
+/* fundoc expect
+ null
+ */
+
+/* fundoc text
+ The `define` form binds a name to a value in the current namespace. `name` is visible to the definition of
+ `value`, which means you can define recursive functions: `(define myfun (fn () (myfun)))`
+ */
+
 // (define fname (fn [a1, a2, a3] (fname a1 a2 a3)))
 private func definef(_ params: [Expression], _ context: inout Context) throws -> IntermediateValue {
     guard params.count == 2 else {

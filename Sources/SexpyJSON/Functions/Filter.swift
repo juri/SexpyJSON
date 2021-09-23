@@ -1,3 +1,20 @@
+/* fundoc name
+ filter
+ */
+
+/* fundoc example
+ (filter (fn (a) (> a 2)) [0, 1, 2, 3, 2, 4, 3, 1])
+ */
+
+/* fundoc expect
+ [3, 4, 3]
+ */
+
+/* fundoc text
+ The `filter` function filters an array with a predicate function. The return value is an array
+ with the elements for which the function returns true.
+ */
+
 private func filterf(param1: IntermediateValue, param2: IntermediateValue, _ context: inout Context) throws -> IntermediateValue {
     guard case let .callable(callable) = param1 else {
         throw EvaluatorError.badFunctionParameters([param1, param2], "First parameter to fliter must be callable")

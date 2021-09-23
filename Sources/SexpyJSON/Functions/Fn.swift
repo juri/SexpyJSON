@@ -1,3 +1,21 @@
+/* fundoc name
+ fn
+ */
+
+/* fundoc example
+ (let (myfun (fn [a] (* a a)))
+    (myfun 3))
+ */
+
+/* fundoc expect
+ 9.0
+ */
+
+/* fundoc text
+ The `fn` form defines a function. Its first parameter is an array of parameters, and it evaluates the rest
+ of the expressions one by one, returning the value from the last one.
+ */
+
 // (fn [a1, a2, …, aN] e1 e2 … eN)
 // (fn (a1 a2 … aN) e1 e2 … eN)
 private func fnf(_ params: [Expression], _ context: inout Context) throws -> IntermediateValue {
