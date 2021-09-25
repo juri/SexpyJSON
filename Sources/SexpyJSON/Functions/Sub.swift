@@ -1,3 +1,28 @@
+/* fundoc name
+ sub
+ */
+
+/* fundoc example
+ (sub ["foo", "bar", "zap", "bang"] 2)
+ */
+
+/* fundoc expect
+ "zap"
+ */
+
+/* fundoc example
+ (sub {"key1": "value1", "key2": "value2"} "key2")
+ */
+
+/* fundoc expect
+ "value2"
+ */
+
+/* fundoc text
+ The `sub` function is the subscription operator. It allows you to retrieve a member of an array (with an index)
+ or an object (with a string).
+ */
+
 private func subf(_ container: IntermediateValue, _ subs: IntermediateValue) throws -> IntermediateValue {
     switch container {
     case let .array(arr):

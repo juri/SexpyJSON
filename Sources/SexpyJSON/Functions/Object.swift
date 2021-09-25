@@ -1,3 +1,20 @@
+/* fundoc name
+ object
+ */
+
+/* fundoc example
+ (object "foo" "bar" "zap" "bang")
+ */
+
+/* fundoc expect
+ { "foo": "bar", "zap": "bang" }
+ */
+
+/* fundoc text
+ The `object` function constructs an object, using the first parameter as the first key,
+ the second parameter as the value for the first key, the third parameter as the second key, etc.
+ */
+
 private func objectf(_ params: [IntermediateValue]) throws -> IntermediateValue {
     try build(
         params: params,
@@ -12,6 +29,23 @@ private func objectf(_ params: [IntermediateValue]) throws -> IntermediateValue 
         wrap: IntermediateValue.object
     )
 }
+
+/* fundoc name
+ dict
+ */
+
+/* fundoc example
+ (dict "foo" "bar" "zap" "bang")
+ */
+
+/* fundoc expect
+ { "foo": "bar", "zap": "bang" }
+ */
+
+/* fundoc text
+ The `dict` function constructs a dictionary, using the first parameter as the first key,
+ the second parameter as the value for the first key, the third parameter as the second key, etc.
+ */
 
 private func dictf(_ params: [IntermediateValue]) throws -> IntermediateValue {
     try build(

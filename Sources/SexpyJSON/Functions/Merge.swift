@@ -1,3 +1,21 @@
+/* fundoc name
+ merge
+ */
+
+/* fundoc example
+ (merge {"a": "b"} {"c": "d"} {"e": "f"})
+ */
+
+/* fundoc expect
+ {"a": "b", "c": "d", "e": "f"}
+ */
+
+/* fundoc text
+ The `merge` function merges the fields of two or more objects or dictionaries, returning a dictionary
+ with the key-value pairs from all the parameters. Objects later in the parameter list take precendence
+ in collisions.
+ */
+
 private func mergef(_ values: [IntermediateValue]) throws -> IntermediateValue {
     guard values.count >= 2, let value1 = values.first else {
         throw EvaluatorError.badFunctionParameters(values, "Merge requires at least two parameters")

@@ -1,3 +1,19 @@
+/* fundoc name
+ map
+ */
+
+/* fundoc example
+ (map len ["a", "bb", "ccc"])
+ */
+
+/* fundoc expect
+ [1, 2, 3]
+ */
+
+/* fundoc text
+ The `map` function maps a function over an array.
+ */
+
 private func mapf(param1: IntermediateValue, param2: IntermediateValue, _ context: inout Context) throws -> IntermediateValue {
     guard case let .callable(callable) = param1 else {
         throw EvaluatorError.badFunctionParameters([param1, param2], "First parameter to map must be callable")
