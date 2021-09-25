@@ -21,7 +21,12 @@ extension Parser {
 
     func filter(_ f: @escaping (A) -> Bool) -> Parser<A> {
         Parser<A> { str -> A? in
-            self.run(&str).flatMap { f($0) ? $0 : nil }
+            let original = str
+            if let match = self.run(&str).flatMap({ f($0) ? $0 : nil }) {
+                return match
+            }
+            str = original
+            return nil
         }
     }
 

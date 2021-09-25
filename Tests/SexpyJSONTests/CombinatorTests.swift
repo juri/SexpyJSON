@@ -8,4 +8,11 @@ final class CombinatorTests: XCTestCase {
         XCTAssertEqual(element, "foo")
         XCTAssertEqual(remainder, ""[...])
     }
+
+    func testFilter() throws {
+        let parser = char.filter { $0 == "a" }
+        let (element, remainder) = parser.run("foo")
+        XCTAssertEqual(element, nil)
+        XCTAssertEqual(remainder, "foo"[...])
+    }
 }
