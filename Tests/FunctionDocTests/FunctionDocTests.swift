@@ -64,11 +64,11 @@ private func assertEqual(_ value: Any, _ expect: Any, _ url: URL) throws {
             try assertEqual(v, e, url)
         }
     case let (valueBool as Bool, expectBool as Bool):
-        XCTAssertEqual(valueBool, expectBool)
+        XCTAssertEqual(valueBool, expectBool, "Unexpected value in \(url.path)")
     case let (valueDouble as Double, expectDouble as Double):
-        XCTAssertEqual(valueDouble, expectDouble, accuracy: 0.0001)
+        XCTAssertEqual(valueDouble, expectDouble, accuracy: 0.0001, "Unexpected value in \(url.path)")
     case let (valueInt as Int, expectInt as Int):
-        XCTAssertEqual(valueInt, expectInt)
+        XCTAssertEqual(valueInt, expectInt, "Unexpected value in \(url.path)")
     case let (valueObject as [String: Any], expectObject as [String: Any]):
         try assertEqual(valueObject.count, expectObject.count, url)
         for (vp, ep) in zip(valueObject.sorted(by: { $0.key < $1.key }), expectObject.sorted(by: { $0.key < $1.key })) {
@@ -76,7 +76,7 @@ private func assertEqual(_ value: Any, _ expect: Any, _ url: URL) throws {
             try assertEqual(vp.value, ep.value, url)
         }
     case let (valueString as String, expectString as String):
-        XCTAssertEqual(valueString, expectString)
+        XCTAssertEqual(valueString, expectString, "Unexpected value in \(url.path)")
     default:
         XCTFail("Could not compare value \(value) to expected value \(expect) in \(url.path)")
     }
