@@ -3,8 +3,7 @@
  */
 
 /* fundoc example
- (let (myfun (fn [a] (* a a)))
-    (myfun 3))
+ ((fn [a] (* a a)) 3)
  */
 
 /* fundoc expect
