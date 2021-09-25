@@ -69,6 +69,12 @@ private func assertEqual(_ value: Any, _ expect: Any, _ url: URL) throws {
         XCTAssertEqual(valueDouble, expectDouble, accuracy: 0.0001)
     case let (valueInt as Int, expectInt as Int):
         XCTAssertEqual(valueInt, expectInt)
+    case let (valueObject as [String: Any], expectObject as [String: Any]):
+        try assertEqual(valueObject.count, expectObject.count, url)
+        for (vp, ep) in zip(valueObject.sorted(by: { $0.key < $1.key }), expectObject.sorted(by: { $0.key < $1.key })) {
+            try assertEqual(vp.key, ep.key, url)
+            try assertEqual(vp.value, ep.value, url)
+        }
     case let (valueString as String, expectString as String):
         XCTAssertEqual(valueString, expectString)
     default:
