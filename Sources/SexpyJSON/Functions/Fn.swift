@@ -2,6 +2,10 @@
  fn
  */
 
+/* fundoc section
+ specialforms
+ */
+
 /* fundoc example
  ((fn [a] (* a a)) 3)
  */

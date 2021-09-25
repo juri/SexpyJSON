@@ -2,6 +2,10 @@
  eq
  */
 
+/* fundoc section
+ specialforms
+ */
+
 /* fundoc example
  (let (a 10
        b (+ 5 5)

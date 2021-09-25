@@ -2,6 +2,10 @@
  if
  */
 
+/* fundoc section
+ specialforms
+ */
+
 /* fundoc example
  (define f (fn [a] (if (not (eq a 0))
                         (/ 1 a)

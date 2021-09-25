@@ -2,6 +2,10 @@
  define
  */
 
+/* fundoc section
+ specialforms
+ */
+
 /* fundoc example
  (define name "value")
  */

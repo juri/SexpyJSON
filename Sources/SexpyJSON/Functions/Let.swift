@@ -2,6 +2,10 @@
  let
  */
 
+/* fundoc section
+ specialforms
+ */
+
 /* fundoc example
  (let (a 2
        b (* a 3)
