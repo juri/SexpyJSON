@@ -14,6 +14,7 @@ public func extractFunctionDocumentation() throws -> [(URL, Result<FunctionDocum
 /// `FunctionDocumentation` stores documentation for one function, identified by `name`.
 public struct FunctionDocumentation {
     public var name: String
+    public var section: String?
     public var parts: [FunctionDocumentationPart]
 }
 
@@ -43,6 +44,7 @@ public enum FunctionDocumentationParseError: Error {
     case nonEmptyLastLine
     case orphanExample
     case orphanExpect
+    case orphanSection
     case orphanText
     case parseError(Error)
 }
@@ -51,6 +53,7 @@ private enum FundocBlock {
     case name(String)
     case example(String)
     case expect(String)
+    case section(String)
     case text(String)
 }
 
@@ -70,6 +73,7 @@ extension FundocBlock {
         case "name": return .success(.name(contentString))
         case "example": return .success(.example(contentString))
         case "expect": return .success(.expect(contentString))
+        case "section": return .success(.section(contentString))
         case "text": return .success(.text(contentString))
         default: return .failure(.badFundocSyntax(String(restOfFirst)))
         }
@@ -132,6 +136,12 @@ private func findComments(url: URL) -> [Result<FunctionDocumentation, FunctionDo
             acc.append(.failure(.missingName))
         case let (.some, .success(.name(name))):
             acc.append(.success(.init(name: name, parts: [])))
+
+        case (.some(.success(var doc)), let .success(.section(section))):
+            doc.section = section
+            acc = acc.dropLast() + [.success(doc)]
+        case (.some(.failure), .success(.section)):
+            acc.append(.failure(.orphanSection))
 
         case (.some(.success(var doc)), let .success(.expect(expect))):
             switch doc.parts.last {
