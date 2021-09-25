@@ -218,4 +218,94 @@ final class MathTests: XCTestCase {
         let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
         XCTAssertEqual(try XCTUnwrap(outputValue.number), -0.27272727, accuracy: 0.0001)
     }
+
+    // MARK: Modulo
+
+    func testModuloOneNumber() throws {
+        let expr = Expression.call(.init(target: .symbol(Symbol("%")), params: [.value(.number("-68"))]))
+        let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
+        XCTAssertEqual(try XCTUnwrap(outputValue.number), -68.0, accuracy: 0.0001)
+    }
+
+    func testModuloTwoIntegers() throws {
+        let expr = Expression.call(
+            .init(target: .symbol(Symbol("%")), params: [.value(.number("6")), .value(.number("2"))])
+        )
+        let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
+        XCTAssertEqual(try XCTUnwrap(outputValue.number), 0.0, accuracy: 0.0001)
+    }
+
+    func testModuloTwoIntegersWithNonZeroRemainder() throws {
+        let expr = Expression.call(
+            .init(target: .symbol(Symbol("%")), params: [.value(.number("6")), .value(.number("4"))])
+        )
+        let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
+        XCTAssertEqual(try XCTUnwrap(outputValue.number), 2.0, accuracy: 0.0001)
+    }
+
+    func testModuloByZero() throws {
+        let expr = Expression.call(
+            .init(target: .symbol(Symbol("%")), params: [.value(.number("6")), .value(.number("0"))])
+        )
+        XCTAssertThrowsError(try evaluateToOutput(expression: expr, in: .withBuiltins))
+    }
+
+    func testModuloTwoDoubles() throws {
+        let expr = Expression.call(
+            .init(target: .symbol(Symbol("%")), params: [.value(.number("10.0")), .value(.number("6.0"))])
+        )
+        let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
+        XCTAssertEqual(try XCTUnwrap(outputValue.number), 4.0, accuracy: 0.0001)
+    }
+
+    func testModuloThreeIntegers() throws {
+        let expr = Expression.call(
+            .init(
+                target: .symbol(Symbol("%")),
+                params: [.value(.number("20")), .value(.number("12")), .value(.number("6"))]
+            )
+        )
+        let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
+        XCTAssertEqual(try XCTUnwrap(outputValue.number), 2.0, accuracy: 0.0001)
+    }
+
+    func testModuloThreeDoubles() throws {
+        let expr = Expression.call(
+            .init(
+                target: .symbol(Symbol("%")),
+                params: [.value(.number("30.0")), .value(.number("13.0")), .value(.number("3.0"))]
+            )
+        )
+        let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
+        XCTAssertEqual(try XCTUnwrap(outputValue.number), 1.0, accuracy: 0.0001)
+    }
+
+    func testModuloThreeMixedValues() throws {
+        let expr = Expression.call(
+            .init(
+                target: .symbol(Symbol("%")),
+                params: [.value(.number("1.0")), .value(.number("2")), .value(.number("-4.0"))]
+            )
+        )
+        let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
+        XCTAssertEqual(try XCTUnwrap(outputValue.number), 1.0, accuracy: 0.0001)
+    }
+
+    func testModuloDivide() throws {
+        let expr = Expression.call(
+            .init(
+                target: .symbol(Symbol("%")),
+                params: [
+                    .value(.number("1")),
+                    .call(.init(target: .symbol(Symbol("%")), params: [
+                        .value(.number("11.0")),
+                        .value(.number("12")),
+                    ])),
+                    .value(.number("-4")),
+                ]
+            )
+        )
+        let outputValue = try evaluateToOutput(expression: expr, in: .withBuiltins)
+        XCTAssertEqual(try XCTUnwrap(outputValue.number), 1.0, accuracy: 0.0001)
+    }
 }

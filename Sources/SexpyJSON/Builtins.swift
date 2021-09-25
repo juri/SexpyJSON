@@ -3,6 +3,7 @@ let builtins: [Symbol: IntermediateValue] = [
     Symbol("/"): .callable(.divideFunction),
     Symbol("*"): .callable(.multiplyFunction),
     Symbol("-"): .callable(.subtractFunction),
+    Symbol("%"): .callable(.moduloFunction),
     Symbol(">"): .callable(.gtFunction),
     Symbol(">="): .callable(.gteFunction),
     Symbol("<"): .callable(.ltFunction),
