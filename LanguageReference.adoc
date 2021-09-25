@@ -1,0 +1,61 @@
+= SexpyJSON Language
+
+== Syntax
+
+The syntax of SexpyJSON consists of JSON, symbols and Lisp-style s-expressions like `(function param1 param2)`.
+The top level is a single entity of one of those types. If it's a s-expression or a compound JSON type, you can
+interleave other values inside it. The s-expressions can operate on JSON values, and JSON values can contain
+s-expressions.
+
+The output is a single JSON value.
+
+Examples:
+
+----
+(let (value "world")
+    { "hello": value })
+----
+
+----
+[1, 2, (- 4 1)]
+----
+
+----
+{
+    "key": (concat "val" "ue")
+}
+----
+
+----
+((create-function arg1 arg2) func-arg-1 func-arg-2)
+----
+
+== Types
+
+SexpyJSON recognizes the types it inherits from JSON:
+
+* Double
+* String
+* Boolean
+* Array
+* Object
+
+In addition to these, it knows the following types that can be injected inside the evaluator
+or constructed at run time:
+
+* Dictionary: the same as object, but a represented internally with a dictionary instead of a list of fields.
+* Native array: any native types contained in an array. Conversion to recognized types happens each time you
+  try to use one of the elements.
+* Integer: a number represented by an integer.
+* Callables: functions and special forms.
+
+All types are converted to the JSON types before being returned from the evaluator. If the conversion
+fails, an exception will be thrown.
+
+== Callables
+
+All s-expressions look the same: the first element inside the parentheses is the call target, and the rest are
+arguments. However, there are differences in how they are evaluated. They can be split into
+two groups. Special forms — `if`, `let`, some others — control evaluation. The rest are functions, that just
+operate on evaluated arguments.
+
