@@ -7,8 +7,8 @@ let package = Package(
     name: "SexpyJSON",
     products: [
         .executable(
-            name: "FunctionDocExtractor",
-            targets: ["FunctionDocExtractor"]
+            name: "DocBuilder",
+            targets: ["DocBuilder"]
         ),
         .executable(
             name: "sxpj",
@@ -25,7 +25,7 @@ let package = Package(
     ],
     targets: [
         .executableTarget(
-            name: "FunctionDocExtractor",
+            name: "DocBuilder",
             dependencies: [
                 "FunctionDocExtractorCore",
             ]
