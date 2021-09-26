@@ -1,5 +1,7 @@
 # SexpyJSON
 
+![Swift build status](https://github.com/juri/SexpyJSON/actions/workflows/swift.yml/badge.svg)
+
 SexpyJSON is a JSON templating language that allows you to embed (something that looks a lot like) Lisp in
 JSON in Lisp in JSON. This implementation is in Swift.
 
