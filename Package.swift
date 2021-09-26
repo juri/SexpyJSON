@@ -28,6 +28,7 @@ let package = Package(
             name: "DocBuilder",
             dependencies: [
                 "FunctionDocExtractorCore",
+                .product(name: "ArgumentParser", package: "swift-argument-parser"),
             ]
         ),
         .executableTarget(
