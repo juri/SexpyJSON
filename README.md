@@ -14,7 +14,11 @@ SexpyJSON is distributed under the terms of the MIT license. See LICENSE for det
 This project is released with a Contributor Covenant Code of Conduct. By participating in this project you agree 
 to abide by its terms.
 
-## Syntax
+## Language Documentation
+
+You can find documentation for the language on this project's [GitHub Pages site](https://juri.github.io/SexpyJSON/).
+
+## Introduction
 
 The top-level element of a SexpyJSON document can be any JSON value (object, array, string, number, null) or
 a s-expression. You can interleave the s-expressions and JSON objects. Any JSON value can be replaced by a
