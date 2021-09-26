@@ -1,5 +1,5 @@
 = SexpyJSON
 
 1. xref:LanguageReference.adoc[Language Reference]
-2. xref:Functions.adoc[Functions]
+2. xref:Functions.adoc[Standard Library]
 

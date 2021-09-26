@@ -8,16 +8,16 @@ public func generateDocs() throws -> String {
 }
 
 public func generateDocs(for functionDocs: [FunctionDocumentation]) -> String {
-    var lines = [String]()
+    var lines = ["= SexpyJSON Standard Library", ""]
     let sections = Dictionary(grouping: functionDocs, by: section(for:))
     for section in Section.allSections {
         guard let sectionDocs = sections[section], !sectionDocs.isEmpty else { continue }
         let sortedDocs = sectionDocs.sorted { $0.name < $1.name }
 
-        lines.append("=== \(section.name)")
+        lines.append("== \(section.name)")
         lines.append("")
         for doc in sortedDocs {
-            lines.append("==== \(doc.name)")
+            lines.append("=== \(doc.name)")
             for part in doc.parts {
                 lines.append("")
                 switch part {
