@@ -1,5 +1,9 @@
 = SexpyJSON
 
+Welcome to SexpyJSON.
+
+SexpyJSON is a templating language for JSON. See https://github.com/juri/SexpyJSON/[GitHub] for more
+information about the Swift implementation, or the links below for templating language documentation.
+
 1. xref:LanguageReference.adoc[Language Reference]
 2. xref:Functions.adoc[Standard Library]
-
