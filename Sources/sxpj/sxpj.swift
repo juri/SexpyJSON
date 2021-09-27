@@ -4,6 +4,11 @@ import SexpyJSON
 
 @main
 struct Executable: ParsableCommand {
+    static var configuration = CommandConfiguration(
+        commandName: "sxpj",
+        abstract: "SexpyJSON command line evaluator."
+    )
+
     @Argument(help: "Expressions to evaluate")
     var expressions: [String]
 
