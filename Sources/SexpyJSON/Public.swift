@@ -183,6 +183,11 @@ extension SXPJOutputValue {
 public struct SXPJOutputObjectMember: Equatable {
     public var name: String
     public var value: SXPJOutputValue
+
+    public init(name: String, value: SXPJOutputValue) {
+        self.name = name
+        self.value = value
+    }
 }
 
 /// `SXPJError` enumerates the errors that SexpyJSON may throw.
