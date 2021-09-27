@@ -26,7 +26,7 @@ public struct SXPJParsedExpression {
         self.expression = expression
     }
 
-    func evaluate() throws -> SXPJOutputValue {
+    public func evaluate() throws -> SXPJOutputValue {
         var evaluator = SXPJEvaluator()
         return try evaluator.evaluate(expression: self)
     }
