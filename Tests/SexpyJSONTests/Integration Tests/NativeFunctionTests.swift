@@ -1,4 +1,4 @@
-@testable import SexpyJSON
+import SexpyJSON
 import XCTest
 
 final class NativeFunctionTests: XCTestCase {
