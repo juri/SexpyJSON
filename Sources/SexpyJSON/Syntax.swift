@@ -129,10 +129,17 @@ let symbolValue = symbol.map { sym in
 
 // MARK: Parser builder for recursive syntax
 
-func buildParser() -> Parser<SexpyJSONElement> {
-    let valueParser: RefBox<Parser<SexpyJSONElement>> = RefBox(value: Parser { _ in fatalError() })
+private func missingParser<T>(_ name: String) -> Parser<T> {
+    Parser<T> { _ in
+        assertionFailure("Parser missing: \(name)")
+        return nil
+    }
+}
 
-    let valueOrSymbolParser: RefBox<Parser<SexpyJSONElement>> = RefBox(value: Parser { _ in fatalError() })
+func buildParser() -> Parser<SexpyJSONElement> {
+    let valueParser: RefBox<Parser<SexpyJSONElement>> = RefBox(value: missingParser("valueParser"))
+
+    let valueOrSymbolParser: RefBox<Parser<SexpyJSONElement>> = RefBox(value: missingParser("valueOrSymbolParser"))
 
     let element: Parser<SexpyJSONElement> = wrapped {
         zip(whitespace, valueOrSymbolParser.value, whitespace).map(\.1)
@@ -151,7 +158,7 @@ func buildParser() -> Parser<SexpyJSONElement> {
             return SexpyJSONElement.object(smems)
         }
 
-    let sexpTargetParser: RefBox<Parser<SexpyJSONTarget>> = RefBox(value: Parser { _ in fatalError() })
+    let sexpTargetParser: RefBox<Parser<SexpyJSONTarget>> = RefBox(value: missingParser("sexpTargetParser"))
     let sexpFunction = oneOf([
         symbol.map(SexpyJSONTarget.symbol),
         wrapped { sexpTargetParser.value },
