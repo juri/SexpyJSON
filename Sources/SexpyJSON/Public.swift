@@ -124,14 +124,23 @@ private func describe(error: EvaluatorError) -> String {
     }
 }
 
+/// `SXPJOutputValue` represents a JSON value returned from the SexpyJSON evaluator.
 public enum SXPJOutputValue: Equatable {
+    /// A JSON string.
     case string(String)
+    /// A JSON number. Numbers in JSON are always Doubles.
     case number(Double)
+    /// A JSON array consisting of other `SXOJOutputValue`s.
     case array([SXPJOutputValue])
+    /// A JSON object. It is represented as a list of fields, in the same order as they originally were.
     case object([SXPJOutputObjectMember])
+    /// A JSON boolean.
     case boolean(Bool)
+    /// A null value.
     case null
 
+    /// Converts the `SXPJOutputValue` to an object suitable for use with `JSONSerialization`.
+    /// A `SXPJOutputValue.null` will cause `nil` to be returned.
     public func outputToJSONObject() -> Any? {
         switch self {
         case let .number(n): return n
@@ -180,6 +189,7 @@ extension SXPJOutputValue {
     }
 }
 
+/// `SXPJOutputObjectMember` is a member of a JSON object.
 public struct SXPJOutputObjectMember: Equatable {
     public var name: String
     public var value: SXPJOutputValue
