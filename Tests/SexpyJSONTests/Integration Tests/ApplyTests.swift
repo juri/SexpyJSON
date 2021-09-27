@@ -20,6 +20,7 @@ final class ApplyTests: XCTestCase {
         try evaluator.evaluate(expression: definitionExpr)
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         let value = try XCTUnwrap(obj["k1"] as? Double)
         XCTAssertEqual(value, 60.0, accuracy: 0.00001)
     }

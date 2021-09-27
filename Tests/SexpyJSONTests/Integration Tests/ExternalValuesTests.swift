@@ -17,6 +17,7 @@ final class ExternalValuesTests: XCTestCase {
         evaluator.set(value: 6, for: "b")
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         XCTAssertEqual(try XCTUnwrap(obj["a"] as? Double), 3.0, accuracy: 0.0001)
         XCTAssertEqual(try XCTUnwrap(obj["b"] as? Double), 7.0, accuracy: 0.0001)
     }
@@ -36,6 +37,7 @@ final class ExternalValuesTests: XCTestCase {
         evaluator.set(value: "zap", for: "b")
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         XCTAssertEqual(try XCTUnwrap(obj["a"] as? String), "blap")
         XCTAssertEqual(try XCTUnwrap(obj["b"] as? Double), 6.0, accuracy: 0.0001)
     }
@@ -55,6 +57,7 @@ final class ExternalValuesTests: XCTestCase {
         evaluator.set(value: 1.0, for: "b")
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         XCTAssertEqual(try XCTUnwrap(obj["a"] as? Double), 5.0, accuracy: 0.0001)
         XCTAssertTrue(try XCTUnwrap(obj["b"] as? Bool))
     }
@@ -74,6 +77,7 @@ final class ExternalValuesTests: XCTestCase {
         evaluator.set(value: false, for: "b")
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         XCTAssertTrue(try XCTUnwrap(obj["a"] as? Bool))
         XCTAssertFalse(try XCTUnwrap(obj["b"] as? Bool))
     }
@@ -90,6 +94,8 @@ final class ExternalValuesTests: XCTestCase {
         var evaluator = SXPJEvaluator()
         evaluator.setNull(for: "a")
         let output = try evaluator.evaluate(expression: inputExpr)
+        let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         let objMembers = try XCTUnwrap(output.object)
         XCTAssertEqual(objMembers.count, 1)
         XCTAssertEqual(objMembers[0].name, "a")
@@ -118,6 +124,7 @@ final class ExternalValuesTests: XCTestCase {
         try evaluator.setAndPreconvert(value: [100, 200, 300], for: "arr3")
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
 
         let concatted = try XCTUnwrap(obj["concatted"] as? [Double])
         let lengths = try XCTUnwrap(obj["lenghts"] as? [Double])
@@ -152,6 +159,7 @@ final class ExternalValuesTests: XCTestCase {
         evaluator.set(value: ["key1": "hello", "key2": ["subkey1": "world"]], for: "d")
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
 
         XCTAssertEqual(try XCTUnwrap(obj["k1"] as? String), "hello")
         XCTAssertEqual(try XCTUnwrap(obj["k2"] as? String), "world")
@@ -171,6 +179,7 @@ final class ExternalValuesTests: XCTestCase {
         try evaluator.setAndPreconvert(value: ["key1": "hello", "key2": ["subkey1": "world"]], for: "d")
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
 
         XCTAssertEqual(try XCTUnwrap(obj["k1"] as? String), "hello")
         XCTAssertEqual(try XCTUnwrap(obj["k2"] as? String), "world")

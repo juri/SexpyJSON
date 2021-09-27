@@ -17,6 +17,7 @@ final class ObjectDictTests: XCTestCase {
         var evaluator = SXPJEvaluator()
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         let v1 = try XCTUnwrap(obj["k1"] as? [String: Any])
         let v2 = try XCTUnwrap(obj["k2"] as? [String: Any])
         let v3 = try XCTUnwrap(obj["k3"] as? [String: Any])

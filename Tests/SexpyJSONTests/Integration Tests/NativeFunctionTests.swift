@@ -23,6 +23,7 @@ final class NativeFunctionTests: XCTestCase {
 
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         let value1 = try XCTUnwrap(obj["key1"] as? String)
         let value2 = try XCTUnwrap(obj["key2"] as? String)
         XCTAssertEqual(value1, "value1")
@@ -48,6 +49,7 @@ final class NativeFunctionTests: XCTestCase {
 
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         let value1 = try XCTUnwrap(obj["key1"] as? String)
         XCTAssertEqual(value1, "value1")
     }

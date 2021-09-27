@@ -7,6 +7,7 @@ final class ExprInJSONTests: XCTestCase {
         let expr = try SXPJParser().parse(source: input)
         let output = try expr.evaluate()
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         XCTAssertEqual(obj["zap"] as? String, "bang")
         XCTAssertEqual(try XCTUnwrap(obj["calculated"] as? Double), 9.0, accuracy: 0.0001)
     }
@@ -38,6 +39,7 @@ final class ExprInJSONTests: XCTestCase {
         let expr = try SXPJParser().parse(source: input)
         let output = try expr.evaluate()
         let obj = try XCTUnwrap(output.outputToJSONObject() as? Double)
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         XCTAssertEqual(obj, 30.0, accuracy: 0.00001)
     }
 
@@ -63,6 +65,7 @@ final class ExprInJSONTests: XCTestCase {
         try evaluator.evaluate(expression: definitionExpr)
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         XCTAssertEqual(obj["zap"] as? String, "bang")
         XCTAssertEqual(try XCTUnwrap(obj["calculated"] as? String), "ccc")
     }
@@ -79,6 +82,7 @@ final class ExprInJSONTests: XCTestCase {
         var evaluator = SXPJEvaluator()
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         let zap = try XCTUnwrap(obj["zap"] as? [Double])
         assertEqual(zap, [1.0, 2.0, 3.0, 4.0], accuracy: 0.0001)
     }

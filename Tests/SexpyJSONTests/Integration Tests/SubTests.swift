@@ -20,6 +20,7 @@ final class SubTests: XCTestCase {
         evaluator.set(value: [101, 102, 103, 104, 105, 106], for: "nArr")
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
 
         let fromArr = try XCTUnwrap(obj["fromArr"] as? String)
         let fromObj = try XCTUnwrap(obj["fromObj"] as? String)
@@ -110,6 +111,7 @@ final class SubTests: XCTestCase {
         var evaluator = SXPJEvaluator()
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
 
         let fromObjFound = try XCTUnwrap(obj["fromObjFound"] as? Bool)
         let fromObjNotFound = try XCTUnwrap(obj["fromObjNotFound"] as? Bool)

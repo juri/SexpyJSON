@@ -22,6 +22,8 @@ final class IsNullTests: XCTestCase {
         var evaluator = SXPJEvaluator()
         evaluator.setNull(for: "externalNull")
         let output = try evaluator.evaluate(expression: inputExpr)
+        let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         let members = try XCTUnwrap(output.object)
 
         XCTAssertEqual(

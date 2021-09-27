@@ -24,6 +24,7 @@ final class ConvertObjectTests: XCTestCase {
         try evaluator.evaluate(expression: definitionExpr)
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [])
 
         let v1 = try XCTUnwrap(obj["k1"] as? [String: String])
         let v2 = try XCTUnwrap(obj["k2"] as? [String: String])

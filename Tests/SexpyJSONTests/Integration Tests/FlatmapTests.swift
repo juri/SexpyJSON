@@ -20,6 +20,7 @@ final class FlatmapTests: XCTestCase {
         try evaluator.evaluate(expression: definitionExpr)
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         let value = try XCTUnwrap(obj["k1"] as? [Double])
         assertEqual(value, [10.0, 100.0, 20.0, 200.0, 30.0, 300.0, 40.0, 400.0, 50.0, 500.0], accuracy: 0.0001)
     }
@@ -42,6 +43,7 @@ final class FlatmapTests: XCTestCase {
         try evaluator.evaluate(expression: definitionExpr)
         let output = try evaluator.evaluate(expression: inputExpr)
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         let value = try XCTUnwrap(obj["k1"] as? [Double])
         assertEqual(value, [0.0, 1.0, 1.0, 2.0, 2.0, 3.0, 4.0, 5.0, 5.0, 6.0], accuracy: 0.0001)
     }

@@ -15,6 +15,7 @@ final class FnSyntaxTests: XCTestCase {
         var evaluator = SXPJEvaluator()
         let output = try evaluator.evaluate(expression: inputExpr)
         let ob = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: ob, options: [.fragmentsAllowed])
         let val = try XCTUnwrap(ob["a"] as? [Double])
         assertEqual(val, [2.0, 4.0, 6.0], accuracy: 0.00001)
     }
@@ -29,6 +30,7 @@ final class FnSyntaxTests: XCTestCase {
         var evaluator = SXPJEvaluator()
         let output = try evaluator.evaluate(expression: inputExpr)
         let ob = try XCTUnwrap(output.outputToJSONObject() as? Double)
+        _ = try JSONSerialization.data(withJSONObject: ob, options: [.fragmentsAllowed])
         XCTAssertEqual(ob, 28.0, accuracy: 0.00001)
     }
 }

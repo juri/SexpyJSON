@@ -7,6 +7,7 @@ final class SimpleJSONTests: XCTestCase {
         let expr = try SXPJParser().parse(source: input)
         let output = try expr.evaluate()
         let obj = try XCTUnwrap(output.outputToJSONObject() as? String)
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         XCTAssertEqual(obj, "hello")
     }
 
@@ -23,6 +24,7 @@ final class SimpleJSONTests: XCTestCase {
         let expr = try SXPJParser().parse(source: input)
         let output = try expr.evaluate()
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         XCTAssertEqual(obj, ["zap", "bang"])
     }
 
@@ -31,6 +33,7 @@ final class SimpleJSONTests: XCTestCase {
         let expr = try SXPJParser().parse(source: input)
         let output = try expr.evaluate()
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         XCTAssertEqual(obj["zap"] as? String, "bang")
         XCTAssertEqual(obj["arr"] as? [String], ["rrr", "rr"])
     }
@@ -40,6 +43,7 @@ final class SimpleJSONTests: XCTestCase {
         let expr = try SXPJParser().parse(source: input)
         let output = try expr.evaluate()
         let obj = output.outputToJSONObject()
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         XCTAssertNil(obj)
     }
 }
