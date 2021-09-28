@@ -43,7 +43,6 @@ final class SimpleJSONTests: XCTestCase {
         let expr = try SXPJParser().parse(source: input)
         let output = try expr.evaluate()
         let obj = output.outputToJSONObject()
-        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
         XCTAssertNil(obj)
     }
 }
