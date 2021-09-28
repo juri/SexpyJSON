@@ -2,6 +2,12 @@
 import XCTest
 
 final class StringSyntaxTests: XCTestCase {
+    func testEmpty() throws {
+        let (element, remainder) = quoted.run("\"\"")
+        XCTAssertEqual(try XCTUnwrap(element), "")
+        XCTAssertEqual(remainder, ""[...])
+    }
+
     func testQuoted() throws {
         let (element, remainder) = quoted.run(#""hello""#)
         XCTAssertEqual(element, "hello")
