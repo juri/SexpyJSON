@@ -24,6 +24,7 @@ let builtins: [Symbol: IntermediateValue] = [
     Symbol("if"): .callable(.ifFunction),
     Symbol("int"): .callable(.intFunction),
     Symbol("is-null"): .callable(.isNullFunction),
+    Symbol("join-string"): .callable(.joinStringFunction),
     Symbol("len"): .callable(.lenFunction),
     Symbol("let"): .callable(.letFunction),
     Symbol("map"): .callable(.mapFunction),
