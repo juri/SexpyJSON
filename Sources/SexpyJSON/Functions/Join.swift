@@ -3,7 +3,7 @@
  */
 
 /* fundoc example
- (join ", " ["hello", "world"])
+ (join-string ", " ["hello", "world"])
  */
 
 /* fundoc expect
