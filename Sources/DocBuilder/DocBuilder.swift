@@ -79,17 +79,17 @@ struct UpdateGitHubPages: ParsableCommand {
             throw errorExit("Failed to read repository root")
         }
 
-        print("🍒 Changing to repository root folder \(repoRoot)")
+        print("SexpyJSON DocBuilder: Changing to repository root folder \(repoRoot)")
 
         guard FileManager.default.changeCurrentDirectoryPath(repoRoot) else {
             throw errorExit("Failed to change working directory to \(repoRoot)")
         }
 
-        print("🍒 Switching to gh-pages branch")
+        print("SexpyJSON DocBuilder: Switching to gh-pages branch")
 
         try runNoisyFromPath("git", args: ["switch", "--no-guess", "gh-pages"])
 
-        print("🍒 Rebasing gh-pages on main")
+        print("SexpyJSON DocBuilder: Rebasing gh-pages on main")
 
         try runNoisyFromPath("git", args: ["rebase", "main"])
         let temp = try FileManager.default.url(
@@ -106,7 +106,7 @@ struct UpdateGitHubPages: ParsableCommand {
             }
         }
 
-        print("🍒 Generating documentation")
+        print("SexpyJSON DocBuilder: Generating documentation")
 
         let files = try createUnprocessed(target: temp)
         try processAsciiDoc(files: files, to: temp, with: self.processor)
@@ -116,21 +116,16 @@ struct UpdateGitHubPages: ParsableCommand {
             options: [.skipsSubdirectoryDescendants]
         )
         let docsFolder = URL(fileURLWithPath: "docs", isDirectory: true)
-
-        print("🍒 Removing old documentation folder \(docsFolder.path)")
+        print("SexpyJSON DocBuilder: Removing old documentation folder \(docsFolder.path)")
         try FileManager.default.removeItem(at: docsFolder)
         try FileManager.default.createDirectory(at: docsFolder, withIntermediateDirectories: true, attributes: nil)
-        guard FileManager.default.createFile(atPath: docsFolder.appendingPathComponent(".keepalive").path, contents: nil, attributes: nil),
-              FileManager.default.createFile(atPath: docsFolder.appendingPathComponent(".nojekyll").path, contents: nil, attributes: nil)
-        else { throw errorExit("Failed to create file in docs folder") }
-
         for file in htmlFiles {
             let outputName = file.lastPathComponent == "Index.html" ? "index.html" : file.lastPathComponent
-            print("🍒 Copying documentation file \(outputName)")
+            print("SexpyJSON DocBuilder: Copying documentation file \(outputName)")
             try FileManager.default.copyItem(at: file, to: docsFolder.appendingPathComponent(outputName))
         }
 
-        print("🍒 Committing changes")
+        print("SexpyJSON DocBuilder: Committing changes")
         try runNoisyFromPath("git", args: ["commit", "-am", "Updated documentation"])
     }
 }
