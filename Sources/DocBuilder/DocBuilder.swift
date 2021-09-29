@@ -67,13 +67,13 @@ struct UpdateGitHubPages: ParsableCommand {
             throw errorExit("The working directory is not clean")
         }
 
-        guard let branchName = try runCapturingFromPath("git", args: ["rev-parse", "--abbrev-ref", "HEAD"]).utf8String,
+        guard let branchName = try runCapturingFromPath("git", args: ["rev-parse", "--abbrev-ref", "HEAD"]).trimmedUTF8,
               !branchName.isEmpty
         else { throw errorExit("Failed to read current branch") }
 
         guard branchName == "main" else { throw errorExit("On \(branchName) branch, must be on main") }
 
-        guard let repoRoot = try runCapturingFromPath("git", args: ["rev-parse", "--show-toplevel"]).utf8String,
+        guard let repoRoot = try runCapturingFromPath("git", args: ["rev-parse", "--show-toplevel"]).trimmedUTF8,
               !repoRoot.isEmpty
         else {
             throw errorExit("Failed to read repository root")
@@ -135,8 +135,8 @@ private func errorExit(_ message: String? = nil, _ code: Int32 = 1) -> Error {
 }
 
 extension Data {
-    fileprivate var utf8String: String? {
-        String(data: self, encoding: .utf8)
+    fileprivate var trimmedUTF8: String? {
+        String(data: self, encoding: .utf8)?.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
 
