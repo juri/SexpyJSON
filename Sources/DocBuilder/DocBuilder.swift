@@ -116,6 +116,9 @@ struct UpdateGitHubPages: ParsableCommand {
             options: [.skipsSubdirectoryDescendants]
         )
         let docsFolder = URL(fileURLWithPath: "docs", isDirectory: true)
+        print("🍒 Removing old documentation folder \(docsFolder.path)")
+        try FileManager.default.removeItem(at: docsFolder)
+        try FileManager.default.createDirectory(at: docsFolder, withIntermediateDirectories: true, attributes: nil)
         for file in htmlFiles {
             let outputName = file.lastPathComponent == "Index.html" ? "index.html" : file.lastPathComponent
             print("🍒 Copying documentation file \(outputName)")
