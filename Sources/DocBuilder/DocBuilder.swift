@@ -71,7 +71,7 @@ struct UpdateGitHubPages: ParsableCommand {
               !branchName.isEmpty
         else { throw errorExit("Failed to read current branch") }
 
-        guard branchName == "main" else { throw errorExit("Not on main branch") }
+        guard branchName == "main" else { throw errorExit("On \(branchName) branch, must be on main") }
 
         guard let repoRoot = try runCapturingFromPath("git", args: ["rev-parse", "--show-toplevel"]).utf8String,
               !repoRoot.isEmpty
