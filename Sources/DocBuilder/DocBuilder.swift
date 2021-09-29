@@ -55,7 +55,8 @@ struct Build: ParsableCommand {
 @available(macOS 11.0, *)
 struct UpdateGitHubPages: ParsableCommand {
     static var configuration = CommandConfiguration(
-        abstract: "Build processed language documentation and update GitHub Pages."
+        commandName: "update-gh-pages",
+        abstract: "Build processed language documentation and update the gh-pages branch."
     )
 
     @Option(help: "AsciiDoctor executable to use. Default: asciidoctor from path", transform: URL.init(fileURLWithPath:))
