@@ -4,6 +4,7 @@ public struct SXPJParser {
 
     public init() {}
 
+    /// Parse an expression represented as a String.
     public func parse(source: String) throws -> SXPJParsedExpression {
         let (element, remainder) = self.parser.run(source)
         guard remainder.isEmpty else {
@@ -17,8 +18,10 @@ public struct SXPJParser {
 }
 
 /// `SXPJParsedExpression` represents a parsed expression, waiting for evaluation.
-/// Use the `evaluate` method to evaluate it directly, or create a `SXPJEvaluator`
+/// Use the `evaluate` method to evaluate it directly, or create a ``SXPJEvaluator``
 /// if you intend to use one evaluator for multiple expressions.
+///
+/// You can evaluate the same `SXPJParsedExpression` multiple times.
 public struct SXPJParsedExpression {
     let expression: Expression
 
@@ -26,6 +29,10 @@ public struct SXPJParsedExpression {
         self.expression = expression
     }
 
+    /// Evaluate the expression using a new evaluator.
+    ///
+    /// Alternatively allocate a ``SXPJEvaluator`` yourself and use it
+    /// for evaluating `SXPJParsedExpression` values.
     public func evaluate() throws -> SXPJOutputValue {
         var evaluator = SXPJEvaluator()
         return try evaluator.evaluate(expression: self)
@@ -39,38 +46,54 @@ public struct SXPJEvaluator {
 
     public init() {}
 
+    /// Inject a string into the namespace of the evaluator.
     public func set(value: String, for key: String) {
         self.context.set(value: .string(value), for: Symbol(key))
     }
 
+    /// Inject an integer into the namespace of the evaluator.
     public func set(value: Int, for key: String) {
         self.context.set(value: .integer(value), for: Symbol(key))
     }
 
+    /// Inject a double into the namespace of the evaluator.
     public func set(value: Double, for key: String) {
         self.context.set(value: .double(value), for: Symbol(key))
     }
 
+    /// Inject a boolean into the namespace of the evaluator.
     public func set(value: Bool, for key: String) {
         self.context.set(value: .boolean(value), for: Symbol(key))
     }
 
+    /// Inject a null into the namespace of the evaluator.
     public func setNull(for key: String) {
         self.context.set(value: .null, for: Symbol(key))
     }
 
+    /// Inject an array into the namespace of the evaluator.
+    ///
+    /// The array will be stored as is. Depending on your usage pattern,
+    /// ``setAndPreconvert(value:for:)-66zs9`` may be more efficient.
     public func set(value: [Any], for key: String) {
         self.context.set(value: .nativeArray(value), for: Symbol(key))
     }
 
+    /// Inject an array into the namespace of the evaluator and preconvert
+    /// it into an internal representation.
+    ///
+    /// If you only intend to access a small subset of elements, ``set(value:for:)-5bb6k``
+    /// may be more efficient.
     public func setAndPreconvert(value: [Any], for key: String) throws {
         try self.context.set(value: IntermediateValue.tryInitArray(nativeValue: value), for: Symbol(key))
     }
 
+    /// Inject a value-returning function into the namespace of the evaluator.
     public func set(value: @escaping ([SXPJOutputValue]) throws -> Any?, for key: String) {
         self.context.set(value: .callable(.nativeFunction(NativeFunction(f: value))), for: Symbol(key))
     }
 
+    /// Inject a Void-returning functioninto the namespace of the evaluator.
     public func set(value: @escaping ([SXPJOutputValue]) throws -> Void, for key: String) {
         let nf = NativeFunction {
             try value($0)
@@ -79,14 +102,24 @@ public struct SXPJEvaluator {
         self.context.set(value: .callable(.nativeFunction(nf)), for: Symbol(key))
     }
 
+    /// Inject a dictionary into the namespace of the evaluator.
+    ///
+    /// The dictionary will be stored as is. Depending on your usage pattern,
+    /// ``setAndPreconvert(value:for:)-888la`` may be more efficient.
     public func set(value: [String: Any], for key: String) {
         self.context.set(value: .dict(value), for: Symbol(key))
     }
 
+    /// Inject a dictionary into the namespace of the evaluator and convert it into the
+    /// internal representation.
+    ///
+    /// In some cases, storing the dictionary as is with ``set(value:for:)-9bdw2``
+    /// may be more efficient.
     public func setAndPreconvert(value: [String: Any], for key: String) throws {
         try self.context.set(value: IntermediateValue.tryInitObject(nativeValue: value), for: Symbol(key))
     }
 
+    /// Evaluate the expression and return any value.
     @discardableResult
     public mutating func evaluate(expression: SXPJParsedExpression) throws -> SXPJOutputValue {
         let originalContext = self.context
