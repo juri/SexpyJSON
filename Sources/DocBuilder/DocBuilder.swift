@@ -116,9 +116,14 @@ struct UpdateGitHubPages: ParsableCommand {
             options: [.skipsSubdirectoryDescendants]
         )
         let docsFolder = URL(fileURLWithPath: "docs", isDirectory: true)
+
         print("🍒 Removing old documentation folder \(docsFolder.path)")
         try FileManager.default.removeItem(at: docsFolder)
         try FileManager.default.createDirectory(at: docsFolder, withIntermediateDirectories: true, attributes: nil)
+        guard FileManager.default.createFile(atPath: docsFolder.appendingPathComponent(".keepalive").path, contents: nil, attributes: nil),
+              FileManager.default.createFile(atPath: docsFolder.appendingPathComponent(".nojekyll").path, contents: nil, attributes: nil)
+        else { throw errorExit("Failed to create file in docs folder") }
+
         for file in htmlFiles {
             let outputName = file.lastPathComponent == "Index.html" ? "index.html" : file.lastPathComponent
             print("🍒 Copying documentation file \(outputName)")
