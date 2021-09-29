@@ -131,7 +131,7 @@ struct UpdateGitHubPages: ParsableCommand {
         }
 
         print("🍒 Committing changes")
-        try runNoisyFromPath("git", args: ["commit", "-m", "Updated documentation"])
+        try runNoisyFromPath("git", args: ["commit", "-am", "Updated documentation"])
     }
 }
 
