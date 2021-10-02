@@ -119,4 +119,25 @@ final class SubTests: XCTestCase {
         XCTAssertTrue(fromObjFound)
         XCTAssertFalse(fromObjNotFound)
     }
+
+    func testNestedValues() throws {
+        let input = #"""
+        (let (arr ["a", "b", ["c", "d"]]
+              obj {"e": "f", "g": ["h", "i", {"j": arr}]})
+            {
+                "value": (sub obj "g" 2 "j" 2 0)
+            }
+        )
+        """#
+
+        let parser = SXPJParser()
+        let inputExpr = try parser.parse(source: input)
+        var evaluator = SXPJEvaluator()
+        let output = try evaluator.evaluate(expression: inputExpr)
+        let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
+
+        let value = try XCTUnwrap(obj["value"] as? String)
+        XCTAssertEqual(value, "c")
+    }
 }

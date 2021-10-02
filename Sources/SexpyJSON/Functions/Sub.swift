@@ -18,44 +18,72 @@
  "value2"
  */
 
+/* fundoc example
+ (sub {"key1": {"nestedKey1": "nestedValue1"}} "key1" "nestedKey1")
+ */
+
+/* fundoc expect
+ "nestedValue1"
+ */
+
 /* fundoc text
  The `sub` function is the subscription operator. It allows you to retrieve a member of an array (with an index)
  or an object (with a string).
  */
 
-private func subf(_ container: IntermediateValue, _ subs: IntermediateValue) throws -> IntermediateValue {
+private func subf(_ params: [IntermediateValue]) throws -> IntermediateValue {
+    guard let container = params.first,
+          case let subscripts = params.dropFirst(),
+          let firstSubscript = subscripts.first,
+          case let restSubscripts = subscripts.dropFirst()
+    else {
+        throw EvaluatorError.badFunctionParameters(params, "The sub function at least two parameters")
+    }
+
+    return try subChild(container, firstSubscript, restSubscripts)
+}
+
+private func subChild(_ container: IntermediateValue, _ headSub: IntermediateValue, _ tail: ArraySlice<IntermediateValue>) throws -> IntermediateValue {
+    let value = try subValue(container, headSub)
+    if let tailHead = tail.first {
+        return try subChild(value, tailHead, tail.dropFirst())
+    }
+    return value
+}
+
+private func subValue(_ container: IntermediateValue, _ sub: IntermediateValue) throws -> IntermediateValue {
     switch container {
     case let .array(arr):
-        guard case let .integer(index) = subs else {
-            throw EvaluatorError.badFunctionParameters([container, subs], "The sub function requires second parameter to be an integer for arrays")
+        guard case let .integer(index) = sub else {
+            throw EvaluatorError.badFunctionParameters([container, sub], "The sub function requires an integer to subscript arrays")
         }
         guard index >= 0, arr.endIndex > index else {
-            throw EvaluatorError.badFunctionParameters([container, subs], "Index \(index) out of bounds for array of \(arr.count) elements")
+            throw EvaluatorError.badFunctionParameters([container, sub], "Index \(index) out of bounds for array of \(arr.count) elements")
         }
         return arr[index]
     case let .nativeArray(arr):
-        guard case let .integer(index) = subs else {
-            throw EvaluatorError.badFunctionParameters([container, subs], "The sub function requires second parameter to be an integer for arrays")
+        guard case let .integer(index) = sub else {
+            throw EvaluatorError.badFunctionParameters([container, sub], "The sub function requires second parameter to be an integer for arrays")
         }
         guard index >= 0, arr.endIndex > index else {
-            throw EvaluatorError.badFunctionParameters([container, subs], "Index \(index) out of bounds for array of \(arr.count) elements")
+            throw EvaluatorError.badFunctionParameters([container, sub], "Index \(index) out of bounds for array of \(arr.count) elements")
         }
         return try IntermediateValue.tryInit(nativeValue: arr[index])
     case let .object(members):
-        guard case let .string(key) = subs else {
-            throw EvaluatorError.badFunctionParameters([container, subs], "The sub function requires second parameter to be a string for objects")
+        guard case let .string(key) = sub else {
+            throw EvaluatorError.badFunctionParameters([container, sub], "The sub function requires second parameter to be a string for objects")
         }
         return members.first(where: { $0.name == key })?.value ?? .null
     case let .dict(dict):
-        guard case let .string(key) = subs else {
-            throw EvaluatorError.badFunctionParameters([container, subs], "The sub function requires second parameter to be a string for objects")
+        guard case let .string(key) = sub else {
+            throw EvaluatorError.badFunctionParameters([container, sub], "The sub function requires second parameter to be a string for objects")
         }
         return try IntermediateValue(nativeValue: dict[key])
     default:
-        throw EvaluatorError.badFunctionParameters([container, subs], "The sub function requires first parameter to be an array or object")
+        throw EvaluatorError.badFunctionParameters([container, sub], "The sub function requires first parameter to be an array or object")
     }
 }
 
 extension Callable {
-    static let subFunction = Callable.function2(Function2(noContext: subf(_:_:), name: "sub"))
+    static let subFunction = Callable.functionVarargs(.init(noContext: subf(_:)))
 }
