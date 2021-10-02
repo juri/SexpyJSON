@@ -140,4 +140,44 @@ final class SubTests: XCTestCase {
         let value = try XCTUnwrap(obj["value"] as? String)
         XCTAssertEqual(value, "c")
     }
+
+    func testNestedValuesThrowsWithMissingContainer() throws {
+        let input = #"""
+        (let (arr ["a", "b", ["c", "d"]]
+              obj {"e": "f", "g": ["h", "i", {"j": arr}]})
+            {
+                "value": (sub obj "g" 2 "NOT THERE" 2 0)
+            }
+        )
+        """#
+
+        let parser = SXPJParser()
+        let inputExpr = try parser.parse(source: input)
+        var evaluator = SXPJEvaluator()
+        XCTAssertThrowsError(try evaluator.evaluate(expression: inputExpr))
+    }
+
+    func testNestedValuesWithOptionalSubReturnsNil() throws {
+        let input = #"""
+        (let (arr ["a", "b", ["c", "d"]]
+              obj {"e": "f", "g": ["h", "i", {"j": arr}]})
+            {
+                "value": (sub? obj "g" 2 "NOT THERE" 2 0)
+            }
+        )
+        """#
+
+        let parser = SXPJParser()
+        let inputExpr = try parser.parse(source: input)
+        var evaluator = SXPJEvaluator()
+        let output = try evaluator.evaluate(expression: inputExpr)
+        let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
+
+        dump(output)
+        dump(obj)
+        dump(obj["asdf"])
+        dump(obj["value"])
+//        XCTAssertNil(obj["value"])
+    }
 }

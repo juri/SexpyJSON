@@ -33,5 +33,6 @@ let builtins: [Symbol: IntermediateValue] = [
     Symbol("object"): .callable(.objectFunction),
     Symbol("round"): .callable(.roundFunction),
     Symbol("sub"): .callable(.subFunction),
+    Symbol("sub?"): .callable(.subOptFunction),
     Symbol("trunc"): .callable(.truncFunction),
 ]

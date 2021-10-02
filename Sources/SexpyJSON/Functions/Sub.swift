@@ -40,13 +40,57 @@ private func subf(_ params: [IntermediateValue]) throws -> IntermediateValue {
         throw EvaluatorError.badFunctionParameters(params, "The sub function at least two parameters")
     }
 
-    return try subChild(container, firstSubscript, restSubscripts)
+    return try subChild(container, firstSubscript, restSubscripts, optional: false)
 }
 
-private func subChild(_ container: IntermediateValue, _ headSub: IntermediateValue, _ tail: ArraySlice<IntermediateValue>) throws -> IntermediateValue {
+/* fundoc name
+ sub?
+ */
+
+/* fundoc example
+ (sub? {"key1": {"nestedKey1": "nestedValue1"}} "key1" "nestedKey1")
+ */
+
+/* fundoc expect
+ "nestedValue1"
+ */
+
+/* fundoc example
+ (sub? {"key1": {"nestedKey1": "nestedValue1"}} "key2" "nestedKey1")
+ */
+
+/* fundoc expect
+ null
+ */
+
+/* fundoc text
+ The `sub?` function is the subscription operator with support for conditional container. It allows you
+ to retrieve a member of an array (with an index) or an object (with a string), and returns null if the
+ container is null. See also `sub`.
+ */
+
+private func subOptf(_ params: [IntermediateValue]) throws -> IntermediateValue {
+    guard let container = params.first,
+          case let subscripts = params.dropFirst(),
+          let firstSubscript = subscripts.first,
+          case let restSubscripts = subscripts.dropFirst()
+    else {
+        throw EvaluatorError.badFunctionParameters(params, "The sub function at least two parameters")
+    }
+
+    return try subChild(container, firstSubscript, restSubscripts, optional: true)
+}
+
+private func subChild(
+    _ container: IntermediateValue,
+    _ headSub: IntermediateValue,
+    _ tail: ArraySlice<IntermediateValue>,
+    optional: Bool
+) throws -> IntermediateValue {
+    if optional, case .null = container { return .null }
     let value = try subValue(container, headSub)
     if let tailHead = tail.first {
-        return try subChild(value, tailHead, tail.dropFirst())
+        return try subChild(value, tailHead, tail.dropFirst(), optional: optional)
     }
     return value
 }
@@ -86,4 +130,5 @@ private func subValue(_ container: IntermediateValue, _ sub: IntermediateValue) 
 
 extension Callable {
     static let subFunction = Callable.functionVarargs(.init(noContext: subf(_:)))
+    static let subOptFunction = Callable.functionVarargs(.init(noContext: subOptf(_:)))
 }
