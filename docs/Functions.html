@@ -1176,9 +1176,47 @@ the number&#8217;s type.</p>
 <pre>==&gt; "value2"</pre>
 </div>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre>(sub {"key1": {"nestedKey1": "nestedValue1"}} "key1" "nestedKey1")</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>==&gt; "nestedValue1"</pre>
+</div>
+</div>
 <div class="paragraph">
 <p>The <code>sub</code> function is the subscription operator. It allows you to retrieve a member of an array (with an index)
 or an object (with a string).</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_sub_2">sub?</h3>
+<div class="listingblock">
+<div class="content">
+<pre>(sub? {"key1": {"nestedKey1": "nestedValue1"}} "key1" "nestedKey1")</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>==&gt; "nestedValue1"</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>(sub? {"key1": {"nestedKey1": "nestedValue1"}} "key2" "nestedKey1")</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>==&gt; null</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>sub?</code> function is the subscription operator with support for conditional container. It allows you
+to retrieve a member of an array (with an index) or an object (with a string), and returns null if the
+container is null. See also <code>sub</code>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1223,7 +1261,7 @@ closer to zero. It does not change the number&#8217;s type..</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-09-29 18:40:03 +0300
+Last updated 2021-10-02 22:31:33 +0300
 </div>
 </div>
 </body>
