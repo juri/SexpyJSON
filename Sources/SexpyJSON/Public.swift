@@ -182,8 +182,9 @@ public enum SXPJOutputValue: Equatable {
         case let .boolean(b): return b
         case let .array(a): return a.map { $0.outputToJSONObject() }
         case let .object(members):
-            let pairs = members.map { member in
-                (member.name, member.value.outputToJSONObject())
+            let pairs = members.compactMap { member -> (String, Any)? in
+                guard let valueOb = member.value.outputToJSONObject() else { return nil }
+                return (member.name, valueOb)
             }
             return Dictionary(pairs, uniquingKeysWith: { $1 })
         }
