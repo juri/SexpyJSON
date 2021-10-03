@@ -38,9 +38,9 @@ private func letf(_ params: [Expression], _ context: inout Context) throws -> In
             throw EvaluatorError.badParameterList(params, "Bad number of elements in let bindings: must be even")
         }
         var nestedContext = context
-        for symbolIndex in stride(from: 0, to: elems.endIndex, by: 2) {
-            let name = try bindingName(elems[symbolIndex])
-            let value = try evaluate(expression: elems[symbolIndex + 1], in: &nestedContext)
+        for (elemExpr, valueExpr) in elems.chunk2() {
+            let name = try bindingName(elemExpr)
+            let value = try evaluate(expression: valueExpr, in: &nestedContext)
             nestedContext = nestedContext.wrap(names: [Symbol(name): value])
         }
         context = nestedContext

@@ -74,10 +74,7 @@ private func build<T>(
 
     var output = make(params.count / 2)
 
-    for keyIndex in stride(from: 0, to: params.endIndex, by: 2) {
-        let keyValue = params[keyIndex]
-        let value = params[keyIndex + 1]
-
+    for (keyValue, value) in params.chunk2() {
         guard let key = keyValue.string else {
             throw EvaluatorError.badFunctionParameters(params, "object keys must be strings")
         }
