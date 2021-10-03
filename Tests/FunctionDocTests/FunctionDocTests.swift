@@ -30,7 +30,7 @@ final class FunctionDocTests: XCTestCase {
                     output = try evaluator.evaluate(expression: expr)
                 } catch {
                     XCTFail("Error while processing \(url.path): \(error)")
-                    throw error
+                    continue
                 }
                 if let expectedReturn = example.expectedReturn {
                     let outputOb = output.outputToJSONObject()
