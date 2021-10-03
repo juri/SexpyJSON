@@ -29,7 +29,7 @@ final class FunctionDocTests: XCTestCase {
                     expr = try parser.parse(source: example.content)
                     output = try evaluator.evaluate(expression: expr)
                 } catch {
-                    XCTFail("Error while processing \(url.path): \(error)")
+                    XCTFail("Error while processing '\(example.content)' in \(url.path): \(error)")
                     continue
                 }
                 if let expectedReturn = example.expectedReturn {
