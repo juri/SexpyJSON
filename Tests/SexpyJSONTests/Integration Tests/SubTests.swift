@@ -171,9 +171,10 @@ final class SubTests: XCTestCase {
         let inputExpr = try parser.parse(source: input)
         var evaluator = SXPJEvaluator()
         let output = try evaluator.evaluate(expression: inputExpr)
-        let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
+        let obj = try XCTUnwrap(output.outputToJSONObject(includeNilObjectFields: true) as? [String: Any])
         _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
 
-        XCTAssertNil(obj["value"])
+        XCTAssertNotNil(obj["value"])
+        XCTAssertEqual(output.object?[0].value, .null)
     }
 }
