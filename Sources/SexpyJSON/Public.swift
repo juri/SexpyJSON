@@ -174,16 +174,21 @@ public enum SXPJOutputValue: Equatable {
 
     /// Converts the `SXPJOutputValue` to an object suitable for use with `JSONSerialization`.
     /// A `SXPJOutputValue.null` will cause `nil` to be returned.
-    public func outputToJSONObject() -> Any? {
+    ///
+    /// - Parameters:
+    ///     - includeNilObjectFields: If true, nil values for object fields will be included in the output. These can be awkward
+    ///                               to deal with, but in some cases you may want to know they were there.
+    public func outputToJSONObject(includeNilObjectFields: Bool = false) -> Any? {
         switch self {
         case let .number(n): return n
         case .null: return nil
         case let .string(s): return s
         case let .boolean(b): return b
-        case let .array(a): return a.map { $0.outputToJSONObject() }
+        case let .array(a): return a.map { $0.outputToJSONObject(includeNilObjectFields: includeNilObjectFields) }
         case let .object(members):
-            let pairs = members.compactMap { member -> (String, Any)? in
-                guard let valueOb = member.value.outputToJSONObject() else { return nil }
+            let pairs = members.compactMap { member -> (String, Any?)? in
+                let valueOb = member.value.outputToJSONObject(includeNilObjectFields: includeNilObjectFields)
+                if valueOb == nil, !includeNilObjectFields { return nil }
                 return (member.name, valueOb)
             }
             return Dictionary(pairs, uniquingKeysWith: { $1 })
