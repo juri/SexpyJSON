@@ -95,6 +95,11 @@ extension IntermediateValue {
         return d
     }
 
+    var isNull: Bool {
+        guard case .null = self else { return false }
+        return true
+    }
+
     var string: String? {
         guard case let .string(s) = self else { return nil }
         return s
