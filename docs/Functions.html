@@ -446,6 +446,61 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h2 id="_special_forms">Special Forms</h2>
 <div class="sectionbody">
 <div class="sect2">
+<h3 id="_cond">cond</h3>
+<div class="listingblock">
+<div class="content">
+<pre>(let (a 1)
+ (cond (&lt; a 0) "less than zero"
+       (&lt; a 2) "less than two"
+       true "greater than or equal to two"))</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>==&gt; "less than two"</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>(let (a 3)
+ (cond (&lt; a 0) "less than zero"
+       (&lt; a 2) "less than two"
+       true "greater than or equal to two"))</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>==&gt; "greater than or equal to two"</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>(cond false "this is not going to match")</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>==&gt; null</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>(cond)</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>==&gt; null</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>cond</code> form allows you to express a conditional with multiple branches. It uses condition-branch pairs,
+returning the value of the first branch that matches the preceding conditional.
+If no branches match, it returns null.
+<code>cond</code> requires an even number of arguments.</p>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_define">define</h3>
 <div class="listingblock">
 <div class="content">
@@ -1188,7 +1243,7 @@ the number&#8217;s type.</p>
 </div>
 <div class="paragraph">
 <p>The <code>sub</code> function is the subscription operator. It allows you to retrieve a member of an array (with an index)
-or an object (with a string).</p>
+or an object (with a string). See also <a href="#_sub_2">sub?</a>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1216,7 +1271,7 @@ or an object (with a string).</p>
 <div class="paragraph">
 <p>The <code>sub?</code> function is the subscription operator with support for conditional container. It allows you
 to retrieve a member of an array (with an index) or an object (with a string), and returns null if the
-container is null. See also <code>sub</code>.</p>
+container is null. See also <a href="#_sub">sub</a>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1261,7 +1316,7 @@ closer to zero. It does not change the number&#8217;s type..</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-02 22:31:33 +0300
+Last updated 2021-10-03 12:16:36 +0300
 </div>
 </div>
 </body>
