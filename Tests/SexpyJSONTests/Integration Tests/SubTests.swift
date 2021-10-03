@@ -174,10 +174,6 @@ final class SubTests: XCTestCase {
         let obj = try XCTUnwrap(output.outputToJSONObject() as? [String: Any])
         _ = try JSONSerialization.data(withJSONObject: obj, options: [.fragmentsAllowed])
 
-        dump(output)
-        dump(obj)
-        dump(obj["asdf"])
-        dump(obj["value"])
-//        XCTAssertNil(obj["value"])
+        XCTAssertNil(obj["value"])
     }
 }
