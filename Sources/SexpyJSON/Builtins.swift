@@ -13,6 +13,7 @@ let builtins: [Symbol: IntermediateValue] = [
     Symbol("as-object"): .callable(.asObjectFunction),
     Symbol("ceil"): .callable(.ceilFunction),
     Symbol("concat"): .callable(.concatFunction),
+    Symbol("cond"): .callable(.condFunction),
     Symbol("define"): .callable(.defineFunction),
     Symbol("dict"): .callable(.dictFunction),
     Symbol("double"): .callable(.doubleFunction),
