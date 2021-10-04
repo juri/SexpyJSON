@@ -15,6 +15,7 @@ public func extractFunctionDocumentation() throws -> [(URL, Result<FunctionDocum
 public struct FunctionDocumentation {
     public var name: String
     public var section: String?
+    public var customID: String?
     public var parts: [FunctionDocumentationPart]
 }
 
@@ -42,6 +43,7 @@ public enum FunctionDocumentationParseError: Error {
     case indentationError
     case missingName
     case nonEmptyLastLine
+    case orphanCustomID
     case orphanExample
     case orphanExpect
     case orphanSection
@@ -50,6 +52,7 @@ public enum FunctionDocumentationParseError: Error {
 }
 
 private enum FundocBlock {
+    case customID(String)
     case name(String)
     case example(String)
     case expect(String)
@@ -70,6 +73,7 @@ extension FundocBlock {
         let contentString = String(content.joined(separator: "\n"))
         let restOfFirst = trimmedFirst.dropFirst(7)
         switch restOfFirst {
+        case "id": return .success(.customID(contentString))
         case "name": return .success(.name(contentString))
         case "example": return .success(.example(contentString))
         case "expect": return .success(.expect(contentString))
@@ -142,6 +146,12 @@ private func findComments(url: URL) -> [Result<FunctionDocumentation, FunctionDo
             acc = acc.dropLast() + [.success(doc)]
         case (.some(.failure), .success(.section)):
             acc.append(.failure(.orphanSection))
+
+        case (.some(.success(var doc)), let .success(.customID(customID))):
+            doc.customID = customID
+            acc = acc.dropLast() + [.success(doc)]
+        case (.some(.failure), .success(.customID)):
+            acc.append(.failure(.orphanCustomID))
 
         case (.some(.success(var doc)), let .success(.expect(expect))):
             switch doc.parts.last {

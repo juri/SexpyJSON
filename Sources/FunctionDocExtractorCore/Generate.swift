@@ -17,6 +17,9 @@ public func generateDocs(for functionDocs: [FunctionDocumentation]) -> String {
         lines.append("== \(section.name)")
         lines.append("")
         for doc in sortedDocs {
+            if let customID = doc.customID {
+                lines.append("[#\(customID)]")
+            }
             lines.append("=== \(doc.name)")
             for part in doc.parts {
                 lines.append("")
