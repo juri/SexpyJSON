@@ -65,7 +65,7 @@ private func roundf(_ value: IntermediateValue) throws -> IntermediateValue {
 
 /* fundoc text
  The `trunc` function truncates its parameter number to the nearest integer that's
- closer to zero. It does not change the number's type..
+ closer to zero. It does not change the number's type.
  */
 
 private func truncf(_ value: IntermediateValue) throws -> IntermediateValue {
