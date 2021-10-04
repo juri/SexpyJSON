@@ -31,5 +31,5 @@ func notf(_ param: IntermediateValue) throws -> IntermediateValue {
 }
 
 extension Callable {
-    static let notFunction = Callable.function1(.init(f: notf(_:), name: "not"))
+    static let notFunction = Callable.function1(.init(noContext: notf(_:), name: "not"))
 }

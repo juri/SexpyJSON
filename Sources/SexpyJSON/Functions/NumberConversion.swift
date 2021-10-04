@@ -228,11 +228,11 @@ private func doublef(_ value: IntermediateValue) throws -> IntermediateValue {
 }
 
 extension Callable {
-    static let roundFunction = Callable.function1(.init(f: roundf(_:), name: "round"))
-    static let truncFunction = Callable.function1(.init(f: truncf(_:), name: "trunc"))
-    static let ceilFunction = Callable.function1(.init(f: ceilf(_:), name: "ceil"))
-    static let floorFunction = Callable.function1(.init(f: floorf(_:), name: "floor"))
+    static let roundFunction = Callable.function1(.init(noContext: roundf(_:), name: "round"))
+    static let truncFunction = Callable.function1(.init(noContext: truncf(_:), name: "trunc"))
+    static let ceilFunction = Callable.function1(.init(noContext: ceilf(_:), name: "ceil"))
+    static let floorFunction = Callable.function1(.init(noContext: floorf(_:), name: "floor"))
 
-    static let intFunction = Callable.function1(.init(f: intf(_:), name: "int"))
-    static let doubleFunction = Callable.function1(.init(f: doublef(_:), name: "double"))
+    static let intFunction = Callable.function1(.init(noContext: intf(_:), name: "int"))
+    static let doubleFunction = Callable.function1(.init(noContext: doublef(_:), name: "double"))
 }

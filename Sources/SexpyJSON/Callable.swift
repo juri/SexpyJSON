@@ -25,7 +25,7 @@ enum Callable {
         case .specialOperator:
             throw EvaluatorError.badCallTarget(.callable(self))
         case let .function1(fun):
-            return try fun.call(params)
+            return try fun.call(params, context: &context)
         case let .function2(fun):
             return try fun.call(params, context: &context)
         case let .functionVarargs(fun):
@@ -45,7 +45,7 @@ struct SpecialOperator {
 }
 
 struct Function1 {
-    let f: (IntermediateValue) throws -> IntermediateValue
+    let f: (IntermediateValue, inout Context) throws -> IntermediateValue
     let name: String
 
     func call(_ params: [Expression], context: inout Context) throws -> IntermediateValue {
@@ -54,15 +54,21 @@ struct Function1 {
         }
         let paramValue = try evaluate(expression: params[0], in: &context)
 
-        return try self.f(paramValue)
+        return try self.f(paramValue, &context)
     }
 
-    func call(_ params: [IntermediateValue]) throws -> IntermediateValue {
+    func call(_ params: [IntermediateValue], context: inout Context) throws -> IntermediateValue {
         guard params.count == 1 else {
             throw EvaluatorError.badFunctionParameters(params, "\(self.name) requires one argument")
         }
 
-        return try self.f(params[0])
+        return try self.f(params[0], &context)
+    }
+}
+
+extension Function1 {
+    init(noContext f: @escaping (IntermediateValue) throws -> IntermediateValue, name: String) {
+        self.init(f: { p1, _ in try f(p1) }, name: name)
     }
 }
 

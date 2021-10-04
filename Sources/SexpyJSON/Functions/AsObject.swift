@@ -20,5 +20,5 @@ private func asObjectf(_ value: IntermediateValue) throws -> IntermediateValue {
 }
 
 extension Callable {
-    static let asObjectFunction = Callable.function1(.init(f: asObjectf(_:), name: "as-object"))
+    static let asObjectFunction = Callable.function1(.init(noContext: asObjectf(_:), name: "as-object"))
 }

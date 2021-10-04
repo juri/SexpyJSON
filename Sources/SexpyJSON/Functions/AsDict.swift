@@ -26,5 +26,5 @@ private func asDictf(_ value: IntermediateValue) throws -> IntermediateValue {
 }
 
 extension Callable {
-    static let asDictFunction = Callable.function1(.init(f: asDictf(_:), name: "as-dict"))
+    static let asDictFunction = Callable.function1(.init(noContext: asDictf(_:), name: "as-dict"))
 }
