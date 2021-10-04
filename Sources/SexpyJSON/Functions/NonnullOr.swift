@@ -38,7 +38,7 @@
  null
  */
 
-/*
+/* fundoc text
  The `??` operator returns the first of its parameters that is not null. It evaluates the parameters on demand.
  */
 
