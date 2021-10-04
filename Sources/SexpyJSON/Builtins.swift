@@ -18,6 +18,7 @@ let builtins: [Symbol: IntermediateValue] = [
     Symbol("define"): .callable(.defineFunction),
     Symbol("dict"): .callable(.dictFunction),
     Symbol("double"): .callable(.doubleFunction),
+    Symbol("dynfn"): .callable(.dynFnFunction),
     Symbol("eq"): .callable(.eqFunction),
     Symbol("filter"): .callable(.filterFunction),
     Symbol("flatmap"): .callable(.flatmapFunction),
