@@ -487,6 +487,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre>==&gt; null</pre>
 </div>
 </div>
+<div class="paragraph">
+<p>The <code>??</code> operator returns the first of its parameters that is not null. It evaluates the parameters on demand.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_cond">cond</h3>
@@ -558,6 +561,26 @@ If no branches match, it returns null.
 <div class="paragraph">
 <p>The <code>define</code> form binds a name to a value in the current namespace. <code>name</code> is visible to the definition of
 <code>value</code>, which means you can define recursive functions: <code>(define myfun (fn () (myfun)))</code></p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_dynfn">dynfn</h3>
+<div class="listingblock">
+<div class="content">
+<pre>(let (my-dynamic-function (dynfn [] (* 10 dynamic-value)))
+   (let (dynamic-value 5)
+       (my-dynamic-function)))</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>==&gt; 50.0</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>dynfn</code> form defines a dynamically scoped function. Unlike <a href="#_fn">fn</a> which operates in its lexical scope —
+seeing the names available where it&#8217;s defined in the source file — a function defined with <code>dynfn</code> operates
+in a dynamic scope, seeing the values in its caller&#8217;s namespace.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1351,7 +1374,7 @@ container is null. See also <a href="#_sub">sub</a>.</p>
 </div>
 <div class="paragraph">
 <p>The <code>trunc</code> function truncates its parameter number to the nearest integer that&#8217;s
-closer to zero. It does not change the number&#8217;s type..</p>
+closer to zero. It does not change the number&#8217;s type.</p>
 </div>
 </div>
 </div>
@@ -1359,7 +1382,7 @@ closer to zero. It does not change the number&#8217;s type..</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-03 17:32:06 +0300
+Last updated 2021-10-04 18:09:27 +0300
 </div>
 </div>
 </body>
