@@ -614,9 +614,21 @@ in a dynamic scope, seeing the values in its caller&#8217;s namespace.</p>
 <pre>==&gt; 9.0</pre>
 </div>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre>(((fn [a] (fn [b] (* a b))) 3) 4)</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>==&gt; 12.0</pre>
+</div>
+</div>
 <div class="paragraph">
 <p>The <code>fn</code> form defines a function. Its first parameter is an array of parameters, and it evaluates the rest
-of the expressions one by one, returning the value from the last one.</p>
+of the expressions one by one, returning the value from the last one. The functions defined with <code>fn</code>
+capture their lexical scope: you can refer to values in the containing source location when you return
+values from functions or pass functions as parameters.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1055,6 +1067,33 @@ the number&#8217;s type.</p>
 </div>
 </div>
 <div class="sect2">
+<h3 id="_has_name">has-name</h3>
+<div class="listingblock">
+<div class="content">
+<pre>(let (a 10) (has-name "a"))</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>==&gt; true</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>(let (a 10) (has-name "b"))</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>==&gt; false</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>has-name</code> function returns true if the string given as an argument is a name of an existing value.
+You can access it with the <a href="#_name">name</a> or <a href="#nameOpt">[nameOpt]</a> function.</p>
+</div>
+</div>
+<div class="sect2">
 <h3 id="_int">int</h3>
 <div class="listingblock">
 <div class="content">
@@ -1192,6 +1231,52 @@ parameter is the separator string, the second parameter the array.</p>
 <p>The <code>merge</code> function merges the fields of two or more objects or dictionaries, returning a dictionary
 with the key-value pairs from all the parameters. Objects later in the parameter list take precendence
 in collisions.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_name">name</h3>
+<div class="listingblock">
+<div class="content">
+<pre>(let (a 10) (name "a"))</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>==&gt; 10</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>name</code> function returns the value bound to the name in the current lexical scope. If the name doesn&#8217;t exist,
+an error is raised. You can check for the name&#8217;s existence with <a href="#_has_name">has-name</a> function or return null
+in case of a non-existent name with <a href="#nameOpt">[nameOpt]</a>.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_name_2">name?</h3>
+<div class="listingblock">
+<div class="content">
+<pre>(let (a 10) (name? "a"))</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>==&gt; 10</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>(let (a 10) (name? "b"))</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>==&gt; null</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>name?</code> function returns the value bound to the name in the current lexical scope. If the name doesn&#8217;t exist,
+it returns null. You can check for the name&#8217;s existence with <a href="#_has_name">has-name</a> function or cause an error to be
+raised in case of an nonexistent name with <a href="#_name">name</a>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1382,7 +1467,7 @@ closer to zero. It does not change the number&#8217;s type.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-04 18:18:38 +0300
+Last updated 2021-10-05 18:36:37 +0300
 </div>
 </div>
 </body>
