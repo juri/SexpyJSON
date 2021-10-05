@@ -14,9 +14,19 @@
  9.0
  */
 
+/* fundoc example
+ (((fn [a] (fn [b] (* a b))) 3) 4)
+ */
+
+/* fundoc expect
+ 12.0
+ */
+
 /* fundoc text
  The `fn` form defines a function. Its first parameter is an array of parameters, and it evaluates the rest
- of the expressions one by one, returning the value from the last one.
+ of the expressions one by one, returning the value from the last one. The functions defined with `fn`
+ capture their lexical scope: you can refer to values in the containing source location when you return
+ values from functions or pass functions as parameters.
  */
 
 // (fn [a1, a2, …, aN] e1 e2 … eN)
