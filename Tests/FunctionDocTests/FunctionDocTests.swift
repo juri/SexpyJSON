@@ -7,7 +7,9 @@ import XCTest
 
 final class FunctionDocTests: XCTestCase {
     func test() throws {
-        let docResults = try extractFunctionDocumentation()
+        let funcSources = Bundle.module.urls(forResourcesWithExtension: ".swift", subdirectory: "Functions") ?? []
+        XCTAssertFalse(funcSources.isEmpty)
+        let docResults = try extractFunctionDocumentation(sources: funcSources)
         let docs = try docResults.map { url, result in
             (url, try result.get())
         }

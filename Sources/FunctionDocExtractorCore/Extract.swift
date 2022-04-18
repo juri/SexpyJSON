@@ -5,8 +5,13 @@ import SwiftSyntaxParser
 /// `extractFunctionDocumentation` extracts documentation for SexpyJSON
 /// functions.
 public func extractFunctionDocumentation() throws -> [(URL, Result<FunctionDocumentation, FunctionDocumentationParseError>)] {
-    let sources = try findFunctionSources()
-    return sources.flatMap { url -> [(URL, Result<FunctionDocumentation, FunctionDocumentationParseError>)] in
+    try extractFunctionDocumentation(sources: try findFunctionSources())
+}
+
+public func extractFunctionDocumentation(
+    sources: [URL]
+) throws -> [(URL, Result<FunctionDocumentation, FunctionDocumentationParseError>)] {
+    sources.flatMap { url -> [(URL, Result<FunctionDocumentation, FunctionDocumentationParseError>)] in
         let docs = findComments(url: url)
         return docs.map { (url, $0) }
     }
