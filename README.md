@@ -2,6 +2,8 @@
 
 ![Swift build status](https://github.com/juri/SexpyJSON/actions/workflows/swift.yml/badge.svg)
 
+(The builds are broken because SexpyJSON requires Swift 5.6 not supported in GitHub actions yet.)
+
 SexpyJSON is a JSON templating language that allows you to embed (something that looks a lot like) Lisp in
 JSON in Lisp in JSON. This implementation is in Swift.
 
