@@ -1,4 +1,4 @@
-// swift-tools-version:5.5
+// swift-tools-version:5.6
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -20,7 +20,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(name: "SwiftSyntax", url: "https://github.com/apple/swift-syntax.git", .revision("swift-5.5-DEVELOPMENT-SNAPSHOT-2021-09-13-a")),
+        .package(url: "https://github.com/apple/swift-syntax.git", exact: "0.50600.1"), // name: SwiftSyntax
         .package(url: "https://github.com/apple/swift-argument-parser", .upToNextMinor(from: "1.0.1")),
     ],
     targets: [
@@ -41,7 +41,8 @@ let package = Package(
         .target(
             name: "FunctionDocExtractorCore",
             dependencies: [
-                "SwiftSyntax",
+                .product(name: "SwiftSyntax", package: "swift-syntax"),
+                .product(name: "SwiftSyntaxParser", package: "swift-syntax"),
             ]
         ),
         .target(
@@ -57,7 +58,9 @@ let package = Package(
             dependencies: [
                 "FunctionDocExtractorCore",
                 "SexpyJSON",
-                "SwiftSyntax",
+                .product(name: "SwiftSyntax", package: "swift-syntax"),
+                .product(name: "SwiftSyntaxParser", package: "swift-syntax"),
+            ],
             ]
         ),
     ]
