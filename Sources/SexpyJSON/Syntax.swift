@@ -95,6 +95,17 @@ let boolFalse = literal("false").map { false }
 
 let null = literal("null")
 
+// MARK: Comment syntax
+
+let lineComment = literal("#")
+let commentedLineSuffix = zip(
+    lineComment,
+    prefix(while: { $0 != "\n" }).map { _ in () }
+)
+.map { _ in () }
+
+let whitespaceOrComment = zeroOrMore(whitespace, separatedBy: commentedLineSuffix).map { _ in () }
+
 // MARK: Sexp syntax
 
 let openParen = literal("(")
@@ -142,13 +153,13 @@ func buildParser() -> Parser<SexpyJSONElement> {
     let valueOrSymbolParser: RefBox<Parser<SexpyJSONElement>> = RefBox(value: missingParser("valueOrSymbolParser"))
 
     let element: Parser<SexpyJSONElement> = wrapped {
-        zip(whitespace, valueOrSymbolParser.value, whitespace).map(\.1)
+        zip(whitespaceOrComment, valueOrSymbolParser.value, whitespaceOrComment).map(\.1)
     }
 
     let elements = zeroOrMore(element, separatedBy: comma)
     let array = zip(openBracket, elements, closeBracket).map(\.1).map(SexpyJSONElement.array)
 
-    let memberName = zip(whitespace, quoted, whitespace).map(\.1)
+    let memberName = zip(whitespaceOrComment, quoted, whitespaceOrComment).map(\.1)
     let member = zip(memberName, literal(":"), element)
     let members = zeroOrMore(member, separatedBy: comma)
     let object = zip(openBrace, members, closeBrace)
@@ -167,15 +178,19 @@ func buildParser() -> Parser<SexpyJSONElement> {
         wrapped { valueParser.value }.map(SExpressionParameter.element),
         symbol.map(SExpressionParameter.symbol),
     ])
-    let callSExpContent = zip(sexpFunction, whitespace, zeroOrMore(sexpParameter, separatedBy: whitespace))
-        .map { ($0.0, $0.2) }
+    let callSExpContent = zip(
+        sexpFunction,
+        whitespaceOrComment,
+        zeroOrMore(sexpParameter, separatedBy: whitespaceOrComment)
+    )
+    .map { ($0.0, $0.2) }
 
     let callSExp = zip(openParen, callSExpContent, closeParen)
         .map(\.1)
         .map { target, params in
             SExpression.call(.init(target: target, params: params))
         }
-    let emptySExp = zip(openParen, whitespace, closeParen)
+    let emptySExp = zip(openParen, whitespaceOrComment, closeParen)
         .map(const(SExpression.empty))
     let sexp = oneOf([callSExp, emptySExp])
 
@@ -192,7 +207,7 @@ func buildParser() -> Parser<SexpyJSONElement> {
         sexp.map(SexpyJSONElement.sexp),
     ])
 
-    let valueBodyIgnoringWhitespace = zip(whitespace, valueBodyParser, whitespace).map(\.1)
+    let valueBodyIgnoringWhitespace = zip(whitespaceOrComment, valueBodyParser, whitespaceOrComment).map(\.1)
 
     valueParser.value = valueBodyIgnoringWhitespace
 

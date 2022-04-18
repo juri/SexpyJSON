@@ -30,6 +30,19 @@ Examples:
 ((create-function arg1 arg2) func-arg-1 func-arg-2)
 ----
 
+== Comments
+
+SexpyJSON supports line comments. An unquoted `#` starts a comment and it extends to the end of the line.
+
+----
+{
+    "a": "b", # hello
+    # world
+    "c", "d"
+}
+----
+
+
 == Types
 
 SexpyJSON recognizes the types it inherits from JSON:
