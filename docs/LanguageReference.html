@@ -483,6 +483,23 @@ s-expressions.</p>
 </div>
 </div>
 <div class="sect1">
+<h2 id="_comments">Comments</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>SexpyJSON supports line comments. An unquoted <code>#</code> starts a comment and it extends to the end of the line.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>{
+    "a": "b", # hello
+    # world
+    "c", "d"
+}</pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
 <h2 id="_types">Types</h2>
 <div class="sectionbody">
 <div class="paragraph">
@@ -548,7 +565,7 @@ operate on evaluated arguments.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-09-26 17:41:15 +0300
+Last updated 2022-04-18 21:10:31 +0300
 </div>
 </div>
 </body>

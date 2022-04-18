@@ -1090,7 +1090,7 @@ the number&#8217;s type.</p>
 </div>
 <div class="paragraph">
 <p>The <code>has-name</code> function returns true if the string given as an argument is a name of an existing value.
-You can access it with the <a href="#_name">name</a> or <a href="#nameOpt">[nameOpt]</a> function.</p>
+You can access it with the <a href="#_name">name?</a> or <a href="#nameOpt">name</a> function.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1234,7 +1234,7 @@ in collisions.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_name">name</h3>
+<h3 id="nameOpt">name</h3>
 <div class="listingblock">
 <div class="content">
 <pre>(let (a 10) (name "a"))</pre>
@@ -1248,11 +1248,11 @@ in collisions.</p>
 <div class="paragraph">
 <p>The <code>name</code> function returns the value bound to the name in the current lexical scope. If the name doesn&#8217;t exist,
 an error is raised. You can check for the name&#8217;s existence with <a href="#_has_name">has-name</a> function or return null
-in case of a non-existent name with <a href="#nameOpt">[nameOpt]</a>.</p>
+in case of a non-existent name with <a href="#nameOpt">name</a>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_name_2">name?</h3>
+<h3 id="_name">name?</h3>
 <div class="listingblock">
 <div class="content">
 <pre>(let (a 10) (name? "a"))</pre>
@@ -1276,7 +1276,7 @@ in case of a non-existent name with <a href="#nameOpt">[nameOpt]</a>.</p>
 <div class="paragraph">
 <p>The <code>name?</code> function returns the value bound to the name in the current lexical scope. If the name doesn&#8217;t exist,
 it returns null. You can check for the name&#8217;s existence with <a href="#_has_name">has-name</a> function or cause an error to be
-raised in case of an nonexistent name with <a href="#_name">name</a>.</p>
+raised in case of an nonexistent name with <a href="#_name">name?</a>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1467,7 +1467,7 @@ closer to zero. It does not change the number&#8217;s type.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2021-10-05 18:36:37 +0300
+Last updated 2022-04-18 21:10:31 +0300
 </div>
 </div>
 </body>
