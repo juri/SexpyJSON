@@ -191,8 +191,8 @@ private func findComments(url: URL) -> [Result<FunctionDocumentation, FunctionDo
 }
 
 private func findFunctionSources() throws -> [URL] {
-    let url = URL(fileURLWithPath: "Sources/SexpyJSON/Functions", isDirectory: true)
-    let files = try FileManager.default.contentsOfDirectory(atPath: "Sources/SexpyJSON/Functions")
+    let url = URL(fileURLWithPath: "Sources/SexpyJSON/F/Functions", isDirectory: true)
+    let files = try FileManager.default.contentsOfDirectory(atPath: "Sources/SexpyJSON/F/Functions")
     let fileURLs = files.map(url.appendingPathComponent(_:))
     return fileURLs
 }
