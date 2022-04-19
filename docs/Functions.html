@@ -440,6 +440,59 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <body class="article">
 <div id="header">
 <h1>SexpyJSON Standard Library</h1>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#_special_forms">Special Forms</a>
+<ul class="sectlevel2">
+<li><a href="#">??</a></li>
+<li><a href="#_cond">cond</a></li>
+<li><a href="#_define">define</a></li>
+<li><a href="#_dynfn">dynfn</a></li>
+<li><a href="#_eq">eq</a></li>
+<li><a href="#_fn">fn</a></li>
+<li><a href="#_fna">fna</a></li>
+<li><a href="#_if">if</a></li>
+<li><a href="#_let">let</a></li>
+</ul>
+</li>
+<li><a href="#_functions">Functions</a>
+<ul class="sectlevel2">
+<li><a href="#_2">%</a></li>
+<li><a href="#_3">*</a></li>
+<li><a href="#_4">+</a></li>
+<li><a href="#_5">-</a></li>
+<li><a href="#_6">/</a></li>
+<li><a href="#_7">&gt; &gt;= &lt; &lt;=</a></li>
+<li><a href="#_apply">apply</a></li>
+<li><a href="#_as_dict">as-dict</a></li>
+<li><a href="#_as_object">as-object</a></li>
+<li><a href="#_ceil">ceil</a></li>
+<li><a href="#_concat">concat</a></li>
+<li><a href="#_dict">dict</a></li>
+<li><a href="#_double">double</a></li>
+<li><a href="#_filter">filter</a></li>
+<li><a href="#_flatmap">flatmap</a></li>
+<li><a href="#_floor">floor</a></li>
+<li><a href="#_has_name">has-name</a></li>
+<li><a href="#_int">int</a></li>
+<li><a href="#_is_null">is-null</a></li>
+<li><a href="#_join_string">join-string</a></li>
+<li><a href="#_len">len</a></li>
+<li><a href="#_map">map</a></li>
+<li><a href="#_merge">merge</a></li>
+<li><a href="#nameOpt">name</a></li>
+<li><a href="#_name">name?</a></li>
+<li><a href="#_not">not</a></li>
+<li><a href="#_object">object</a></li>
+<li><a href="#_round">round</a></li>
+<li><a href="#_sub">sub</a></li>
+<li><a href="#subopt">sub?</a></li>
+<li><a href="#_trunc">trunc</a></li>
+</ul>
+</li>
+</ul>
+</div>
 </div>
 <div id="content">
 <div class="sect1">
@@ -628,7 +681,31 @@ in a dynamic scope, seeing the values in its caller&#8217;s namespace.</p>
 <p>The <code>fn</code> form defines a function. Its first parameter is an array of parameters, and it evaluates the rest
 of the expressions one by one, returning the value from the last one. The functions defined with <code>fn</code>
 capture their lexical scope: you can refer to values in the containing source location when you return
-values from functions or pass functions as parameters.</p>
+values from functions or pass functions as parameters.
+If you want to skip naming the parameters of your function, use the <a href="#_fna">fna</a> form which assigns automatic
+numbered names.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_fna">fna</h3>
+<div class="listingblock">
+<div class="content">
+<pre>((fna (* $0 $0)) 3)</pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>==&gt; 9.0</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>fna</code> form defines a function with anonymous parameters. It evaluates the expressions it is given as parameters
+one by one, returning the value from the last one. The functions defined with <code>fna</code>
+capture their lexical scope: you can refer to values in the containing source location when you return
+values from functions or pass functions as parameters.
+The parameters passed in to functions defined with <code>fna</code> have access to their parameters with the automatic
+names <code>$0</code>, <code>$1</code>, etc.
+If you want to give names to the function parameters, use the <a href="#_fn">fn</a> form.</p>
 </div>
 </div>
 <div class="sect2">
@@ -784,7 +861,7 @@ the fraction part.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_7">&gt; &gt;= &lt; &#8656;</h3>
+<h3 id="_7">&gt; &gt;= &lt; &lt;=</h3>
 <div class="listingblock">
 <div class="content">
 <pre>(&gt; 3 2 1)</pre>
@@ -836,7 +913,7 @@ the fraction part.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>The basic numeric comparison operators are less than (<code>&lt;</code>), less than or equal (<code>&#8656;</code>),
+<p>The basic numeric comparison operators are less than (<code>&lt;</code>), less than or equal (<code>&lt;=</code>),
 greater than (<code>&gt;</code>), and greater than or equal (<code>&gt;=</code>). They support any number of arguments.</p>
 </div>
 </div>
@@ -1467,7 +1544,7 @@ closer to zero. It does not change the number&#8217;s type.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2022-04-18 21:10:31 +0300
+Last updated 2022-04-19 17:59:23 +0300
 </div>
 </div>
 </body>
