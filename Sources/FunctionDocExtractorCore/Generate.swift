@@ -8,7 +8,7 @@ public func generateDocs() throws -> String {
 }
 
 public func generateDocs(for functionDocs: [FunctionDocumentation]) -> String {
-    var lines = ["= SexpyJSON Standard Library", ""]
+    var lines = ["= SexpyJSON Standard Library", ":toc:", ""]
     let sections = Dictionary(grouping: functionDocs, by: section(for:))
     for section in Section.allSections {
         guard let sectionDocs = sections[section], !sectionDocs.isEmpty else { continue }
