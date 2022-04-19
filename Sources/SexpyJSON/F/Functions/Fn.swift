@@ -27,6 +27,9 @@
  of the expressions one by one, returning the value from the last one. The functions defined with `fn`
  capture their lexical scope: you can refer to values in the containing source location when you return
  values from functions or pass functions as parameters.
+
+ If you want to skip naming the parameters of your function, use the <<_fna>> form which assigns automatic
+ numbered names.
  */
 
 // (fn [a1, a2, …, aN] e1 e2 … eN)
@@ -63,6 +66,52 @@ private func fnf(_ params: [Expression], _ context: inout Context) throws -> Int
         }
 
         let namespacePairs = zip(functionArguments, args).map { name, value in
+            (Symbol(name: name), value)
+        }
+        let nsDict = Dictionary(namespacePairs, uniquingKeysWith: { $1 })
+        var evalContext = originalContext.wrap(names: nsDict)
+        var returnValue: IntermediateValue = .null
+        for expr in fnExpressions {
+            returnValue = try evaluate(expression: expr, in: &evalContext)
+        }
+        return returnValue
+    })))
+}
+
+/* fundoc name
+ fna
+ */
+
+/* fundoc section
+ specialforms
+ */
+
+/* fundoc example
+ ((fna (* $0 $0)) 3)
+ */
+
+/* fundoc expect
+ 9.0
+ */
+
+/* fundoc text
+ The `fna` form defines a function with anonymous parameters. It evaluates the expressions it is given as parameters
+ one by one, returning the value from the last one. The functions defined with `fna`
+ capture their lexical scope: you can refer to values in the containing source location when you return
+ values from functions or pass functions as parameters.
+
+ The parameters passed in to functions defined with `fna` have access to their parameters with the automatic
+ names `$0`, `$1`, etc.
+
+ If you want to give names to the function parameters, use the <<_fn>> form.
+ */
+
+private func anonfnf(_ params: [Expression], _ context: inout Context) throws -> IntermediateValue {
+    let originalContext = context
+    let fnExpressions = params
+    return .callable(.functionVarargs(.init(noContext: { args in
+        let argNames = (0...).lazy.map { "$\($0)" }
+        let namespacePairs = zip(argNames, args).map { name, value in
             (Symbol(name: name), value)
         }
         let nsDict = Dictionary(namespacePairs, uniquingKeysWith: { $1 })
@@ -153,6 +202,7 @@ private func makeNameExtractor(params: [Expression]) -> (Expression) throws -> S
 }
 
 extension Callable {
+    static let anonfnFunction = Callable.specialOperator(SpecialOperator(f: anonfnf(_:_:)))
     static let dynFnFunction = Callable.specialOperator(SpecialOperator(f: dynfnf(_:_:)))
     static let fnFunction = Callable.specialOperator(SpecialOperator(f: fnf(_:_:)))
 }
