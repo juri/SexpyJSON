@@ -1,5 +1,5 @@
 /* fundoc name
- > >= < <=
+ > +>=+ < +<=+
  */
 
 /* fundoc example
@@ -43,8 +43,8 @@
  */
 
 /* fundoc text
- The basic numeric comparison operators are less than (`<`), less than or equal (`<=`),
- greater than (`>`), and greater than or equal (`>=`). They support any number of arguments.
+ The basic numeric comparison operators are less than (`+<+`), less than or equal (`+<=+`),
+ greater than (`+>+`), and greater than or equal (`+>=+`). They support any number of arguments.
  */
 
 private func makeComp(
